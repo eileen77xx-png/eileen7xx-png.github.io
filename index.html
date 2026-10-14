@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* شريط الإشعارات المتجدد من اليمين إلى اليسار */
+        /* شريط الإشعارات المتجدد */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -116,7 +116,6 @@
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 15px; }
         .modal-box { background: var(--card-bg); border-radius: 16px; padding: 20px; width: 100%; max-width: 450px; border: 1px solid var(--neon-green); }
         
-        /* شهادة التوثيق والأمان */
         .certificate-box {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             border: 3px double var(--accent);
@@ -252,7 +251,6 @@
                         <div class="marquee-item">💼 استثمر بأمان، نفذ مهامك اليومية بسهولة، واحصل على عوائدك المالية بانتظام <span class="marquee-divider">| 🚀</span></div>
                         <div class="marquee-item">🎉 مبروك لجميع المستخدمين الذين تم تحويل أرباحهم اليومية وعمولاتهم بنجاح <span class="marquee-divider">| 💰</span></div>
                         <div class="marquee-item">💎 اشترك في باقاتنا الاستثمارية اليوم وضاعف أرباحك بكل ثقة وأمان <span class="marquee-divider">| ✨</span></div>
-                        <!-- مكرر لاستمرار التمرير -->
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر <span class="marquee-divider">| 🇪🇬</span></div>
                         <div class="marquee-item">💼 استثمر بأمان، نفذ مهامك اليومية بسهولة، واحصل على عوائدك المالية بانتظام <span class="marquee-divider">| 🚀</span></div>
                         <div class="marquee-item">🎉 مبروك لجميع المستخدمين الذين تم تحويل أرباحهم اليومية وعمولاتهم بنجاح <span class="marquee-divider">| 💰</span></div>
@@ -396,35 +394,35 @@
         </div>
     </div>
 
-    <!-- السكريبت البرمجي الكامل والمضبوط -->
+    <!-- سكريبت مضاد للتداخلات وأخطاء العرض في الموبايل -->
     <script>
-        var currentUserPhone = localStorage.getItem('tasawuq_logged_user') || null;
+        var currentUserPhone = localStorage.getItem("tasawuq_logged_user") || null;
         var usersDB = {};
         
         try {
-            usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
+            usersDB = JSON.parse(localStorage.getItem("tasawuq_users")) || {};
         } catch(e) {
             usersDB = {};
         }
 
-        if (!usersDB['01032315526']) {
-            usersDB['01032315526'] = {
-                name: 'صاحب الشركة',
-                password: 'asmael',
+        if (!usersDB["01032315526"]) {
+            usersDB["01032315526"] = {
+                name: "صاحب الشركة",
+                password: "asmael",
                 balance: 0,
                 deposit: 0,
                 profit: 0,
                 subscribed: false,
-                subscribedPackage: 'غير مشترك',
+                subscribedPackage: "غير مشترك",
                 packageRequest: null,
-                packageRequestStatus: 'لا يوجد',
-                avatar: 'https://via.placeholder.com/150',
+                packageRequestStatus: "لا يوجد",
+                avatar: "https://via.placeholder.com/150",
                 tasksCount: 5,
                 completedTasks: {},
                 withdrawRequest: null,
-                withdrawStatus: 'لا يوجد'
+                withdrawStatus: "لا يوجد"
             };
-            localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         }
 
         function getTodayDateKey() {
@@ -432,40 +430,40 @@
             var year = now.getFullYear();
             var month = String(now.getMonth() + 1).padStart(2, '0');
             var day = String(now.getDate()).padStart(2, '0');
-            return year + '-' + month + '-' + day;
+            return year + "-" + month + "-" + day;
         }
 
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener("DOMContentLoaded", function() {
             if (currentUserPhone && usersDB[currentUserPhone]) {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('registerScreen').classList.add('hidden');
-                document.getElementById('appScreen').classList.remove('hidden');
-                document.getElementById('bottomNav').classList.remove('hidden');
+                document.getElementById("loginScreen").classList.add("hidden");
+                document.getElementById("registerScreen").classList.add("hidden");
+                document.getElementById("appScreen").classList.remove("hidden");
+                document.getElementById("bottomNav").classList.remove("hidden");
                 loadUserData();
 
-                if(currentUserPhone === '01032315526') {
-                    document.getElementById('adminNavBtn').classList.remove('hidden');
+                if(currentUserPhone === "01032315526") {
+                    document.getElementById("adminNavBtn").classList.remove("hidden");
                     renderAdminPanel();
                 } else {
-                    document.getElementById('adminNavBtn').classList.add('hidden');
+                    document.getElementById("adminNavBtn").classList.add("hidden");
                 }
             }
         });
 
         function showRegister() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('registerScreen').classList.remove('hidden');
+            document.getElementById("loginScreen").classList.add("hidden");
+            document.getElementById("registerScreen").classList.remove("hidden");
         }
 
         function showLogin() {
-            document.getElementById('registerScreen').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById("registerScreen").classList.add("hidden");
+            document.getElementById("loginScreen").classList.remove("hidden");
         }
 
         function executeRegister() {
-            var nameField = document.getElementById('regName');
-            var phoneField = document.getElementById('regPhone');
-            var passwordField = document.getElementById('regPassword');
+            var nameField = document.getElementById("regName");
+            var phoneField = document.getElementById("regPhone");
+            var passwordField = document.getElementById("regPassword");
 
             if (!nameField || !phoneField || !passwordField) return;
 
@@ -474,12 +472,12 @@
             var password = passwordField.value.trim();
 
             if (!name || !phone || !password) {
-                alert('الرجاء كتابة الاسم ورقم الموبايل وكلمة السر!');
+                alert("الرجاء كتابة الاسم ورقم الموبايل وكلمة السر!");
                 return;
             }
 
             if (usersDB[phone]) {
-                alert('رقم الموبايل مسجل بالفعل!');
+                alert("رقم الموبايل مسجل بالفعل!");
                 showLogin();
                 return;
             }
@@ -491,31 +489,31 @@
                 deposit: 0,
                 profit: 0,
                 subscribed: false,
-                subscribedPackage: 'غير مشترك',
+                subscribedPackage: "غير مشترك",
                 packageRequest: null,
-                packageRequestStatus: 'لا يوجد',
-                avatar: 'https://via.placeholder.com/150',
+                packageRequestStatus: "لا يوجد",
+                avatar: "https://via.placeholder.com/150",
                 tasksCount: 5,
                 completedTasks: {},
                 withdrawRequest: null,
-                withdrawStatus: 'لا يوجد'
+                withdrawStatus: "لا يوجد"
             };
             
-            localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             currentUserPhone = phone;
-            localStorage.setItem('tasawuq_logged_user', phone);
+            localStorage.setItem("tasawuq_logged_user", phone);
             loadUserData();
             
-            document.getElementById('registerScreen').classList.add('hidden');
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('appScreen').classList.remove('hidden');
-            document.getElementById('bottomNav').classList.remove('hidden');
-            alert('تم إنشاء الحساب بنجاح!');
+            document.getElementById("registerScreen").classList.add("hidden");
+            document.getElementById("loginScreen").classList.add("hidden");
+            document.getElementById("appScreen").classList.remove("hidden");
+            document.getElementById("bottomNav").classList.remove("hidden");
+            alert("تم إنشاء الحساب بنجاح!");
         }
 
         function executeLogin() {
-            var phoneField = document.getElementById('loginPhone');
-            var passwordField = document.getElementById('loginPassword');
+            var phoneField = document.getElementById("loginPhone");
+            var passwordField = document.getElementById("loginPassword");
 
             if (!phoneField || !passwordField) return;
 
@@ -523,24 +521,24 @@
             var password = passwordField.value.trim();
 
             if (!usersDB[phone] || usersDB[phone].password !== password) {
-                alert('رقم الموبايل أو كلمة السر غير صحيحة!');
+                alert("رقم الموبايل أو كلمة السر غير صحيحة!");
                 return;
             }
 
             currentUserPhone = phone;
-            localStorage.setItem('tasawuq_logged_user', phone);
+            localStorage.setItem("tasawuq_logged_user", phone);
             loadUserData();
             
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('registerScreen').classList.add('hidden');
-            document.getElementById('appScreen').classList.remove('hidden');
-            document.getElementById('bottomNav').classList.remove('hidden');
+            document.getElementById("loginScreen").classList.add("hidden");
+            document.getElementById("registerScreen").classList.add("hidden");
+            document.getElementById("appScreen").classList.remove("hidden");
+            document.getElementById("bottomNav").classList.remove("hidden");
 
-            if(phone === '01032315526') {
-                document.getElementById('adminNavBtn').classList.remove('hidden');
+            if(phone === "01032315526") {
+                document.getElementById("adminNavBtn").classList.remove("hidden");
                 renderAdminPanel();
             } else {
-                document.getElementById('adminNavBtn').classList.add('hidden');
+                document.getElementById("adminNavBtn").classList.add("hidden");
             }
         }
 
@@ -548,40 +546,40 @@
             var data = usersDB[currentUserPhone];
             if (!data) return;
             
-            document.getElementById('displayNameHeader').innerText = data.name;
-            document.getElementById('displayPhone').innerText = currentUserPhone;
-            document.getElementById('displayId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('depositVal').innerText = (data.deposit || 0).toFixed(2);
-            document.getElementById('profitVal').innerText = (data.profit || 0).toFixed(2);
+            document.getElementById("displayNameHeader").innerText = data.name;
+            document.getElementById("displayPhone").innerText = currentUserPhone;
+            document.getElementById("displayId").innerText = currentUserPhone.slice(-6) + "8";
+            document.getElementById("depositVal").innerText = (data.deposit || 0).toFixed(2);
+            document.getElementById("profitVal").innerText = (data.profit || 0).toFixed(2);
 
-            var icon = document.getElementById('headerAvatarIcon');
-            var img = document.getElementById('headerAvatarImg');
-            if (data.avatar && data.avatar !== 'https://via.placeholder.com/150') {
+            var icon = document.getElementById("headerAvatarIcon");
+            var img = document.getElementById("headerAvatarImg");
+            if (data.avatar && data.avatar !== "https://via.placeholder.com/150") {
                 img.src = data.avatar;
-                img.classList.remove('hidden');
-                if (icon) icon.classList.add('hidden');
+                img.classList.remove("hidden");
+                if (icon) icon.classList.add("hidden");
             } else {
-                if (img) img.classList.add('hidden');
-                if (icon) icon.classList.remove('hidden');
+                if (img) img.classList.add("hidden");
+                if (icon) icon.classList.remove("hidden");
             }
 
-            var vipBadge = document.getElementById('vipBadge');
+            var vipBadge = document.getElementById("vipBadge");
             if(vipBadge) {
                 if(data.subscribed) {
                     vipBadge.innerText = data.subscribedPackage;
-                    vipBadge.classList.remove('hidden');
+                    vipBadge.classList.remove("hidden");
                 } else {
-                    vipBadge.classList.add('hidden');
+                    vipBadge.classList.add("hidden");
                 }
             }
 
-            document.getElementById('accountName').innerText = data.name;
-            document.getElementById('accountPhone').innerText = currentUserPhone;
-            document.getElementById('accountId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('accountPackage').innerText = data.subscribedPackage || 'غير مشترك';
-            document.getElementById('accountDeposit').innerText = (data.deposit || 0).toFixed(2) + ' EGP';
-            document.getElementById('accountBalance').innerText = (data.balance || 0).toFixed(2) + ' EGP';
-            document.getElementById('userAvatarImg').src = data.avatar || 'https://via.placeholder.com/150';
+            document.getElementById("accountName").innerText = data.name;
+            document.getElementById("accountPhone").innerText = currentUserPhone;
+            document.getElementById("accountId").innerText = currentUserPhone.slice(-6) + "8";
+            document.getElementById("accountPackage").innerText = data.subscribedPackage || "غير مشترك";
+            document.getElementById("accountDeposit").innerText = (data.deposit || 0).toFixed(2) + " EGP";
+            document.getElementById("accountBalance").innerText = (data.balance || 0).toFixed(2) + " EGP";
+            document.getElementById("userAvatarImg").src = data.avatar || "https://via.placeholder.com/150";
 
             updateTasksButtons();
             updateUserWithdrawUI();
@@ -589,18 +587,18 @@
         }
 
         function switchTab(tabName) {
-            var tabs = document.querySelectorAll('.tab-content');
-            for(var i=0; i<tabs.length; i++) { tabs[i].classList.add('hidden'); }
+            var tabs = document.querySelectorAll(".tab-content");
+            for(var i=0; i<tabs.length; i++) { tabs[i].classList.add("hidden"); }
             
-            var navBtns = document.querySelectorAll('.nav-btn');
-            for(var j=0; j<navBtns.length; j++) { navBtns[j].classList.remove('active'); }
+            var navBtns = document.querySelectorAll(".nav-btn");
+            for(var j=0; j<navBtns.length; j++) { navBtns[j].classList.remove("active"); }
 
-            if (tabName === 'home') document.getElementById('tabHome').classList.remove('hidden');
-            else if (tabName === 'account') document.getElementById('tabAccount').classList.remove('hidden');
-            else if (tabName === 'tasks') document.getElementById('tabTasks').classList.remove('hidden');
-            else if (tabName === 'transactions') document.getElementById('tabTransactions').classList.remove('hidden');
-            else if (tabName === 'orders') document.getElementById('tabOrders').classList.remove('hidden');
-            else if (tabName === 'admin') document.getElementById('tabAdmin').classList.remove('hidden');
+            if (tabName === "home") document.getElementById("tabHome").classList.remove("hidden");
+            else if (tabName === "account") document.getElementById("tabAccount").classList.remove("hidden");
+            else if (tabName === "tasks") document.getElementById("tabTasks").classList.remove("hidden");
+            else if (tabName === "transactions") document.getElementById("tabTransactions").classList.remove("hidden");
+            else if (tabName === "orders") document.getElementById("tabOrders").classList.remove("hidden");
+            else if (tabName === "admin") document.getElementById("tabAdmin").classList.remove("hidden");
         }
 
         function uploadUserAvatar(e) {
@@ -609,7 +607,7 @@
                 var reader = new FileReader();
                 reader.onload = function(evt) {
                     usersDB[currentUserPhone].avatar = evt.target.result;
-                    localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+                    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
                     loadUserData();
                 };
                 reader.readAsDataURL(file);
@@ -620,17 +618,17 @@
             var newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
             if (newName && newName.trim() !== "") {
                 usersDB[currentUserPhone].name = newName.trim();
-                localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
                 loadUserData();
             }
         }
 
         function handleLogout() {
             currentUserPhone = null;
-            localStorage.removeItem('tasawuq_logged_user');
-            document.getElementById('appScreen').classList.add('hidden');
-            document.getElementById('bottomNav').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
+            localStorage.removeItem("tasawuq_logged_user");
+            document.getElementById("appScreen").classList.add("hidden");
+            document.getElementById("bottomNav").classList.add("hidden");
+            document.getElementById("loginScreen").classList.remove("hidden");
         }
 
         function updateTasksButtons() {
@@ -643,7 +641,7 @@
             u.tasksCount = 5 - completedToday;
 
             for (var i = 1; i <= 5; i++) {
-                var btn = document.getElementById('taskBtn' + i);
+                var btn = document.getElementById("taskBtn" + i);
                 if (btn) {
                     if (u.completedTasks[todayKey] && u.completedTasks[todayKey].indexOf(i) !== -1) {
                         btn.disabled = true;
@@ -656,14 +654,14 @@
                     }
                 }
             }
-            var leftEl = document.getElementById('tasksLeft');
+            var leftEl = document.getElementById("tasksLeft");
             if(leftEl) leftEl.innerText = u.tasksCount;
         }
 
         function doTask(taskId) {
             var user = usersDB[currentUserPhone];
             if (!user.subscribed) {
-                alert('يجب موافقة الأدمن على اشتراك الباقة أولاً!');
+                alert("يجب موافقة الأدمن على اشتراك الباقة أولاً!");
                 return;
             }
             
@@ -672,7 +670,7 @@
             if (!user.completedTasks[todayKey]) user.completedTasks[todayKey] = [];
 
             if (user.completedTasks[todayKey].indexOf(taskId) !== -1) {
-                alert('تم تنفيذ هذه المهمة اليوم بالفعل!');
+                alert("تم تنفيذ هذه المهمة اليوم بالفعل!");
                 return;
             }
 
@@ -681,56 +679,56 @@
             user.profit += taskEarn;
             user.completedTasks[todayKey].push(taskId);
 
-            localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             loadUserData();
-            alert('مبروك! تمت المهمة وأُضيف ربح (' + taskEarn.toFixed(2) + ' ج.م).');
+            alert("مبروك! تمت المهمة وأُضيف ربح (" + taskEarn.toFixed(2) + " ج.م).");
         }
 
-        function openProfileModal() { document.getElementById('profileModal').classList.remove('hidden'); }
-        function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
+        function openProfileModal() { document.getElementById("profileModal").classList.remove("hidden"); }
+        function closeProfileModal() { document.getElementById("profileModal").classList.add("hidden"); }
 
         function savePasswordChange() {
-            var newPass = document.getElementById('editPasswordInput').value.trim();
+            var newPass = document.getElementById("editPasswordInput").value.trim();
             if (newPass) {
                 usersDB[currentUserPhone].password = newPass;
-                localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
                 closeProfileModal();
-                alert('تم تغيير كلمة المرور!');
+                alert("تم تغيير كلمة المرور!");
             }
         }
 
-        function openPackagesModal() { document.getElementById('packagesModal').classList.remove('hidden'); }
-        function closePackagesModal() { document.getElementById('packagesModal').classList.add('hidden'); }
-        function openInfoModal() { document.getElementById('infoModal').classList.remove('hidden'); }
-        function closeInfoModal() { document.getElementById('infoModal').classList.add('hidden'); }
+        function openPackagesModal() { document.getElementById("packagesModal").classList.remove("hidden"); }
+        function closePackagesModal() { document.getElementById("packagesModal").classList.add("hidden"); }
+        function openInfoModal() { document.getElementById("infoModal").classList.remove("hidden"); }
+        function closeInfoModal() { document.getElementById("infoModal").classList.add("hidden"); }
 
         function updateUserWithdrawUI() {
             var data = usersDB[currentUserPhone];
-            var statusDiv = document.getElementById('userWithdrawStatus');
+            var statusDiv = document.getElementById("userWithdrawStatus");
             if(statusDiv) {
-                statusDiv.innerHTML = data.withdrawRequest ? 'مبلغ السحب: <strong>' + data.withdrawRequest + ' ج.م</strong> - الحالة: <span style="color:var(--accent);">' + data.withdrawStatus + '</span>' : 'لا توجد معاملات سحب معلقة حالياً.';
+                statusDiv.innerHTML = data.withdrawRequest ? ("مبلغ السحب: <strong>" + data.withdrawRequest + " ج.م</strong> - الحالة: <span style='color:var(--accent);'>" + data.withdrawStatus + "</span>") : "لا توجد معاملات سحب معلقة حالياً.";
             }
         }
 
         function updateUserPackageRequestUI() {
             var data = usersDB[currentUserPhone];
-            var box = document.getElementById('userPackageRequestStatus');
+            var box = document.getElementById("userPackageRequestStatus");
             if(box) {
-                box.innerHTML = data.packageRequest ? 'الباقة المطلوبة: <strong>باقة ' + data.packageRequest + ' EGP</strong> - الحالة: <span style="color:var(--accent);">' + data.packageRequestStatus + '</span>' : 'لا توجد طلبات اشتراك باقات حالياً.';
+                box.innerHTML = data.packageRequest ? ("الباقة المطلوبة: <strong>باقة " + data.packageRequest + " EGP</strong> - الحالة: <span style='color:var(--accent);'>" + data.packageRequestStatus + "</span>") : "لا توجد طلبات اشتراك باقات حالياً.";
             }
         }
 
         function requestPackageSubscription(price, name) {
             var user = usersDB[currentUserPhone];
-            if (user.subscribed) { alert('أنت مشترك بالفعل!'); return; }
-            if (user.balance < price) { alert('رصيدك المتاح غير كافٍ للاشتراك!'); return; }
+            if (user.subscribed) { alert("أنت مشترك بالفعل!"); return; }
+            if (user.balance < price) { alert("رصيدك المتاح غير كافٍ للاشتراك!"); return; }
 
             user.packageRequest = price;
-            user.packageRequestStatus = 'قيد المراجعة';
-            localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+            user.packageRequestStatus = "قيد المراجعة";
+            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             loadUserData();
             closePackagesModal();
-            alert('تم إرسال طلب الاشتراك بنجاح.');
+            alert("تم إرسال طلب الاشتراك بنجاح.");
         }
 
         function requestWithdrawal() {
@@ -738,26 +736,26 @@
             var amount = parseFloat(prompt("ادخل المبلغ المراد سحبه:"));
             if (amount && !isNaN(amount)) {
                 user.withdrawRequest = amount;
-                user.withdrawStatus = 'قيد المراجعة من الأدمن';
-                localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+                user.withdrawStatus = "قيد المراجعة من الأدمن";
+                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
                 loadUserData();
-                alert('تم إرسال طلب السحب بنجاح!');
+                alert("تم إرسال طلب السحب بنجاح!");
             }
         }
 
         function renderAdminPanel() {
-            var tbody = document.getElementById('adminUserTable');
+            var tbody = document.getElementById("adminUserTable");
             if(!tbody) return;
-            tbody.innerHTML = '';
+            tbody.innerHTML = "";
             for (var phoneKey in usersDB) {
                 var u = usersDB[phoneKey];
-                tbody.innerHTML += '<tr>' +
-                    '<td>' + u.name + '<br><span style="color:var(--neon-green);">' + phoneKey + '</span></td>' +
-                    '<td>' + (u.balance || 0).toFixed(2) + ' ج.م</td>' +
-                    '<td>' + (u.deposit || 0).toFixed(2) + ' ج.م</td>' +
-                    '<td>' + (u.profit || 0).toFixed(2) + ' ج.م</td>' +
-                    '<td style="color:var(--accent);">' + (u.packageRequest ? 'باقة ' + u.packageRequest + ' (' + u.packageRequestStatus + ')' : 'لا يوجد') + '</td>' +
-                    '<td>' +
-                        '<button onclick="adminEditBalance(\'' + phoneKey + '\', \'balance\')" style="background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">شحن متاح</button> ' +
-                        '<button onclick="adminEditBalance(\'' + phoneKey + '\', \'deposit\')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">وديعة</button> ' +
-                        (u.packageRequestStatus === 'قيد المراجعة' ? '
+                tbody.innerHTML += "<tr>" +
+                    "<td>" + u.name + "<br><span style='color:var(--neon-green);'>" + phoneKey + "</span></td>" +
+                    "<td>" + (u.balance || 0).toFixed(2) + " ج.م</td>" +
+                    "<td>" + (u.deposit || 0).toFixed(2) + " ج.م</td>" +
+                    "<td>" + (u.profit || 0).toFixed(2) + " ج.م</td>" +
+                    "<td style='color:var(--accent);'>" + (u.packageRequest ? "باقة " + u.packageRequest + " (" + u.packageRequestStatus + ")" : "لا يوجد") + "</td>" +
+                    "<td>" +
+                        "<button onclick=\"adminEditBalance('" + phoneKey + "', 'balance')\" style='background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;'>شحن متاح</button> " +
+                        "<button onclick=\"adminEditBalance('" + phoneKey + "', 'deposit')\" style='background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;'>وديعة</button> " +
+                        (u.packageRequestStatus === "قيد المراجعة" ? "<button onclick=\"adminApprovePackage('" + phoneKey + "')\" style='background:var(--accent); color
