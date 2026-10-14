@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك المضمون 100% --- */
+        /* --- تصميم الشريط المتحرك المتصل بدون فواصل --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -54,15 +54,14 @@
             padding: 10px 0;
             margin: 0 15px 15px 15px;
             overflow: hidden;
-            width: calc(100% - 30px);
+            white-space: nowrap;
             border-radius: 8px;
             position: relative;
         }
         .marquee-content {
             display: inline-flex;
             white-space: nowrap;
-            animation: marqueeSmooth 25s linear infinite;
-            width: max-content;
+            animation: tickerScroll 18s linear infinite;
         }
         .marquee-item {
             display: inline-flex;
@@ -76,9 +75,9 @@
             font-weight: bold;
             margin: 0 15px;
         }
-        @keyframes marqueeSmooth {
+        @keyframes tickerScroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            100% { transform: translateX(-33.333%); }
         }
 
         .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
@@ -184,14 +183,22 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك الانسيابي الجديد -->
+                <!-- الشريط المتحرك المتصل والمصحح تماماً -->
                 <div class="marquee-container">
                     <div class="marquee-content">
+                        <!-- مجموعة 1 -->
                         <span class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
                         <span class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
                         <span class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
                         <span class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <!-- التكرار لضمان استمرار الدوران بسلاسة -->
+                        
+                        <!-- مجموعة 2 (متطابقة لضمان التدوير الفوري بدون فراغات) -->
+                        <span class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+
+                        <!-- مجموعة 3 (تأكيد الاستمرارية) -->
                         <span class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
                         <span class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
                         <span class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
@@ -737,8 +744,3 @@
                 renderAdminPanel();
                 if(currentUserPhone === phoneKey) loadUserData();
                 alert(`تمت الموافقة على طلب السحب.`);
-            }
-        }
-    </script>
-</body>
-</html>
