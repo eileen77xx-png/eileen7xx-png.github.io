@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك الديناميكي المستمر --- */
+        /* --- تصميم الشريط المتحرك البطيء والمستمر بدون فواصل --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -56,21 +56,24 @@
             overflow: hidden;
             white-space: nowrap;
             border-radius: 8px;
+            position: relative;
         }
         .marquee-text {
             display: inline-block;
-            animation: marquee 30s linear infinite;
+            /* تم إبطاء السرعة إلى 55 ثانية لتصبح مريحة وبطيئة جداً */
+            animation: marquee 55s linear infinite;
             color: var(--neon-green);
             font-size: 13px;
             font-weight: 500;
+            padding-left: 100%;
         }
         .brand-divider {
             color: var(--accent);
             font-weight: bold;
-            margin: 0 12px;
+            margin: 0 20px;
         }
         @keyframes marquee {
-            0% { transform: translateX(100%); }
+            0% { transform: translateX(0); }
             100% { transform: translateX(-100%); }
         }
 
@@ -177,10 +180,10 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك العشوائي والمستمر -->
+                <!-- الشريط المتحرك البطيء والمستمر على مدار الساعة -->
                 <div class="marquee-container">
                     <div class="marquee-text" id="dynamicMarquee">
-                        <!-- يتم إنشاؤه تلقائياً بالأرقام العشوائية والمبالغ بواسطة الجافاسكريبت -->
+                        <!-- يتم التوليد التلقائي المستمر هنا -->
                     </div>
                 </div>
 
@@ -325,13 +328,14 @@
             saveDB();
         }
 
-        // --- دالة توليد نصوص الشريط المتحرك العشوائية والمستمرة ---
+        // --- دالة توليد محتوى الشريط بطريقة دائرية مستمرة بدون فواصل ---
         function generateRandomMarqueeText() {
             const prefixes = ['010', '011', '012', '015'];
             const amounts = [250, 500, 1800, 5000, 8000, 10000, 15000];
             let htmlContent = '';
 
-            for (let i = 0; i < 12; i++) {
+            // تم زيادة عدد العناصر إلى 25 عنصراً لضمان الطول واستمرارية الدوران بسلاسة على مدار الساعة
+            for (let i = 0; i < 25; i++) {
                 const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
                 const randomLast4 = Math.floor(1000 + Math.random() * 9000);
                 const randomPhone = `${randomPrefix}****${randomLast4}`;
@@ -343,7 +347,7 @@
                     htmlContent += `✨ مبروك انضمام مستخدم جديد برقم <strong>${randomPhone}</strong>`;
                 }
 
-                // الفاصل بين النصوص
+                // فاصل علم مصر وكلمة تسوق بلس بدون فواصل مزعجة في الحركة
                 htmlContent += `<span class="brand-divider"> 🇪🇬 تسوق بلس </span>`;
             }
 
@@ -351,7 +355,6 @@
             if (marqueeEl) marqueeEl.innerHTML = htmlContent;
         }
 
-        // تشغيل توليد الشريط عند فتح الصفحة
         window.addEventListener('DOMContentLoaded', generateRandomMarqueeText);
 
         function saveDB() {
@@ -414,7 +417,7 @@
 
             currentUserPhone = phone;
             loadUserData();
-            generateRandomMarqueeText(); // إعادات توليد الأرقام العشوائية عند الدخول
+            generateRandomMarqueeText();
             
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('appScreen').classList.remove('hidden');
