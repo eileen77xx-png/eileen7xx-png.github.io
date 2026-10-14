@@ -46,35 +46,39 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك البطيء والمستمر بدون فواصل --- */
+        /* --- تصميم الشريط المتحرك اللانهائي وبدون فواصل (Continuous Loop) --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
             border-bottom: 1px solid rgba(34, 197, 94, 0.25);
-            padding: 8px 0;
+            padding: 9px 0;
             margin: 0 15px 15px 15px;
             overflow: hidden;
             white-space: nowrap;
             border-radius: 8px;
-            position: relative;
+            display: flex;
         }
-        .marquee-text {
-            display: inline-block;
-            /* تم إبطاء السرعة إلى 55 ثانية لتصبح مريحة وبطيئة جداً */
-            animation: marquee 55s linear infinite;
+        .marquee-wrapper {
+            display: flex;
+            width: max-content;
+            animation: marqueeContinuous 80s linear infinite;
+        }
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
             color: var(--neon-green);
             font-size: 13px;
             font-weight: 500;
-            padding-left: 100%;
         }
         .brand-divider {
             color: var(--accent);
             font-weight: bold;
-            margin: 0 20px;
+            margin: 0 15px;
         }
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+        @keyframes marqueeContinuous {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
         }
 
         .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
@@ -180,10 +184,11 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك البطيء والمستمر على مدار الساعة -->
+                <!-- الشريط المتحرك المستمر بدون انقطاع برمجياً -->
                 <div class="marquee-container">
-                    <div class="marquee-text" id="dynamicMarquee">
-                        <!-- يتم التوليد التلقائي المستمر هنا -->
+                    <div class="marquee-wrapper">
+                        <div class="marquee-content" id="marqueeBlock1"></div>
+                        <div class="marquee-content" id="marqueeBlock2"></div>
                     </div>
                 </div>
 
@@ -328,31 +333,39 @@
             saveDB();
         }
 
-        // --- دالة توليد محتوى الشريط بطريقة دائرية مستمرة بدون فواصل ---
+        // --- دالة توليد محتوى الشريط الشامل والمستمر بدون فواصل ---
         function generateRandomMarqueeText() {
             const prefixes = ['010', '011', '012', '015'];
             const amounts = [250, 500, 1800, 5000, 8000, 10000, 15000];
             let htmlContent = '';
 
-            // تم زيادة عدد العناصر إلى 25 عنصراً لضمان الطول واستمرارية الدوران بسلاسة على مدار الساعة
-            for (let i = 0; i < 25; i++) {
-                const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-                const randomLast4 = Math.floor(1000 + Math.random() * 9000);
-                const randomPhone = `${randomPrefix}****${randomLast4}`;
-                const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
-
-                if (i % 2 === 0) {
-                    htmlContent += `🎉 ألف مبروك تم تحويل مبلغ <strong>${randomAmount} ج.م</strong> للمستخدم <strong>${randomPhone}</strong>`;
+            // توليد سلسلة متنوعة من الإشعارات والمبالغ والمكافآت
+            for (let i = 0; i < 20; i++) {
+                const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+                const last4 = Math.floor(1000 + Math.random() * 9000);
+                const phone = `${prefix}****${last4}`;
+                const amount = amounts[Math.floor(Math.random() * amounts.length)];
+                
+                const type = i % 4;
+                if (type === 0) {
+                    htmlContent += `✨ مبروك انضمام مستخدم جديد برقم <strong>${phone}</strong>`;
+                } else if (type === 1) {
+                    htmlContent += `🎉 ألف مبروك تم تحويل مبلغ <strong>${amount} ج.م</strong> للمستخدم <strong>${phone}</strong>`;
+                } else if (type === 2) {
+                    htmlContent += `🎁 ألف مبروك تم استلام مكافأة للمستخدم برقم <strong>${phone}</strong>`;
                 } else {
-                    htmlContent += `✨ مبروك انضمام مستخدم جديد برقم <strong>${randomPhone}</strong>`;
+                    htmlContent += `🔗 تم تحويل مكافأة الدخول من الرابط الخاص بمستخدم رقم <strong>${phone}</strong>`;
                 }
 
-                // فاصل علم مصر وكلمة تسوق بلس بدون فواصل مزعجة في الحركة
                 htmlContent += `<span class="brand-divider"> 🇪🇬 تسوق بلس </span>`;
             }
 
-            const marqueeEl = document.getElementById('dynamicMarquee');
-            if (marqueeEl) marqueeEl.innerHTML = htmlContent;
+            const b1 = document.getElementById('marqueeBlock1');
+            const b2 = document.getElementById('marqueeBlock2');
+            if (b1 && b2) {
+                b1.innerHTML = htmlContent;
+                b2.innerHTML = htmlContent; // نسخ متطابق للحركة الدائرية المستمرة
+            }
         }
 
         window.addEventListener('DOMContentLoaded', generateRandomMarqueeText);
