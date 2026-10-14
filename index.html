@@ -46,24 +46,41 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- الشريط المتحرك الجذري والمضمون 100% --- */
+        /* --- تصميم الشريط المتحرك إلى الأعلى --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
             border-bottom: 1px solid rgba(34, 197, 94, 0.25);
-            padding: 10px 15px;
+            height: 36px;
             margin: 0 15px 15px 15px;
+            overflow: hidden;
             border-radius: 8px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        marquee {
+        .marquee-content {
+            display: flex;
+            flex-direction: column;
+            animation: scrollUp 15s linear infinite;
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        }
+        .marquee-item {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--neon-green);
             font-size: 13px;
             font-weight: 500;
+            gap: 8px;
         }
-        .brand-divider {
-            color: var(--accent);
-            font-weight: bold;
-            margin: 0 25px;
+        @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
         }
 
         .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
@@ -169,16 +186,19 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك الكلاسيكي المضمون -->
+                <!-- الشريط المتحرك عمودياً إلى الأعلى -->
                 <div class="marquee-container">
-                    <marquee scrollamount="5" direction="right">
-                        ✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong> <span class="brand-divider"> 🇪🇬 تسوق بلس </span> 
-                        🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong> <span class="brand-divider"> 🇪🇬 تسوق بلس </span> 
-                        🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong> <span class="brand-divider"> 🇪🇬 تسوق بلس </span> 
-                        🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong> <span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****5522</strong> <span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        ✨ مبروك انضمام مستخدم جديد رقم <strong>012****1133</strong> <span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                    </marquee>
+                    <div class="marquee-content">
+                        <div class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></div>
+                        <div class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></div>
+                        <div class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></div>
+                        <!-- التكرار لضمان الاستمرارية العمودية السلسة -->
+                        <div class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></div>
+                        <div class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></div>
+                        <div class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></div>
+                    </div>
                 </div>
 
                 <div class="action-btns-row">
