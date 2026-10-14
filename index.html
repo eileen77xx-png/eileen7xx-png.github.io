@@ -33,7 +33,6 @@
             flex-direction: column;
         }
 
-        /* حاويات المصادقة (تسجيل الدخول وإنشاء الحساب) */
         .auth-container {
             max-width: 440px;
             margin: 25px auto;
@@ -45,7 +44,6 @@
             width: 90%;
         }
 
-        /* عرض الصورة بشكل كامل ومميز في إنشاء الحساب */
         .auth-hero-img {
             width: 100%;
             height: 230px;
@@ -85,7 +83,7 @@
             color: var(--text-muted);
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 11px;
             border-radius: 8px;
@@ -94,10 +92,6 @@
             color: white;
             font-size: 14px;
             outline: none;
-        }
-
-        .form-group input:focus {
-            border-color: var(--primary);
         }
 
         .btn-submit {
@@ -113,7 +107,12 @@
             transition: 0.3s;
         }
 
-        .btn-submit:hover {
+        .btn-submit:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+
+        .btn-submit:hover:not(:disabled) {
             opacity: 0.9;
         }
 
@@ -130,7 +129,6 @@
             font-weight: bold;
         }
 
-        /* الهيدر العلوي والتصميم الاحترافي للأرباح والمستخدم */
         .app-header {
             background: var(--card-bg);
             padding: 15px;
@@ -214,7 +212,6 @@
             margin-top: 3px;
         }
 
-        /* الشريط المتحرك */
         .ticker-wrap {
             width: 100%;
             background: #1e1b4b;
@@ -364,12 +361,12 @@
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب جديد (تم ربط الصورة برابط سحابي مباشر) -->
+    <!-- 2. شاشة إنشاء حساب جديد -->
     <div id="registerScreen" class="auth-container hidden">
         <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="تسوق بلس" class="auth-hero-img">
         <div class="auth-content">
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
-            <p class="welcome-desc">أنشئ حسابك الجديد الآن وابدأ رحلتك الاستثمارية والتسويقية نحو عوائد مضمونة وأمان تام.</p>
+            <p class="welcome-desc">أنشئ حسابك الجديد الآن وابدأ رحلتك الاستثمارية نحو عوائد مضمونة وأمان تام.</p>
             
             <form onsubmit="handleRegister(event)">
                 <div class="form-group">
@@ -388,7 +385,7 @@
         </div>
     </div>
 
-    <!-- 3. الواجهة الرئيسية للمنصة -->
+    <!-- 3. الواجهة الرئيسية للمستخدم -->
     <div id="appScreen" class="hidden">
         <header class="app-header">
             <div class="top-user-row">
@@ -433,6 +430,7 @@
         </div>
 
         <main class="main-content">
+            <!-- باقات الشحن والاشتراك -->
             <section style="margin-bottom: 25px;">
                 <h3 class="section-title"><i class="fa-solid fa-box-open"></i> باقات الشحن والاشتراك</h3>
                 <div class="packages-grid">
@@ -457,6 +455,7 @@
                 </div>
             </section>
 
+            <!-- المهمات اليومية -->
             <section style="margin-bottom: 25px;">
                 <h3 class="section-title"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
                 <div class="tasks-grid">
@@ -477,32 +476,42 @@
                 </div>
             </section>
 
+            <!-- قسم طلب السحب ومعاملات المستخدم -->
             <section style="margin-bottom: 25px;">
-                <h3 class="section-title"><i class="fa-solid fa-wallet"></i> طلب سحب الأرباح (الأحد والأربعاء)</h3>
+                <h3 class="section-title"><i class="fa-solid fa-wallet"></i> طلب سحب الأرباح (الأحد والأربعاء فقط)</h3>
                 <div class="package-card" style="text-align: right;">
                     <div class="form-group">
                         <label>اختر مبلغ السحب:</label>
-                        <select id="withdrawAmount" style="width:100%; padding: 10px; background:#0f172a; color:white; border-radius:8px; border:1px solid #334155;">
+                        <select id="withdrawAmount">
                             <option value="250">250 ج.م</option>
                             <option value="800">800 ج.م</option>
                             <option value="1500">1500 ج.م</option>
                             <option value="2000">2000 ج.م</option>
                         </select>
                     </div>
-                    <button onclick="requestWithdrawal()" class="btn-submit" style="padding: 10px;">إرسال طلب السحب للمسئول</button>
+                    <button id="withdrawBtn" onclick="requestWithdrawal()" class="btn-submit" style="padding: 10px;">إرسال طلب السحب للمسئول</button>
+                    
+                    <!-- قسم حالة المعاملات الخاصة بالمستخدم -->
+                    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #334155;">
+                        <h4 style="font-size: 13px; color: var(--accent); margin-bottom: 5px;">سجل طلبات السحب الخاصة بك:</h4>
+                        <div id="userWithdrawStatus" style="font-size: 12px; color: var(--text-muted);">لا توجد طلبات سحب حالية.</div>
+                    </div>
                 </div>
             </section>
 
+            <!-- لوحة تحكم الأدمن (صاحب الشركة) -->
             <section id="adminSection" class="admin-panel hidden">
-                <h3 style="color: var(--accent); font-size: 15px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم الأدمن</h3>
+                <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم صاحب الشركة (الأدمن)</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">تحكم كامل في أرصدة المستخدمين والاطلاع على طلبات السحب والموافقة عليها:</p>
                 <table>
                     <thead>
                         <tr>
                             <th>المستخدم</th>
-                            <th>المتاح</th>
+                            <th>الرصيد المتاح</th>
                             <th>الوديعة</th>
                             <th>الأرباح</th>
-                            <th>إدارة</th>
+                            <th>طلب السحب الحالي</th>
+                            <th>الإدارة</th>
                         </tr>
                     </thead>
                     <tbody id="adminUserTable"></tbody>
@@ -514,6 +523,22 @@
     <script>
         let currentUser = null;
         let usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
+
+        // تهيئة حساب الأدمن الافتراضي بالبيانات الجديدة
+        if (!usersDB['01032315526']) {
+            usersDB['01032315526'] = {
+                password: 'asmael',
+                balance: 0,
+                deposit: 0,
+                profit: 0,
+                subscribed: false,
+                tasksCount: 5,
+                avatar: 'https://via.placeholder.com/150',
+                withdrawRequest: null,
+                withdrawStatus: 'لا يوجد'
+            };
+            saveDB();
+        }
 
         function showRegister() {
             document.getElementById('loginScreen').classList.add('hidden');
@@ -542,7 +567,9 @@
                 profit: 0,
                 subscribed: false,
                 tasksCount: 5,
-                avatar: 'https://via.placeholder.com/150'
+                avatar: 'https://via.placeholder.com/150',
+                withdrawRequest: null,
+                withdrawStatus: 'لا يوجد'
             };
             saveDB();
 
@@ -565,7 +592,7 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('appScreen').classList.remove('hidden');
 
-            if(username === 'admin') {
+            if(username === '01032315526') {
                 document.getElementById('adminSection').classList.remove('hidden');
                 renderAdminPanel();
             }
@@ -582,6 +609,31 @@
 
             if(data.subscribed) {
                 document.getElementById('subBadge').classList.remove('hidden');
+            }
+
+            updateUserWithdrawUI();
+            checkWithdrawDay();
+        }
+
+        function checkWithdrawDay() {
+            const today = new Date().getDay();
+            const btn = document.getElementById('withdrawBtn');
+            if (today === 0 || today === 3) {
+                btn.disabled = false;
+                btn.innerText = "إرسال طلب السحب للمسئول";
+            } else {
+                btn.disabled = true;
+                btn.innerText = "السحب متاح يومي الأحد والأربعاء فقط";
+            }
+        }
+
+        function updateUserWithdrawUI() {
+            const data = usersDB[currentUser];
+            const statusDiv = document.getElementById('userWithdrawStatus');
+            if (data.withdrawRequest) {
+                statusDiv.innerHTML = `مبلغ ${data.withdrawRequest} ج.م - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
+            } else {
+                statusDiv.innerHTML = `لا توجد طلبات سحب معلقة حالياً.`;
             }
         }
 
@@ -632,12 +684,21 @@
         }
 
         function requestWithdrawal() {
-            const today = new Date().getDay();
-            if (today !== 0 && today !== 3) {
-                alert('طلب السحب متاح يومي الأحد والأربعاء فقط!');
+            const user = usersDB[currentUser];
+            if (user.withdrawRequest) {
+                alert('لديك طلب سحب قيد المراجعة بالفعل ولا يمكن تقديم طلب جديد حتى يتم معالجته.');
                 return;
             }
-            const amount = document.getElementById('withdrawAmount').value;
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            if (user.profit < amount && user.balance < amount) {
+                alert('رصيدك أو أرباحك لا تكفي لهذا المبلغ!');
+                return;
+            }
+
+            user.withdrawRequest = amount;
+            user.withdrawStatus = 'قيد المراجعة من الأدمن';
+            saveDB();
+            loadUserData();
             alert(`تم إرسال طلب سحب بقيمة ${amount} ج.م للمسئول بنجاح!`);
         }
 
@@ -645,29 +706,52 @@
             const tbody = document.getElementById('adminUserTable');
             tbody.innerHTML = '';
             for (let uname in usersDB) {
-                if (uname === 'admin') continue;
+                if (uname === '01032315526') continue;
                 const u = usersDB[uname];
                 tbody.innerHTML += `
                     <tr>
                         <td>${uname}</td>
-                        <td>${u.balance}</td>
-                        <td>${u.deposit}</td>
-                        <td>${u.profit}</td>
+                        <td>${u.balance} ج.م</td>
+                        <td>${u.deposit} ج.م</td>
+                        <td>${u.profit} ج.م</td>
+                        <td style="color:var(--accent);">${u.withdrawRequest ? u.withdrawRequest + ' ج.م (' + u.withdrawStatus + ')' : 'لا يوجد'}</td>
                         <td>
-                            <button onclick="adminAddBalance('${uname}')" style="background:var(--success); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">+ شحن</button>
+                            <button onclick="adminAction('${uname}', 'charge')" style="background:var(--success); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">شحن</button>
+                            <button onclick="adminAction('${uname}', 'deduct')" style="background:var(--danger); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">خصم</button>
+                            ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${uname}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة السحب</button>` : ''}
                         </td>
                     </tr>
                 `;
             }
         }
 
-        function adminAddBalance(uname) {
-            const amount = parseFloat(prompt(`شحن رصيد للمستخدم ${uname}:`));
+        function adminAction(uname, type) {
+            const amount = parseFloat(prompt(`ادخل المبلغ المراد ${type === 'charge' ? 'شحنه لـ' : 'خصمه من'} المستخدم ${uname}:`));
             if (amount && !isNaN(amount)) {
-                usersDB[uname].balance += amount;
+                if (type === 'charge') {
+                    usersDB[uname].balance += amount;
+                } else {
+                    usersDB[uname].balance = Math.max(0, usersDB[uname].balance - amount);
+                }
                 saveDB();
                 renderAdminPanel();
-                alert(`تم شحن ${amount} ج.م للمستخدم ${uname}`);
+                alert(`تم ${type === 'charge' ? 'شحن' : 'خصم'} المبلغ بنجاح للمستخدم ${uname}`);
+            }
+        }
+
+        function adminApproveWithdraw(uname) {
+            const u = usersDB[uname];
+            if (u.withdrawRequest) {
+                if (u.profit >= u.withdrawRequest) {
+                    u.profit -= u.withdrawRequest;
+                } else {
+                    u.balance = Math.max(0, u.balance - u.withdrawRequest);
+                }
+                u.withdrawStatus = 'تم السحب بنجاح 🎉';
+                u.withdrawRequest = null;
+                saveDB();
+                renderAdminPanel();
+                alert(`تمت الموافقة على طلب سحب المستخدم ${uname} بنجاح.`);
             }
         }
 
