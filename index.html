@@ -125,7 +125,7 @@
             font-weight: bold;
         }
 
-        /* --- تصميم البروفايل ورصيد الحساب بالواجهة الرئيسية --- */
+        /* --- الهيدر العلوي ورصيد الحساب للواجهة الرئيسية --- */
         .profile-header-card {
             background: linear-gradient(180deg, #182238 0%, #0f172a 100%);
             border-radius: 16px;
@@ -304,21 +304,82 @@
             cursor: pointer;
         }
 
-        .banner-box {
-            margin: 0 15px 20px 15px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
+        /* --- تصميم شبكة الباقات المطابقة للصورة --- */
+        .packages-grid-custom {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 15px 20px 15px;
         }
 
-        .banner-box img {
-            width: 100%;
-            display: block;
-            height: 120px;
-            object-fit: cover;
+        .pkg-box-item {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 15px;
+            border: 1px solid #23304d;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        /* --- قسم حسابي التفصيلي --- */
+        .pkg-top-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .pkg-name-price {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .pkg-price-val {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--neon-green);
+        }
+
+        .pkg-badge-tasks {
+            background: #1a233a;
+            border: 1px solid #334155;
+            color: var(--text-light);
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .pkg-bottom-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .pkg-bottom-row span {
+            color: var(--neon-green);
+            font-weight: bold;
+        }
+
+        .btn-pkg-subscribe {
+            margin-top: 10px;
+            padding: 6px;
+            font-size: 12px;
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* --- تصميم قسم حسابي (بدون تاريخ) --- */
         .account-details-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -428,6 +489,7 @@
             text-align: center;
         }
 
+        /* --- شريط التنقل السفلي --- */
         .bottom-nav-bar {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -463,36 +525,29 @@
             width: 100%;
         }
 
-        .packages-grid, .tasks-grid {
+        .tasks-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: 1fr;
             gap: 12px;
             padding: 15px;
         }
 
-        .package-card, .task-card {
+        .task-card {
             background: var(--card-bg);
             border-radius: 12px;
             padding: 15px;
             border: 1px solid #23304d;
-            text-align: center;
-        }
-
-        .task-card {
-            padding: 0;
-            overflow: hidden;
-            text-align: right;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
         .task-img {
-            width: 100%;
-            height: 130px;
+            width: 80px;
+            height: 80px;
             object-fit: cover;
+            border-radius: 8px;
         }
-
-        .task-body { padding: 12px; }
 
         .modal-overlay {
             position: fixed;
@@ -595,7 +650,7 @@
         </div>
     </div>
 
-    <!-- 3. تطبيق المنصة الرئيسي -->
+    <!-- 3. التطبيق الرئيسي -->
     <div id="appScreen" class="hidden">
         <main class="main-content">
 
@@ -622,14 +677,13 @@
                         </div>
                     </div>
 
-                    <!-- مؤشر درجة الائتمان -->
                     <div class="credit-badge">
                         <div class="credit-circle">100</div>
                         <span class="credit-label">درجة الائتمان</span>
                     </div>
                 </div>
 
-                <!-- كارت رصيد الحساب (شارة VIP تظهر فقط عند الاشتراك) -->
+                <!-- رصيد الحساب -->
                 <div class="balance-card">
                     <span id="vipBadge" class="vip-badge-tag hidden">VIP1</span>
                     <div class="balance-title">رصيد الحساب</div>
@@ -644,9 +698,9 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- أزرار العمليات المباشرة -->
+                <!-- أزرار إيداع وسحب -->
                 <div class="action-btns-row">
-                    <button onclick="openPackagesModal()" class="btn-deposit">
+                    <button onclick="openDepositModalDirect()" class="btn-deposit">
                         <i class="fa-solid fa-wallet"></i> إيداع
                     </button>
                     <button onclick="requestWithdrawal()" class="btn-withdraw">
@@ -654,18 +708,113 @@
                     </button>
                 </div>
 
-                <!-- بانر العروض -->
-                <div class="banner-box">
-                    <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=800&auto=format&fit=crop" alt="المكافآت والعروض">
+                <!-- شبكة الباقات المطابقة للصورة -->
+                <div style="padding: 0 15px 5px 15px; font-weight: bold; color: var(--accent);"><i class="fa-solid fa-gem"></i> باقات الاستثمار المتاحة</div>
+                <div class="packages-grid-custom">
+                    <!-- باقة 300 -->
+                    <div class="pkg-box-item">
+                        <div>
+                            <div class="pkg-top-info">
+                                <span class="pkg-name-price">باقة <span class="pkg-price-val">300 EGP</span></span>
+                                <div class="pkg-badge-tasks">5 مهام</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="pkg-bottom-row">
+                                <span>العائد 5%</span>
+                                <span>إجمالي الأرباح اليومية</span>
+                            </div>
+                            <button onclick="subscribePackage(300, '300')" class="btn-pkg-subscribe">اشتراك</button>
+                        </div>
+                    </div>
+                    <!-- باقة 800 -->
+                    <div class="pkg-box-item">
+                        <div>
+                            <div class="pkg-top-info">
+                                <span class="pkg-name-price">باقة <span class="pkg-price-val">800 EGP</span></span>
+                                <div class="pkg-badge-tasks">5 مهام</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="pkg-bottom-row">
+                                <span>العائد 5%</span>
+                                <span>إجمالي الأرباح اليومية</span>
+                            </div>
+                            <button onclick="subscribePackage(800, '800')" class="btn-pkg-subscribe">اشتراك</button>
+                        </div>
+                    </div>
+                    <!-- باقة 1500 -->
+                    <div class="pkg-box-item">
+                        <div>
+                            <div class="pkg-top-info">
+                                <span class="pkg-name-price">باقة <span class="pkg-price-val">1500 EGP</span></span>
+                                <div class="pkg-badge-tasks">5 مهام</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="pkg-bottom-row">
+                                <span>العائد 5%</span>
+                                <span>إجمالي الأرباح اليومية</span>
+                            </div>
+                            <button onclick="subscribePackage(1500, '1500')" class="btn-pkg-subscribe">اشتراك</button>
+                        </div>
+                    </div>
+                    <!-- باقة 3000 -->
+                    <div class="pkg-box-item">
+                        <div>
+                            <div class="pkg-top-info">
+                                <span class="pkg-name-price">باقة <span class="pkg-price-val">3000 EGP</span></span>
+                                <div class="pkg-badge-tasks">5 مهام</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="pkg-bottom-row">
+                                <span>العائد 5%</span>
+                                <span>إجمالي الأرباح اليومية</span>
+                            </div>
+                            <button onclick="subscribePackage(3000, '3000')" class="btn-pkg-subscribe">اشتراك</button>
+                        </div>
+                    </div>
+                    <!-- باقة 8000 -->
+                    <div class="pkg-box-item">
+                        <div>
+                            <div class="pkg-top-info">
+                                <span class="pkg-name-price">باقة <span class="pkg-price-val">8000 EGP</span></span>
+                                <div class="pkg-badge-tasks">5 مهام</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="pkg-bottom-row">
+                                <span>العائد 5%</span>
+                                <span>إجمالي الأرباح اليومية</span>
+                            </div>
+                            <button onclick="subscribePackage(8000, '8000')" class="btn-pkg-subscribe">اشتراك</button>
+                        </div>
+                    </div>
+                    <!-- باقة 12000 -->
+                    <div class="pkg-box-item">
+                        <div>
+                            <div class="pkg-top-info">
+                                <span class="pkg-name-price">باقة <span class="pkg-price-val">12000 EGP</span></span>
+                                <div class="pkg-badge-tasks">5 مهام</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="pkg-bottom-row">
+                                <span>العائد 5%</span>
+                                <span>إجمالي الأرباح اليومية</span>
+                            </div>
+                            <button onclick="subscribePackage(12000, '12000 VIP')" class="btn-pkg-subscribe">اشتراك</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- قسم (حسابي) -->
+            <!-- قسم (حسابي) بدون تاريخ الاشتراك -->
             <div id="tabAccount" class="tab-content hidden">
                 <div class="account-details-card">
                     <h3 style="color:var(--neon-green); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-id-card-clip"></i> معلومات الحساب الشخصي</h3>
                     
-                    <!-- اختيار صورة الحساب من المعرض/الاستوديو -->
                     <div class="user-avatar-upload-box">
                         <img id="userAvatarImg" src="https://via.placeholder.com/150" class="user-avatar-preview" onclick="document.getElementById('avatarFileInput').click()">
                         <div class="avatar-edit-icon" onclick="document.getElementById('avatarFileInput').click()" title="اختيار صورة من الاستوديو">
@@ -674,7 +823,6 @@
                         <input type="file" id="avatarFileInput" class="hidden" accept="image/*" onchange="uploadUserAvatar(event)">
                     </div>
 
-                    <!-- التفاصيل الشخصية -->
                     <div class="info-row-item">
                         <span class="info-label">اسم المستخدم:</span>
                         <div style="display:flex; align-items:center; gap:8px;">
@@ -694,17 +842,11 @@
                     </div>
 
                     <div class="info-row-item">
-                        <span class="info-label">تاريخ الاشتراك:</span>
-                        <span id="accountJoinDate" class="info-val">01/01/2025</span>
-                    </div>
-
-                    <div class="info-row-item">
                         <span class="info-label">الباقة الحالية:</span>
                         <span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span>
                     </div>
                 </div>
 
-                <!-- قائمة الإعدادات -->
                 <div class="menu-list-card">
                     <div class="menu-item" onclick="openProfileModal()">
                         <div class="menu-left-part">
@@ -734,29 +876,58 @@
                 <button onclick="handleLogout()" class="btn-logout">تسجيل الخروج</button>
             </div>
 
-            <!-- أقسام (مهمة - المعاملات - الطلبات) -->
+            <!-- قسم (مهمة): 5 منتجات تسويقية تتوزع عليها الـ 5% يومياً -->
             <div id="tabTasks" class="tab-content hidden">
                 <div style="padding:15px;">
-                    <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
-                    <div class="tasks-grid" style="padding:0;">
+                    <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> المهمات التسويقية اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">كل مهمة تمنحك 1% ليصبح الإجمالي 5% يومياً من قيمة باقتك!</p>
+                    
+                    <div class="tasks-grid">
                         <div class="task-card">
                             <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" class="task-img">
-                            <div class="task-body">
-                                <h5>تقييم هاتف ذكي حديث</h5>
-                                <button id="taskBtn1" onclick="doTask(1)" class="btn-submit" style="margin-top: 10px;">تنفيذ المهمة (+5%)</button>
+                            <div style="flex-grow: 1;">
+                                <h4 style="font-size: 14px; margin-bottom: 5px;">تسويق هاتف ذكي متطور</h4>
+                                <p style="font-size: 11px; color: var(--text-muted);">العائد: 1% من قيمة الباقة</p>
+                                <button id="taskBtn1" onclick="doTask(1)" class="btn-submit" style="margin-top: 8px; padding: 6px; font-size: 13px;">تنفيذ المهمة (1%)</button>
                             </div>
                         </div>
                         <div class="task-card">
                             <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400" class="task-img">
-                            <div class="task-body">
-                                <h5>تقييم سماعات لاسلكية</h5>
-                                <button id="taskBtn2" onclick="doTask(2)" class="btn-submit" style="margin-top: 10px;">تنفيذ المهمة (+5%)</button>
+                            <div style="flex-grow: 1;">
+                                <h4 style="font-size: 14px; margin-bottom: 5px;">تسويق سماعات لاسلكية بريميوم</h4>
+                                <p style="font-size: 11px; color: var(--text-muted);">العائد: 1% من قيمة الباقة</p>
+                                <button id="taskBtn2" onclick="doTask(2)" class="btn-submit" style="margin-top: 8px; padding: 6px; font-size: 13px;">تنفيذ المهمة (1%)</button>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" class="task-img">
+                            <div style="flex-grow: 1;">
+                                <h4 style="font-size: 14px; margin-bottom: 5px;">ترويج ساعة ذكية رياضية</h4>
+                                <p style="font-size: 11px; color: var(--text-muted);">العائد: 1% من قيمة الباقة</p>
+                                <button id="taskBtn3" onclick="doTask(3)" class="btn-submit" style="margin-top: 8px; padding: 6px; font-size: 13px;">تنفيذ المهمة (1%)</button>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" class="task-img">
+                            <div style="flex-grow: 1;">
+                                <h4 style="font-size: 14px; margin-bottom: 5px;">ترويج كاميرا رقمية حديثة</h4>
+                                <p style="font-size: 11px; color: var(--text-muted);">العائد: 1% من قيمة الباقة</p>
+                                <button id="taskBtn4" onclick="doTask(4)" class="btn-submit" style="margin-top: 8px; padding: 6px; font-size: 13px;">تنفيذ المهمة (1%)</button>
+                            </div>
+                        </div>
+                        <div class="task-card">
+                            <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400" class="task-img">
+                            <div style="flex-grow: 1;">
+                                <h4 style="font-size: 14px; margin-bottom: 5px;">تسويق أجهزة منزلية ذكية</h4>
+                                <p style="font-size: 11px; color: var(--text-muted);">العائد: 1% من قيمة الباقة</p>
+                                <button id="taskBtn5" onclick="doTask(5)" class="btn-submit" style="margin-top: 8px; padding: 6px; font-size: 13px;">تنفيذ المهمة (1%)</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- قسم (المعاملات) -->
             <div id="tabTransactions" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:10px;"><i class="fa-solid fa-receipt"></i> تفاصيل وسجل المعاملات</h3>
@@ -764,10 +935,11 @@
                 </div>
             </div>
 
+            <!-- قسم (الطلبات) -->
             <div id="tabOrders" class="tab-content hidden">
                 <div style="padding:15px;">
-                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-clipboard-list"></i> سجل الطلبات المنجزة</h3>
-                    <p style="font-size:13px; color:var(--text-muted);">جميع المهام والطلبات المكتملة تظهر هنا بانتظام.</p>
+                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-calendar-check"></i> سجل الطلبات المنجزة</h3>
+                    <p style="font-size:13px; color:var(--text-muted);">جميع المهام والطلبات التسويقية المكتملة تظهر هنا.</p>
                 </div>
             </div>
 
@@ -826,46 +998,28 @@
     <div id="packagesModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-gem"></i> باقات الشحن والاشتراك</h3>
-            <div class="packages-grid" style="padding:0;">
-                <div class="package-card">
-                    <h4>باقة 300</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">300 ج.م</div>
-                    <button onclick="subscribePackage(300, '300')" class="btn-submit" style="padding:6px;">اشتراك</button>
-                </div>
-                <div class="package-card">
-                    <h4>باقة 800</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">800 ج.م</div>
-                    <button onclick="subscribePackage(800, '800')" class="btn-submit" style="padding:6px;">اشتراك</button>
-                </div>
-                <div class="package-card">
-                    <h4>باقة 1500</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">1500 ج.م</div>
-                    <button onclick="subscribePackage(1500, '1500')" class="btn-submit" style="padding:6px;">اشتراك</button>
-                </div>
-                <div class="package-card">
-                    <h4>باقة 3000</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">3000 ج.م</div>
-                    <button onclick="subscribePackage(3000, '3000')" class="btn-submit" style="padding:6px;">اشتراك</button>
-                </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <button onclick="subscribePackage(300, '300')" class="btn-submit" style="padding:10px;">باقة 300 EGP</button>
+                <button onclick="subscribePackage(800, '800')" class="btn-submit" style="padding:10px;">باقة 800 EGP</button>
+                <button onclick="subscribePackage(1500, '1500')" class="btn-submit" style="padding:10px;">باقة 1500 EGP</button>
+                <button onclick="subscribePackage(3000, '3000')" class="btn-submit" style="padding:10px;">باقة 3000 EGP</button>
+                <button onclick="subscribePackage(8000, '8000')" class="btn-submit" style="padding:10px;">باقة 8000 EGP</button>
+                <button onclick="subscribePackage(12000, '12000 VIP')" class="btn-submit" style="padding:10px;">باقة 12000 EGP</button>
             </div>
             <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
         </div>
     </div>
 
-    <!-- مودال تعديل بيانات البروفايل وكلمة المرور -->
+    <!-- مودال تعديل الحساب -->
     <div id="profileModal" class="modal-overlay hidden">
         <div class="modal-box">
-            <h3 style="color:var(--neon-green); margin-bottom:12px;"><i class="fa-solid fa-user-gear"></i> تعديل بيانات البروفايل</h3>
-            <div class="form-group">
-                <label>اسم المستخدم الجديد:</label>
-                <input type="text" id="editNameInputModal" placeholder="أدخل اسمك الجديد">
-            </div>
+            <h3 style="color:var(--neon-green); margin-bottom:12px;"><i class="fa-solid fa-user-gear"></i> تغيير كلمة المرور</h3>
             <div class="form-group">
                 <label>كلمة المرور الجديدة:</label>
-                <input type="password" id="editPasswordInput" placeholder="أدخل كلمة المرور الجديدة (اختياري)">
+                <input type="password" id="editPasswordInput" placeholder="أدخل كلمة المرور الجديدة">
             </div>
             <div style="display:flex; gap:10px; margin-top:15px;">
-                <button onclick="saveProfileModalChanges()" class="btn-submit">حفظ التغييرات</button>
+                <button onclick="savePasswordChange()" class="btn-submit">حفظ التغييرات</button>
                 <button onclick="closeProfileModal()" class="btn-submit" style="background:#334155;">إلغاء</button>
             </div>
         </div>
@@ -898,7 +1052,6 @@
                 profit: 0,
                 subscribed: false,
                 subscribedPackage: 'غير مشترك',
-                joinDate: new Date().toLocaleDateString('ar-EG'),
                 avatar: 'https://via.placeholder.com/150',
                 tasksCount: 5,
                 completedTasks: {},
@@ -937,7 +1090,6 @@
                 profit: 0,
                 subscribed: false,
                 subscribedPackage: 'غير مشترك',
-                joinDate: new Date().toLocaleDateString('ar-EG'),
                 avatar: 'https://via.placeholder.com/150',
                 tasksCount: 5,
                 completedTasks: {},
@@ -946,7 +1098,7 @@
             };
             saveDB();
 
-            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية. يمكنك تسجيل الدخول الآن.');
+            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية.');
             showLogin();
         }
 
@@ -976,14 +1128,12 @@
         function loadUserData() {
             const data = usersDB[currentUserPhone];
             
-            // بيانات الواجهة الرئيسية
             document.getElementById('displayNameHeader').innerText = data.name;
             document.getElementById('displayPhone').innerText = currentUserPhone;
             document.getElementById('displayId').innerText = currentUserPhone.slice(-6) + '8';
             document.getElementById('balanceVal').innerText = data.balance.toFixed(2);
             document.getElementById('profitVal').innerText = data.profit.toFixed(2);
 
-            // تحديث صورة الهيدر العلوي
             const icon = document.getElementById('headerAvatarIcon');
             const img = document.getElementById('headerAvatarImg');
             if (data.avatar && data.avatar !== 'https://via.placeholder.com/150') {
@@ -995,7 +1145,6 @@
                 icon.classList.remove('hidden');
             }
 
-            // إظهار شارة VIP فقط عند الاشتراك
             const vipBadge = document.getElementById('vipBadge');
             if(data.subscribed) {
                 vipBadge.innerText = data.subscribedPackage || "VIP1";
@@ -1004,11 +1153,9 @@
                 vipBadge.classList.add('hidden');
             }
 
-            // بيانات صفحة "حسابي"
             document.getElementById('accountName').innerText = data.name;
             document.getElementById('accountPhone').innerText = currentUserPhone;
             document.getElementById('accountId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('accountJoinDate').innerText = data.joinDate || '2025/01/01';
             document.getElementById('accountPackage').innerText = data.subscribedPackage || 'غير مشترك';
             document.getElementById('userAvatarImg').src = data.avatar || 'https://via.placeholder.com/150';
 
@@ -1081,26 +1228,30 @@
             const todayKey = new Date().toISOString().split('T')[0];
             if (!u.completedTasks) u.completedTasks = {};
 
-            for (let i = 1; i <= 2; i++) {
+            let completedToday = u.completedTasks[todayKey] ? u.completedTasks[todayKey].length : 0;
+            u.tasksCount = 5 - completedToday;
+
+            for (let i = 1; i <= 5; i++) {
                 const btn = document.getElementById(`taskBtn${i}`);
                 if (btn) {
                     if (u.completedTasks[todayKey] && u.completedTasks[todayKey].includes(i)) {
                         btn.disabled = true;
-                        btn.innerText = "مكتملة اليوم ✓";
+                        btn.innerText = "مكتملة ✓ (1%)";
                         btn.style.background = "#334155";
                     } else {
                         btn.disabled = false;
-                        btn.innerText = "تنفيذ المهمة (+5%)";
+                        btn.innerText = "تنفيذ المهمة (1%)";
                         btn.style.background = "";
                     }
                 }
             }
+            document.getElementById('tasksLeft').innerText = u.tasksCount;
         }
 
         function doTask(taskId) {
             const user = usersDB[currentUserPhone];
             if (!user.subscribed) {
-                alert('يجب الاشتراك في إحدى الباقات أولاً لتنفيذ المهمات!');
+                alert('يجب الاشتراك في إحدى الباقات أولاً لتنفيذ المهمات التسويقية!');
                 return;
             }
             
@@ -1109,154 +1260,10 @@
             if (!user.completedTasks[todayKey]) user.completedTasks[todayKey] = [];
 
             if (user.completedTasks[todayKey].includes(taskId)) {
-                alert('لقد قمت بتنفيذ هذه المهمة اليوم بالفعل!');
+                alert('لقد قمت بتنفيذ هذه المهمة اليوم بالفعل! لا يمكن تكرار نفس المهمة في نفس اليوم.');
                 return;
             }
 
-            const earned = user.deposit * 0.05;
-            user.profit += earned;
-            user.completedTasks[todayKey].push(taskId);
-
-            saveDB();
-            loadUserData();
-            alert(`مبروك! تمت المهمة بنجاح وربحت ${earned.toFixed(2)} ج.م.`);
-        }
-
-        function openProfileModal() { 
-            document.getElementById('editNameInputModal').value = usersDB[currentUserPhone].name;
-            document.getElementById('profileModal').classList.remove('hidden'); 
-        }
-        function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
-
-        function saveProfileModalChanges() {
-            const newName = document.getElementById('editNameInputModal').value.trim();
-            const newPass = document.getElementById('editPasswordInput').value.trim();
-
-            if (newName) usersDB[currentUserPhone].name = newName;
-            if (newPass) usersDB[currentUserPhone].password = newPass;
-
-            saveDB();
-            loadUserData();
-            closeProfileModal();
-            alert('تم حفظ البيانات والتغييرات بنجاح!');
-        }
-
-        function openPackagesModal() { document.getElementById('packagesModal').classList.remove('hidden'); }
-        function closePackagesModal() { document.getElementById('packagesModal').classList.add('hidden'); }
-
-        function openInfoModal() { document.getElementById('infoModal').classList.remove('hidden'); }
-        function closeInfoModal() { document.getElementById('infoModal').classList.add('hidden'); }
-
-        function updateUserWithdrawUI() {
-            const data = usersDB[currentUserPhone];
-            const statusDiv = document.getElementById('userWithdrawStatus');
-            if (data.withdrawRequest) {
-                statusDiv.innerHTML = `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
-            } else {
-                statusDiv.innerHTML = `لا توجد معاملات سحب معلقة حالياً.`;
-            }
-        }
-
-        function subscribePackage(price, name) {
-            const user = usersDB[currentUserPhone];
-            if (user.balance < price) {
-                alert(`رصيدك غير كافٍ للاشتراك في باقة ${name} ج.م! يرجى التواصل مع الأدمن لشحن الرصيد.`);
-                return;
-            }
-            user.balance -= price;
-            user.deposit += price;
-            user.subscribed = true;
-            user.subscribedPackage = `باقة ${name} VIP`;
-            saveDB();
-            loadUserData();
-            closePackagesModal();
-            alert(`تم الاشتراك بنجاح في باقة ${name} ج.م!`);
-        }
-
-        function requestWithdrawal() {
-            const today = new Date().getDay();
-            if (today !== 0 && today !== 3) {
-                alert('طلب السحب متاح يومي الأحد والأربعاء فقط!');
-                return;
-            }
-
-            const user = usersDB[currentUserPhone];
-            if (user.withdrawRequest) {
-                alert('لديك طلب سحب قيد المراجعة بالفعل!');
-                return;
-            }
-
-            const amount = parseFloat(prompt("ادخل المبلغ المراد سحبه:"));
-            if (amount && !isNaN(amount)) {
-                if (user.profit < amount && user.balance < amount) {
-                    alert('رصيدك غير كافٍ!');
-                    return;
-                }
-                user.withdrawRequest = amount;
-                user.withdrawStatus = 'قيد المراجعة من الأدمن';
-                saveDB();
-                loadUserData();
-                alert(`تم إرسال طلب سحب بقيمة ${amount} ج.م بنجاح!`);
-            }
-        }
-
-        function renderAdminPanel() {
-            const tbody = document.getElementById('adminUserTable');
-            tbody.innerHTML = '';
-            for (let phoneKey in usersDB) {
-                const u = usersDB[phoneKey];
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${u.name} <br><span style="color:var(--neon-green);">${phoneKey}</span></td>
-                        <td>${u.balance.toFixed(2)} ج.م</td>
-                        <td>${u.deposit.toFixed(2)} ج.م</td>
-                        <td>${u.profit.toFixed(2)} ج.م</td>
-                        <td style="color:var(--accent);">${u.withdrawRequest ? u.withdrawRequest + ' ج.م (' + u.withdrawStatus + ')' : 'لا يوجد'}</td>
-                        <td>
-                            <button onclick="adminAction('${phoneKey}', 'charge')" style="background:var(--neon-green); color:#000; border:none; padding:4px 6px; border-radius:4px; font-weight:bold; cursor:pointer;">شحن</button>
-                            <button onclick="adminAction('${phoneKey}', 'deduct')" style="background:var(--danger); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">خصم</button>
-                            ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${phoneKey}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة</button>` : ''}
-                        </td>
-                    </tr>
-                `;
-            }
-        }
-
-        function adminAction(phoneKey, type) {
-            const amount = parseFloat(prompt(`ادخل المبلغ المراد ${type === 'charge' ? 'شحنه لـ' : 'خصمه من'} الرقم ${phoneKey}:`));
-            if (amount && !isNaN(amount)) {
-                if (type === 'charge') {
-                    usersDB[phoneKey].balance += amount;
-                } else {
-                    usersDB[phoneKey].balance = Math.max(0, usersDB[phoneKey].balance - amount);
-                }
-                saveDB();
-                renderAdminPanel();
-                if(currentUserPhone === phoneKey) loadUserData();
-                alert(`تم ${type === 'charge' ? 'شحن' : 'خصم'} المبلغ بنجاح`);
-            }
-        }
-
-        function adminApproveWithdraw(phoneKey) {
-            const u = usersDB[phoneKey];
-            if (u.withdrawRequest) {
-                if (u.profit >= u.withdrawRequest) {
-                    u.profit -= u.withdrawRequest;
-                } else {
-                    u.balance = Math.max(0, u.balance - u.withdrawRequest);
-                }
-                u.withdrawStatus = 'تم السحب بنجاح 🎉';
-                u.withdrawRequest = null;
-                saveDB();
-                renderAdminPanel();
-                if(currentUserPhone === phoneKey) loadUserData();
-                alert(`تمت الموافقة على طلب السحب بنجاح.`);
-            }
-        }
-
-        function saveDB() {
-            localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
-        }
-    </script>
-</body>
-</html>
+            // توزيع نسبة 5% على 5 مهام (كل مهمة تمنح 1% من قيمة الباقة/الوديعة)
+            const earned = user.deposit * 0.01;
+            user.profit += ear
