@@ -13,7 +13,6 @@
             --accent: #f59e0b;
             --bg-dark: #090d16;
             --card-bg: #131b2e;
-            --card-inner: #1a233a;
             --text-light: #f8fafc;
             --text-muted: #94a3b8;
             --danger: #ef4444;
@@ -53,9 +52,7 @@
             border-bottom: 2px solid var(--neon-green);
         }
 
-        .auth-content {
-            padding: 24px;
-        }
+        .auth-content { padding: 24px; }
 
         .welcome-title {
             text-align: center;
@@ -73,9 +70,7 @@
             line-height: 1.5;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+        .form-group { margin-bottom: 15px; }
 
         .form-group label {
             display: block;
@@ -111,274 +106,135 @@
             display: inline-block;
         }
 
-        .btn-submit:disabled {
-            background: #334155;
-            cursor: not-allowed;
-        }
-
-        .switch-auth {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .switch-auth span {
-            color: var(--neon-green);
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* --- تصميم الهيدر والبروفايل المقتبس من الصورة --- */
-        .profile-header-card {
-            background: linear-gradient(180deg, #182238 0%, #0f172a 100%);
-            border-radius: 16px;
-            padding: 18px;
-            margin: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* --- هيدر الواجهة الرئيسية المطور (تسوق بلس + سلة + صوره فتاة) --- */
+        .brand-header-banner {
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            padding: 15px 20px;
+            border-bottom: 2px solid var(--accent);
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-main-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .avatar-3d {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #2563eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             overflow: hidden;
-        }
-
-        .user-numbers {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .user-phone-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .user-id-box {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .credit-badge {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             position: relative;
         }
 
-        .credit-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 3px solid var(--neon-green);
+        .brand-title-group {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: white;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+            gap: 10px;
         }
 
-        .credit-label {
-            font-size: 10px;
+        .brand-title-group h1 {
+            font-size: 22px;
+            color: var(--text-light);
+            font-weight: 800;
+        }
+
+        .brand-title-group h1 span { color: var(--accent); }
+
+        .cart-icon-3d {
+            font-size: 26px;
             color: var(--neon-green);
-            margin-top: 4px;
-        }
-
-        /* --- كارت رصيد الحساب المظلم المطابق للصورة --- */
-        .balance-card {
-            background: linear-gradient(135deg, #111a2e 0%, #0a101d 100%);
-            border-radius: 16px;
-            padding: 20px;
-            margin: 0 15px 15px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vip-badge-tag {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: #22c55e;
-            color: #000;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 3px 10px;
+            background: rgba(34, 197, 94, 0.15);
+            padding: 8px 12px;
             border-radius: 12px;
-        }
-
-        .balance-title {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .balance-amount {
-            font-size: 28px;
-            font-weight: bold;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .profit-subtext {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 12px;
-        }
-
-        .profit-val-green {
-            color: var(--neon-green);
-            font-weight: bold;
-        }
-
-        .wallet-icon-bg {
-            position: absolute;
-            bottom: 10px;
-            left: 15px;
-            font-size: 55px;
-            color: rgba(255, 255, 255, 0.05);
-        }
-
-        /* --- أزرار إيداع وسحب الناصعة --- */
-        .action-btns-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 0 15px 20px 15px;
-        }
-
-        .btn-deposit {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            color: #000;
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 12px;
-            border: none;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .btn-withdraw {
-            background: #0f172a;
-            color: white;
             border: 1px solid var(--neon-green);
-            font-weight: bold;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
         }
 
-        /* --- البانر الإعلاني العريض --- */
-        .banner-box {
-            margin: 0 15px 20px 15px;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .banner-box img {
-            width: 100%;
-            display: block;
-            height: 120px;
+        .hero-girl-img {
+            width: 75px;
+            height: 75px;
             object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
         }
 
-        /* --- قائمة خيارات "حسابي" المطابقة للصورة --- */
-        .menu-list-card {
+        /* --- كروت الأرصدة الثلاثية (شحن - أرباح - مسحوبات) --- */
+        .balances-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .balance-box-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .balance-box-item .b-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .balance-box-item .b-val {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--neon-green);
+        }
+
+        /* --- صفحة حسابي والمعلومات الشاملة --- */
+        .account-details-card {
             background: var(--card-bg);
             border-radius: 16px;
-            margin: 0 15px 20px 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-            overflow: hidden;
+            margin: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .menu-item {
+        .user-avatar-upload-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .user-avatar-preview {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--neon-green);
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .avatar-edit-icon {
+            position: absolute;
+            bottom: 25px;
+            right: calc(50% - 45px);
+            background: var(--accent);
+            color: black;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 16px 18px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            justify-content: center;
             cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .menu-left-part {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            color: var(--text-light);
-        }
-
-        .menu-left-part i {
-            font-size: 18px;
-            color: var(--text-muted);
-            width: 24px;
-            text-align: center;
-        }
-
-        .arrow-icon {
-            color: var(--text-muted);
             font-size: 12px;
         }
 
-        .btn-logout {
-            margin: 0 15px 25px 15px;
-            background: #1e293b;
-            color: var(--text-light);
-            border: 1px solid #334155;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: bold;
-            width: calc(100% - 30px);
-            cursor: pointer;
-            text-align: center;
+        .info-row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
         }
 
-        /* --- شريط التنقل السفلي المثبت بالأسفل (Bottom Navigation) --- */
+        .info-row-item:last-child { border-bottom: none; }
+
+        .info-label { color: var(--text-muted); }
+        .info-val { font-weight: bold; color: var(--text-light); }
+
+        /* --- شريط التنقل السفلي المثبت --- */
         .bottom-nav-bar {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -404,52 +260,14 @@
             flex: 1;
         }
 
-        .nav-btn i {
-            font-size: 20px;
-        }
-
-        .nav-btn.active, .nav-btn:hover {
-            color: var(--neon-green);
-        }
+        .nav-btn i { font-size: 20px; }
+        .nav-btn.active, .nav-btn:hover { color: var(--neon-green); }
 
         .main-content {
             max-width: 800px;
             margin: 0 auto;
             flex-grow: 1;
             width: 100%;
-        }
-
-        .packages-grid, .tasks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
-            padding: 15px;
-        }
-
-        .package-card, .task-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px solid #23304d;
-            text-align: center;
-        }
-
-        .task-card {
-            padding: 0;
-            overflow: hidden;
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .task-img {
-            width: 100%;
-            height: 130px;
-            object-fit: cover;
-        }
-
-        .task-body {
-            padding: 12px;
         }
 
         .modal-overlay {
@@ -470,8 +288,6 @@
             width: 100%;
             max-width: 450px;
             border: 1px solid var(--neon-green);
-            max-height: 90vh;
-            overflow-y: auto;
         }
 
         .admin-panel {
@@ -496,11 +312,7 @@
             font-size: 12px;
         }
 
-        th {
-            background: #090d16;
-            color: var(--accent);
-        }
-
+        th { background: #090d16; color: var(--accent); }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -523,15 +335,15 @@
                 </div>
                 <button type="submit" class="btn-submit">دخول</button>
             </form>
-            <div class="switch-auth">
-                ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span>
+            <div style="text-align:center; margin-top:15px; font-size:13px; color:var(--text-muted);">
+                ليس لديك حساب؟ <span onclick="showRegister()" style="color:var(--neon-green); cursor:pointer; font-weight:bold;">إنشاء حساب جديد</span>
             </div>
         </div>
     </div>
 
     <!-- 2. شاشة إنشاء حساب جديد -->
     <div id="registerScreen" class="auth-container hidden">
-        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="تسوق بلس" class="auth-hero-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" class="auth-hero-img">
         <div class="auth-content">
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
             <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على <strong>مكافأة 50 ج.م</strong> فوراً!</p>
@@ -551,8 +363,8 @@
                 </div>
                 <button type="submit" class="btn-submit">تسجيل حساب جديد (+50 ج.م هدية)</button>
             </form>
-            <div class="switch-auth">
-                لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span>
+            <div style="text-align:center; margin-top:15px; font-size:13px; color:var(--text-muted);">
+                لديك حساب بالفعل؟ <span onclick="showLogin()" style="color:var(--neon-green); cursor:pointer; font-weight:bold;">تسجيل الدخول</span>
             </div>
         </div>
     </div>
@@ -561,174 +373,121 @@
     <div id="appScreen" class="hidden">
         <main class="main-content">
 
-            <!-- قسم (حسابي) المطابق للصورة تماماً -->
-            <div id="tabAccount" class="tab-content">
-                <!-- البروفايل العلوي -->
-                <div class="profile-header-card">
-                    <div class="user-main-info">
-                        <div class="avatar-3d" onclick="openProfileModal()">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="user-numbers">
-                            <div id="displayPhone" class="user-phone-title">01000000000</div>
-                            <div class="user-id-box">
-                                <i class="fa-solid fa-id-card"></i>
-                                ID <span id="displayId">70522459</span>
-                                <i class="fa-regular fa-copy" onclick="copyId()" style="cursor:pointer; color:var(--neon-green);"></i>
-                            </div>
-                        </div>
+            <!-- الواجهة الرئيسية الافتراضية (تسوق بلس) -->
+            <div id="tabHome" class="tab-content">
+                <!-- الهيدر المميز بالصورة والمكونات -->
+                <div class="brand-header-banner">
+                    <div class="brand-title-group">
+                        <i class="fa-solid fa-cart-shopping cart-icon-3d"></i>
+                        <h1>تسوق <span>بلس</span></h1>
                     </div>
+                    <!-- صورة فتاة تسوق إلكتروني فريدة ومميزة -->
+                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&auto=format&fit=crop" class="hero-girl-img" title="تسوق بلس">
+                </div>
 
-                    <!-- مؤشر درجة الائتمان -->
-                    <div class="credit-badge">
-                        <div class="credit-circle">100</div>
-                        <span class="credit-label">درجة الائتمان</span>
+                <!-- الأرصدة الثلاثية: رصيد الشحن | رصيد الأرباح | إجمالي المسحوبات -->
+                <div class="balances-grid-3">
+                    <div class="balance-box-item">
+                        <div class="b-label">رصيد الشحن المتاح</div>
+                        <div class="b-val"><span id="chargeBalVal">0.00</span> ج.م</div>
+                    </div>
+                    <div class="balance-box-item">
+                        <div class="b-label">رصيد الأرباح</div>
+                        <div class="b-val" style="color:var(--accent);"><span id="profitBalVal">0.00</span> ج.م</div>
+                    </div>
+                    <div class="balance-box-item">
+                        <div class="b-label">إجمالي المسحوبات</div>
+                        <div class="b-val" style="color:#60a5fa;"><span id="withdrawnTotalVal">0.00</span> ج.م</div>
                     </div>
                 </div>
 
-                <!-- كارت رصيد الحساب -->
-                <div class="balance-card">
-                    <span id="vipBadge" class="vip-badge-tag">VIP1</span>
-                    <div class="balance-title">رصيد الحساب</div>
-                    <div class="balance-amount">
-                        <span style="color:var(--neon-green);">EGP</span>
-                        <span id="balanceVal">0.00</span>
-                    </div>
-                    <div class="profit-subtext">
-                        إجمالي أرباح العمولة <br>
-                        <span class="profit-val-green">EGP <span id="profitVal">0.00</span></span>
-                    </div>
-                    <i class="fa-solid fa-wallet wallet-icon-bg"></i>
-                </div>
-
-                <!-- أزرار العمليات المباشرة (إيداع وسحب) -->
-                <div class="action-btns-row">
-                    <button onclick="openPackagesModal()" class="btn-deposit">
-                        <i class="fa-solid fa-wallet"></i> إيداع
+                <div style="padding: 0 15px 15px 15px;">
+                    <button onclick="openPackagesModal()" class="btn-submit" style="background: linear-gradient(135deg, var(--accent), #d97706); padding: 14px;">
+                        <i class="fa-solid fa-gem"></i> تصفح باقات الاستثمار للشحن والاشتراك
                     </button>
-                    <button onclick="requestWithdrawal()" class="btn-withdraw">
-                        <i class="fa-solid fa-money-bill-transfer"></i> سحب
-                    </button>
-                </div>
-
-                <!-- بانر عجلة الحظ والعروض -->
-                <div class="banner-box">
-                    <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=800&auto=format&fit=crop" alt="المكافآت والعروض">
-                </div>
-
-                <!-- القائمة التفصيلية للمستخدم -->
-                <div class="menu-list-card">
-                    <div class="menu-item" onclick="openProfileModal()">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-user-gear"></i>
-                            <span>المعلومات الشخصية</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="alert('بطاقتك البنكية/المحفظة مسجلة وآمنة.')">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-credit-card"></i>
-                            <span>بطاقاتي</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="switchTab('transactions')">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-receipt"></i>
-                            <span>تفاصيل الأموال المعاملات</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="openProfileModal()">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-lock"></i>
-                            <span>تغيير كلمة المرور</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="openInfoModal()">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-location-dot"></i>
-                            <span>عنوان الشحن والمعلومات</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="window.open('https://t.me/tasawwoq_plus', '_blank')">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-headset"></i>
-                            <span>خدمة العملاء</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-                </div>
-
-                <button onclick="handleLogout()" class="btn-logout">تسجيل الخروج</button>
-            </div>
-
-            <!-- قسم (الرئيسية) -->
-            <div id="tabHome" class="tab-content hidden">
-                <div style="padding:15px;">
-                    <h3 style="color:var(--neon-green); margin-bottom:10px;">الواجهة الرئيسية - تسوق بلس</h3>
-                    <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">مرحباً بك في منصتك الاستثمارية الأولى! يمكنك الانتقال للمهمات اليومية أو تفقّد باقات الاشتراك المتاحة.</p>
                 </div>
             </div>
 
-            <!-- قسم (مهمة) -->
+            <!-- قسم (حسابي) ومعلومات الحساب التفصيلية -->
+            <div id="tabAccount" class="tab-content hidden">
+                <div class="account-details-card">
+                    <h3 style="color:var(--neon-green); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-id-card-clip"></i> معلومات الحساب الشخصي</h3>
+                    
+                    <!-- صورة بروفايل المستخدم مع إمكانية التغيير -->
+                    <div class="user-avatar-upload-box">
+                        <img id="userAvatarImg" src="https://via.placeholder.com/150" class="user-avatar-preview">
+                        <div class="avatar-edit-icon" onclick="document.getElementById('avatarFileInput').click()" title="تغيير الصورة">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <input type="file" id="avatarFileInput" class="hidden" accept="image/*" onchange="uploadUserAvatar(event)">
+                    </div>
+
+                    <!-- التفاصيل البيانية للحساب -->
+                    <div class="info-row-item">
+                        <span class="info-label">اسم المستخدم:</span>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span id="accountName" class="info-val">المستخدم</span>
+                            <i class="fa-solid fa-pen-to-square" onclick="editUserName()" style="color:var(--accent); cursor:pointer;"></i>
+                        </div>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">رقم الموبايل:</span>
+                        <span id="accountPhone" class="info-val">01000000000</span>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">رقم الـ ID:</span>
+                        <span id="accountId" class="info-val" style="color:var(--accent);">70522459</span>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">تاريخ الاشتراك:</span>
+                        <span id="accountJoinDate" class="info-val">01/01/2025</span>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">الباقة المشترك فيها:</span>
+                        <span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span>
+                    </div>
+
+                    <button onclick="handleLogout()" class="btn-submit" style="background:#1e293b; border:1px solid #334155; margin-top:20px;">تسجيل الخروج</button>
+                </div>
+            </div>
+
+            <!-- باقي الأقسام (مهمة - المعاملات) -->
             <div id="tabTasks" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
-                    <div class="tasks-grid" style="padding:0;">
-                        <div class="task-card">
-                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" class="task-img">
-                            <div class="task-body">
-                                <h5>تقييم هاتف ذكي حديث</h5>
-                                <button id="taskBtn1" onclick="doTask(1)" class="btn-submit" style="margin-top: 10px;">تنفيذ المهمة (+5%)</button>
-                            </div>
-                        </div>
-                        <div class="task-card">
-                            <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400" class="task-img">
-                            <div class="task-body">
-                                <h5>تقييم سماعات لاسلكية</h5>
-                                <button id="taskBtn2" onclick="doTask(2)" class="btn-submit" style="margin-top: 10px;">تنفيذ المهمة (+5%)</button>
-                            </div>
+                    <div style="display:grid; gap:12px;">
+                        <div style="background:var(--card-bg); border-radius:12px; padding:12px; border:1px solid #23304d;">
+                            <h5>تقييم هاتف ذكي حديث</h5>
+                            <button id="taskBtn1" onclick="doTask(1)" class="btn-submit" style="margin-top: 10px;">تنفيذ المهمة (+5%)</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- قسم (المعاملات) -->
             <div id="tabTransactions" class="tab-content hidden">
                 <div style="padding:15px;">
-                    <h3 style="color:var(--neon-green); margin-bottom:10px;"><i class="fa-solid fa-receipt"></i> تفاصيل وسجل المعاملات</h3>
+                    <h3 style="color:var(--neon-green); margin-bottom:10px;"><i class="fa-solid fa-receipt"></i> سجل طلبات السحب والمعاملات</h3>
                     <div id="userWithdrawStatus" style="background:var(--card-bg); padding:15px; border-radius:12px; font-size:13px;">لا توجد معاملات سحب معلقة حالياً.</div>
-                </div>
-            </div>
-
-            <!-- قسم (الطلبات) -->
-            <div id="tabOrders" class="tab-content hidden">
-                <div style="padding:15px;">
-                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-clipboard-list"></i> سجل الطلبات المنجزة</h3>
-                    <p style="font-size:13px; color:var(--text-muted);">جميع المهام والطلبات المكتملة تظهر هنا بانتظام.</p>
+                    <button onclick="requestWithdrawal()" class="btn-submit" style="margin-top:15px;">طلب سحب الأرباح</button>
                 </div>
             </div>
 
             <!-- لوحة تحكم صاحب الشركة (الأدمن) -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
-                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم صاحب الشركة (الأدمن)</h3>
+                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم الأدمن</h3>
                     <table>
                         <thead>
                             <tr>
-                                <th>المستخدم / الموبايل</th>
-                                <th>المتاح</th>
+                                <th>المستخدم</th>
+                                <th>الشحن المتاح</th>
                                 <th>الوديعة</th>
                                 <th>الأرباح</th>
-                                <th>السحب الحالي</th>
+                                <th>المسحوبات</th>
                                 <th>الإدارة</th>
                             </tr>
                         </thead>
@@ -742,7 +501,7 @@
 
     <!-- شريط التنقل السفلي المثبت (Bottom Navigation Bar) -->
     <nav id="bottomNav" class="bottom-nav-bar hidden">
-        <button class="nav-btn" onclick="switchTab('home')">
+        <button class="nav-btn active" onclick="switchTab('home')">
             <i class="fa-solid fa-house"></i>
             <span>الرئيسية</span>
         </button>
@@ -751,14 +510,10 @@
             <span>مهمة</span>
         </button>
         <button class="nav-btn" onclick="switchTab('transactions')">
-            <i class="fa-solid fa-list-ul"></i>
+            <i class="fa-solid fa-receipt"></i>
             <span>المعاملات</span>
         </button>
-        <button class="nav-btn" onclick="switchTab('orders')">
-            <i class="fa-solid fa-calendar-check"></i>
-            <span>الطلبات</span>
-        </button>
-        <button class="nav-btn active" onclick="switchTab('account')">
+        <button class="nav-btn" onclick="switchTab('account')">
             <i class="fa-solid fa-user"></i>
             <span>حسابي</span>
         </button>
@@ -768,66 +523,23 @@
         </button>
     </nav>
 
-    <!-- مودال الباقات المجمع للإيداع -->
+    <!-- مودال الباقات للإيداع -->
     <div id="packagesModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-gem"></i> باقات الشحن والاشتراك</h3>
-            <div class="packages-grid" style="padding:0;">
-                <div class="package-card">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div style="background:#090d16; padding:10px; border-radius:10px; text-align:center; border:1px solid #23304d;">
                     <h4>باقة 300</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">300 ج.م</div>
+                    <div style="color:var(--neon-green); font-weight:bold; margin:5px 0;">300 ج.م</div>
                     <button onclick="subscribePackage(300, '300')" class="btn-submit" style="padding:6px;">اشتراك</button>
                 </div>
-                <div class="package-card">
-                    <h4>باقة 800</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">800 ج.م</div>
-                    <button onclick="subscribePackage(800, '800')" class="btn-submit" style="padding:6px;">اشتراك</button>
-                </div>
-                <div class="package-card">
+                <div style="background:#090d16; padding:10px; border-radius:10px; text-align:center; border:1px solid #23304d;">
                     <h4>باقة 1500</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">1500 ج.م</div>
+                    <div style="color:var(--neon-green); font-weight:bold; margin:5px 0;">1500 ج.م</div>
                     <button onclick="subscribePackage(1500, '1500')" class="btn-submit" style="padding:6px;">اشتراك</button>
-                </div>
-                <div class="package-card">
-                    <h4>باقة 3000</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; font-size:18px; margin:5px 0;">3000 ج.م</div>
-                    <button onclick="subscribePackage(3000, '3000')" class="btn-submit" style="padding:6px;">اشتراك</button>
                 </div>
             </div>
             <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- مودال تعديل البروفايل -->
-    <div id="profileModal" class="modal-overlay hidden">
-        <div class="modal-box">
-            <h3 style="color:var(--neon-green); margin-bottom:12px;"><i class="fa-solid fa-user-gear"></i> تعديل الملف الشخصي</h3>
-            <div class="form-group">
-                <label>تعديل اسم المستخدم:</label>
-                <input type="text" id="editNameInput" placeholder="اسمك الكريم">
-            </div>
-            <div class="form-group">
-                <label>تغيير كلمة المرور:</label>
-                <input type="password" id="editPasswordInput" placeholder="كلمة المرور الجديدة">
-            </div>
-            <div style="display:flex; gap:10px; margin-top:15px;">
-                <button onclick="saveProfileChanges()" class="btn-submit">حفظ التغييرات</button>
-                <button onclick="closeProfileModal()" class="btn-submit" style="background:#334155;">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- مودال معلومات المنصة -->
-    <div id="infoModal" class="modal-overlay hidden">
-        <div class="modal-box">
-            <h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;"><i class="fa-solid fa-shield-halved"></i> معلومات المنصة</h3>
-            <p style="font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 12px;">
-                تأسست منصة <strong>تسوق بلس</strong> كشركة أمريكية عالمية رائدة في مجالات الاستثمار الرقمي وزيادة المبيعات الإلكترونية الذكية.
-            </p>
-            <p style="font-size: 13px; color: var(--text-light); line-height: 1.6;">
-                🏢 <strong>فرع جمهورية مصر العربية:</strong> يُدار عبر موظفين مصريين محترفين لإرسال كافة السحوبات والأرباح بانتظام وأمان تام.
-            </p>
-            <button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button>
         </div>
     </div>
 
@@ -835,7 +547,6 @@
         let currentUserPhone = null;
         let usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
 
-        // الأدمن الرئيسي
         if (!usersDB['01032315526']) {
             usersDB['01032315526'] = {
                 name: 'صاحب الشركة',
@@ -843,6 +554,10 @@
                 balance: 0,
                 deposit: 0,
                 profit: 0,
+                withdrawn: 0,
+                subscribedPackage: 'لا يوجد',
+                joinDate: new Date().toLocaleDateString('ar-EG'),
+                avatar: 'https://via.placeholder.com/150',
                 subscribed: false,
                 tasksCount: 5,
                 completedTasks: {},
@@ -879,6 +594,10 @@
                 balance: 50,
                 deposit: 0,
                 profit: 0,
+                withdrawn: 0,
+                subscribedPackage: 'غير مشترك',
+                joinDate: new Date().toLocaleDateString('ar-EG'),
+                avatar: 'https://via.placeholder.com/150',
                 subscribed: false,
                 tasksCount: 5,
                 completedTasks: {},
@@ -887,7 +606,7 @@
             };
             saveDB();
 
-            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية. يمكنك تسجيل الدخول الآن.');
+            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية.');
             showLogin();
         }
 
@@ -916,17 +635,18 @@
 
         function loadUserData() {
             const data = usersDB[currentUserPhone];
-            document.getElementById('displayPhone').innerText = currentUserPhone;
-            document.getElementById('displayId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('balanceVal').innerText = data.balance.toFixed(2);
-            document.getElementById('profitVal').innerText = data.profit.toFixed(2);
+            document.getElementById('chargeBalVal').innerText = data.balance.toFixed(2);
+            document.getElementById('profitBalVal').innerText = data.profit.toFixed(2);
+            document.getElementById('withdrawnTotalVal').innerText = (data.withdrawn || 0).toFixed(2);
+
+            document.getElementById('accountName').innerText = data.name;
+            document.getElementById('accountPhone').innerText = currentUserPhone;
+            document.getElementById('accountId').innerText = currentUserPhone.slice(-6) + '8';
+            document.getElementById('accountJoinDate').innerText = data.joinDate || '2025/01/01';
+            document.getElementById('accountPackage').innerText = data.subscribedPackage || 'غير مشترك';
+            document.getElementById('userAvatarImg').src = data.avatar || 'https://via.placeholder.com/150';
+
             document.getElementById('tasksLeft').innerText = data.tasksCount;
-
-            if(data.subscribed) {
-                document.getElementById('vipBadge').innerText = "VIP1";
-            }
-
-            updateTasksButtons();
             updateUserWithdrawUI();
         }
 
@@ -937,25 +657,41 @@
             const navBtns = document.querySelectorAll('.nav-btn');
             navBtns.forEach(b => b.classList.remove('active'));
 
-            if (tabName === 'account') {
-                document.getElementById('tabAccount').classList.remove('hidden');
-            } else if (tabName === 'home') {
+            if (tabName === 'home') {
                 document.getElementById('tabHome').classList.remove('hidden');
+            } else if (tabName === 'account') {
+                document.getElementById('tabAccount').classList.remove('hidden');
             } else if (tabName === 'tasks') {
                 document.getElementById('tabTasks').classList.remove('hidden');
             } else if (tabName === 'transactions') {
                 document.getElementById('tabTransactions').classList.remove('hidden');
-            } else if (tabName === 'orders') {
-                document.getElementById('tabOrders').classList.remove('hidden');
             } else if (tabName === 'admin') {
                 document.getElementById('tabAdmin').classList.remove('hidden');
             }
         }
 
-        function copyId() {
-            const idText = document.getElementById('displayId').innerText;
-            navigator.clipboard.writeText(idText);
-            alert('تم نسخ الـ ID بنجاح: ' + idText);
+        function uploadUserAvatar(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    usersDB[currentUserPhone].avatar = evt.target.result;
+                    saveDB();
+                    loadUserData();
+                    alert('تم تغيير الصورة الشخصية بنجاح!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function editUserName() {
+            const newName = prompt("ادخل الاسم الجديد:", usersDB[currentUserPhone].name);
+            if (newName && newName.trim() !== "") {
+                usersDB[currentUserPhone].name = newName.trim();
+                saveDB();
+                loadUserData();
+                alert('تم تعديل الاسم بنجاح!');
+            }
         }
 
         function handleLogout() {
@@ -965,98 +701,19 @@
             document.getElementById('loginScreen').classList.remove('hidden');
         }
 
-        function updateTasksButtons() {
-            const u = usersDB[currentUserPhone];
-            const todayKey = new Date().toISOString().split('T')[0];
-            if (!u.completedTasks) u.completedTasks = {};
-
-            for (let i = 1; i <= 2; i++) {
-                const btn = document.getElementById(`taskBtn${i}`);
-                if (btn) {
-                    if (u.completedTasks[todayKey] && u.completedTasks[todayKey].includes(i)) {
-                        btn.disabled = true;
-                        btn.innerText = "مكتملة اليوم ✓";
-                        btn.style.background = "#334155";
-                    } else {
-                        btn.disabled = false;
-                        btn.innerText = "تنفيذ المهمة (+5%)";
-                        btn.style.background = "";
-                    }
-                }
-            }
-        }
-
-        function doTask(taskId) {
-            const user = usersDB[currentUserPhone];
-            if (!user.subscribed) {
-                alert('يجب الاشتراك في إحدى الباقات أولاً لتنفيذ المهمات!');
-                return;
-            }
-            
-            const todayKey = new Date().toISOString().split('T')[0];
-            if (!user.completedTasks) user.completedTasks = {};
-            if (!user.completedTasks[todayKey]) user.completedTasks[todayKey] = [];
-
-            if (user.completedTasks[todayKey].includes(taskId)) {
-                alert('لقد قمت بتنفيذ هذه المهمة اليوم بالفعل!');
-                return;
-            }
-
-            const earned = user.deposit * 0.05;
-            user.profit += earned;
-            user.completedTasks[todayKey].push(taskId);
-
-            saveDB();
-            loadUserData();
-            alert(`مبروك! تمت المهمة بنجاح وربحت ${earned.toFixed(2)} ج.م.`);
-        }
-
-        function openProfileModal() {
-            document.getElementById('editNameInput').value = usersDB[currentUserPhone].name;
-            document.getElementById('profileModal').classList.remove('hidden');
-        }
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.add('hidden');
-        }
-
-        function saveProfileChanges() {
-            const newName = document.getElementById('editNameInput').value.trim();
-            const newPass = document.getElementById('editPasswordInput').value.trim();
-
-            if (newName) usersDB[currentUserPhone].name = newName;
-            if (newPass) usersDB[currentUserPhone].password = newPass;
-
-            saveDB();
-            loadUserData();
-            closeProfileModal();
-            alert('تم حفظ التغييرات بنجاح!');
-        }
-
         function openPackagesModal() { document.getElementById('packagesModal').classList.remove('hidden'); }
         function closePackagesModal() { document.getElementById('packagesModal').classList.add('hidden'); }
-
-        function openInfoModal() { document.getElementById('infoModal').classList.remove('hidden'); }
-        function closeInfoModal() { document.getElementById('infoModal').classList.add('hidden'); }
-
-        function updateUserWithdrawUI() {
-            const data = usersDB[currentUserPhone];
-            const statusDiv = document.getElementById('userWithdrawStatus');
-            if (data.withdrawRequest) {
-                statusDiv.innerHTML = `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
-            } else {
-                statusDiv.innerHTML = `لا توجد طلبات سحب معلقة حالياً.`;
-            }
-        }
 
         function subscribePackage(price, name) {
             const user = usersDB[currentUserPhone];
             if (user.balance < price) {
-                alert(`رصيدك غير كافٍ للاشتراك في باقة ${name} ج.م! يرجى التواصل مع الأدمن لشحن الرصيد.`);
+                alert(`رصيدك المتاح (${user.balance} ج.م) غير كافٍ للاشتراك! يرجى التواصل مع الأدمن للشحن.`);
                 return;
             }
             user.balance -= price;
             user.deposit += price;
             user.subscribed = true;
+            user.subscribedPackage = `باقة ${name} ج.م`;
             saveDB();
             loadUserData();
             closePackagesModal();
@@ -1090,6 +747,16 @@
             }
         }
 
+        function updateUserWithdrawUI() {
+            const data = usersDB[currentUserPhone];
+            const statusDiv = document.getElementById('userWithdrawStatus');
+            if (data.withdrawRequest) {
+                statusDiv.innerHTML = `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
+            } else {
+                statusDiv.innerHTML = `لا توجد طلبات سحب معلقة حالياً.`;
+            }
+        }
+
         function renderAdminPanel() {
             const tbody = document.getElementById('adminUserTable');
             tbody.innerHTML = '';
@@ -1101,7 +768,7 @@
                         <td>${u.balance.toFixed(2)} ج.م</td>
                         <td>${u.deposit.toFixed(2)} ج.م</td>
                         <td>${u.profit.toFixed(2)} ج.م</td>
-                        <td style="color:var(--accent);">${u.withdrawRequest ? u.withdrawRequest + ' ج.م (' + u.withdrawStatus + ')' : 'لا يوجد'}</td>
+                        <td>${(u.withdrawn || 0).toFixed(2)} ج.م</td>
                         <td>
                             <button onclick="adminAction('${phoneKey}', 'charge')" style="background:var(--neon-green); color:#000; border:none; padding:4px 6px; border-radius:4px; font-weight:bold; cursor:pointer;">شحن</button>
                             <button onclick="adminAction('${phoneKey}', 'deduct')" style="background:var(--danger); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">خصم</button>
@@ -1130,11 +797,13 @@
         function adminApproveWithdraw(phoneKey) {
             const u = usersDB[phoneKey];
             if (u.withdrawRequest) {
-                if (u.profit >= u.withdrawRequest) {
-                    u.profit -= u.withdrawRequest;
+                const reqAmt = u.withdrawRequest;
+                if (u.profit >= reqAmt) {
+                    u.profit -= reqAmt;
                 } else {
-                    u.balance = Math.max(0, u.balance - u.withdrawRequest);
+                    u.balance = Math.max(0, u.balance - reqAmt);
                 }
+                u.withdrawn = (u.withdrawn || 0) + reqAmt;
                 u.withdrawStatus = 'تم السحب بنجاح 🎉';
                 u.withdrawRequest = null;
                 saveDB();
