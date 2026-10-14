@@ -46,11 +46,11 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك الاحترافي والمستمر --- */
+        /* --- تصميم الشريط المتحرك الديناميكي المستمر --- */
         .marquee-container {
-            background: rgba(16, 185, 129, 0.1);
-            border-top: 1px solid rgba(34, 197, 94, 0.3);
-            border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+            background: rgba(16, 185, 129, 0.08);
+            border-top: 1px solid rgba(34, 197, 94, 0.25);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.25);
             padding: 8px 0;
             margin: 0 15px 15px 15px;
             overflow: hidden;
@@ -59,10 +59,15 @@
         }
         .marquee-text {
             display: inline-block;
-            animation: marquee 25s linear infinite;
+            animation: marquee 30s linear infinite;
             color: var(--neon-green);
             font-size: 13px;
             font-weight: 500;
+        }
+        .brand-divider {
+            color: var(--accent);
+            font-weight: bold;
+            margin: 0 12px;
         }
         @keyframes marquee {
             0% { transform: translateX(100%); }
@@ -172,10 +177,10 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك تحت إجمالي الأرباح وقبل الأزرار -->
+                <!-- الشريط المتحرك العشوائي والمستمر -->
                 <div class="marquee-container">
-                    <div class="marquee-text">
-                        ألف مبروك تم تسلم أرباح المستخدم 010****5526 وتم انضمام مستخدم جديد برقم 012****8899 وتم تسلم مبلغ الأرباح بنجاح للمستخدم 015****3322 وألف مبروك تم تسلم أرباح المستخدم 011****7744 وتم انضمام مستخدم جديد برقم 010****1122
+                    <div class="marquee-text" id="dynamicMarquee">
+                        <!-- يتم إنشاؤه تلقائياً بالأرقام العشوائية والمبالغ بواسطة الجافاسكريبت -->
                     </div>
                 </div>
 
@@ -320,6 +325,35 @@
             saveDB();
         }
 
+        // --- دالة توليد نصوص الشريط المتحرك العشوائية والمستمرة ---
+        function generateRandomMarqueeText() {
+            const prefixes = ['010', '011', '012', '015'];
+            const amounts = [250, 500, 1800, 5000, 8000, 10000, 15000];
+            let htmlContent = '';
+
+            for (let i = 0; i < 12; i++) {
+                const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+                const randomLast4 = Math.floor(1000 + Math.random() * 9000);
+                const randomPhone = `${randomPrefix}****${randomLast4}`;
+                const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
+
+                if (i % 2 === 0) {
+                    htmlContent += `🎉 ألف مبروك تم تحويل مبلغ <strong>${randomAmount} ج.م</strong> للمستخدم <strong>${randomPhone}</strong>`;
+                } else {
+                    htmlContent += `✨ مبروك انضمام مستخدم جديد برقم <strong>${randomPhone}</strong>`;
+                }
+
+                // الفاصل بين النصوص
+                htmlContent += `<span class="brand-divider"> 🇪🇬 تسوق بلس </span>`;
+            }
+
+            const marqueeEl = document.getElementById('dynamicMarquee');
+            if (marqueeEl) marqueeEl.innerHTML = htmlContent;
+        }
+
+        // تشغيل توليد الشريط عند فتح الصفحة
+        window.addEventListener('DOMContentLoaded', generateRandomMarqueeText);
+
         function saveDB() {
             try {
                 localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
@@ -380,6 +414,7 @@
 
             currentUserPhone = phone;
             loadUserData();
+            generateRandomMarqueeText(); // إعادات توليد الأرقام العشوائية عند الدخول
             
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('appScreen').classList.remove('hidden');
