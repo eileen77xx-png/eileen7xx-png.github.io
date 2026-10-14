@@ -312,7 +312,7 @@
 
     <div id="infoModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;">معلومات المنصة</h3><p style="font-size: 13px; line-height: 1.6;">منصة تسوق بلس تتيح لك تنفيذ المهام اليومية والحصول على الأرباح بانتظام.</p><button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button></div></div>
 
-    <!-- السكريبت المحدث لحفظ الجلسة عند التحديث -->
+    <!-- السكريبت المحدث لتجديد المهام تلقائياً بعد الساعة 12 منتصف الليل -->
     <script>
         let currentUserPhone = localStorage.getItem('tasawuq_logged_user') || null;
         let usersDB = {};
@@ -343,10 +343,17 @@
             localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
         }
 
-        // فحص الجلسة عند فتح الصفحة أو عمل تحديث (Refresh)
+        // دالة للحصول على تاريخ اليوم الحالي بالتوقيت المحلي (تتغير تلقائياً بعد 12 منتصف الليل)
+        function getTodayDateKey() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
         window.addEventListener('DOMContentLoaded', function() {
             if (currentUserPhone && usersDB[currentUserPhone]) {
-                // إذا كان المستخدم مسجلاً مسبقاً، افتح التطبيق مباشرة دون شاشة تسجيل الدخول
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('registerScreen').classList.add('hidden');
                 document.getElementById('appScreen').classList.remove('hidden');
@@ -402,7 +409,7 @@
             localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
             
             currentUserPhone = phone;
-            localStorage.setItem('tasawuq_logged_user', phone); // حفظ الجلسة الدائمة
+            localStorage.setItem('tasawuq_logged_user', phone);
             loadUserData();
             
             document.getElementById('registerScreen').classList.add('hidden');
@@ -421,7 +428,7 @@
             }
 
             currentUserPhone = phone;
-            localStorage.setItem('tasawuq_logged_user', phone); // حفظ الجلسة الدائمة
+            localStorage.setItem('tasawuq_logged_user', phone);
             loadUserData();
             
             document.getElementById('loginScreen').classList.add('hidden');
@@ -517,7 +524,7 @@
 
         function handleLogout() {
             currentUserPhone = null;
-            localStorage.removeItem('tasawuq_logged_user'); // مسح جلسة الدخول عند تسجيل الخروج
+            localStorage.removeItem('tasawuq_logged_user');
             document.getElementById('appScreen').classList.add('hidden');
             document.getElementById('bottomNav').classList.add('hidden');
             document.getElementById('loginScreen').classList.remove('hidden');
@@ -526,7 +533,7 @@
         function updateTasksButtons() {
             const u = usersDB[currentUserPhone];
             if(!u) return;
-            const todayKey = new Date().toISOString().split('T')[0];
+            const todayKey = getTodayDateKey(); // استخدام التاريخ المتجدد تلقائياً بعد منتصف الليل
             if (!u.completedTasks) u.completedTasks = {};
 
             let completedToday = u.completedTasks[todayKey] ? u.completedTasks[todayKey].length : 0;
@@ -557,7 +564,7 @@
                 return;
             }
             
-            const todayKey = new Date().toISOString().split('T')[0];
+            const todayKey = getTodayDateKey(); // جلب التاريخ الحالي المتجدد
             if (!user.completedTasks) user.completedTasks = {};
             if (!user.completedTasks[todayKey]) user.completedTasks[todayKey] = [];
 
