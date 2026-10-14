@@ -107,12 +107,12 @@
     <div id="registerScreen" class="auth-container hidden">
         <div class="auth-content">
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
-            <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على <strong>مكافأة 50 ج.م</strong> فوراً!</p>
+            <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على حساب تفاعلي متطور!</p>
             <form onsubmit="handleRegister(event)">
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" required placeholder="اسمك الكريم"></div>
                 <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="regPhone" required placeholder="ادخل رقم الموبايل"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" required placeholder="********"></div>
-                <button type="submit" class="btn-submit">تسجيل حساب جديد (+50 ج.م)</button>
+                <button type="submit" class="btn-submit">تسجيل حساب جديد</button>
             </form>
             <div class="switch-auth">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
         </div>
@@ -142,49 +142,25 @@
 
                 <div class="balance-card">
                     <span id="vipBadge" class="vip-badge-tag hidden">غير مشترك</span>
-                    <div class="balance-title">رصيد الحساب المتاح</div>
-                    <div class="balance-amount"><span style="color:var(--neon-green);">EGP</span><span id="balanceVal">0.00</span></div>
+                    <div class="balance-title">رصيد الوديعة</div>
+                    <div class="balance-amount"><span style="color:var(--neon-green);">EGP</span><span id="depositVal">0.00</span></div>
                     <div class="profit-subtext">إجمالي أرباح العمولة <br><span class="profit-val-green">EGP <span id="profitVal">0.00</span></span></div>
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
                 <div class="action-btns-row">
-                    <button onclick="openPackagesModal()" class="btn-deposit"><i class="fa-solid fa-wallet"></i> إيداع</button>
+                    <button onclick="openPackagesModal()" class="btn-deposit"><i class="fa-solid fa-wallet"></i> اشتراك باقة</button>
                     <button onclick="requestWithdrawal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب</button>
                 </div>
 
                 <div style="padding: 0 15px 5px 15px; font-weight: bold; color: var(--accent);"><i class="fa-solid fa-gem"></i> باقات الاستثمار المتاحة والعوائد اليومية</div>
                 <div class="packages-grid-custom">
-                    <!-- باقة 300 -->
-                    <div class="pkg-box-item">
-                        <div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">300 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div>
-                        <div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>15 EGP</span></div><button onclick="subscribePackage(300, '300')" class="btn-pkg-subscribe">اشتراك</button></div>
-                    </div>
-                    <!-- باقة 800 -->
-                    <div class="pkg-box-item">
-                        <div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">800 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div>
-                        <div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>40 EGP</span></div><button onclick="subscribePackage(800, '800')" class="btn-pkg-subscribe">اشتراك</button></div>
-                    </div>
-                    <!-- باقة 1500 -->
-                    <div class="pkg-box-item">
-                        <div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">1500 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div>
-                        <div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>75 EGP</span></div><button onclick="subscribePackage(1500, '1500')" class="btn-pkg-subscribe">اشتراك</button></div>
-                    </div>
-                    <!-- باقة 3000 -->
-                    <div class="pkg-box-item">
-                        <div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">3000 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div>
-                        <div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>150 EGP</span></div><button onclick="subscribePackage(3000, '3000')" class="btn-pkg-subscribe">اشتراك</button></div>
-                    </div>
-                    <!-- باقة 8000 -->
-                    <div class="pkg-box-item">
-                        <div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">8000 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div>
-                        <div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>400 EGP</span></div><button onclick="subscribePackage(8000, '8000')" class="btn-pkg-subscribe">اشتراك</button></div>
-                    </div>
-                    <!-- باقة 12000 -->
-                    <div class="pkg-box-item">
-                        <div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">12000 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div>
-                        <div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>600 EGP</span></div><button onclick="subscribePackage(12000, '12000 VIP')" class="btn-pkg-subscribe">اشتراك</button></div>
-                    </div>
+                    <div class="pkg-box-item"><div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">300 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div><div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>15 EGP</span></div><button onclick="requestPackageSubscription(300, '300')" class="btn-pkg-subscribe">طلب اشتراك</button></div></div>
+                    <div class="pkg-box-item"><div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">800 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div><div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>40 EGP</span></div><button onclick="requestPackageSubscription(800, '800')" class="btn-pkg-subscribe">طلب اشتراك</button></div></div>
+                    <div class="pkg-box-item"><div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">1500 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div><div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>75 EGP</span></div><button onclick="requestPackageSubscription(1500, '1500')" class="btn-pkg-subscribe">طلب اشتراك</button></div></div>
+                    <div class="pkg-box-item"><div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">3000 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div><div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>150 EGP</span></div><button onclick="requestPackageSubscription(3000, '3000')" class="btn-pkg-subscribe">طلب اشتراك</button></div></div>
+                    <div class="pkg-box-item"><div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">8000 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div><div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>400 EGP</span></div><button onclick="requestPackageSubscription(8000, '8000')" class="btn-pkg-subscribe">طلب اشتراك</button></div></div>
+                    <div class="pkg-box-item"><div class="pkg-top-info"><span class="pkg-name-price">باقة <span class="pkg-price-val">12000 EGP</span></span><div class="pkg-badge-tasks">5 مهام</div></div><div><div class="pkg-bottom-row"><span>العائد اليومي</span><span>600 EGP</span></div><button onclick="requestPackageSubscription(12000, '12000 VIP')" class="btn-pkg-subscribe">طلب اشتراك</button></div></div>
                 </div>
             </div>
 
@@ -202,6 +178,7 @@
                     <div class="info-row-item"><span class="info-label">رقم الـ ID:</span><span id="accountId" class="info-val" style="color:var(--accent);">70522459</span></div>
                     <div class="info-row-item"><span class="info-label">الباقة المشترك فيها:</span><span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span></div>
                     <div class="info-row-item"><span class="info-label">رصيد الوديعة الحالي:</span><span id="accountDeposit" class="info-val" style="color:var(--accent);">0.00 EGP</span></div>
+                    <div class="info-row-item"><span class="info-label">الرصيد المتاح بالشحن:</span><span id="accountBalance" class="info-val" style="color:var(--neon-green);">0.00 EGP</span></div>
                 </div>
 
                 <div class="menu-list-card">
@@ -229,14 +206,21 @@
             <div id="tabTransactions" class="tab-content hidden"><div style="padding:15px;"><h3 style="color:var(--neon-green); margin-bottom:10px;"><i class="fa-solid fa-receipt"></i> المعاملات والسحوبات</h3><div id="userWithdrawStatus" style="background:var(--card-bg); padding:15px; border-radius:12px; font-size:13px;">لا توجد معاملات سحب معلقة حالياً.</div></div></div>
 
             <!-- الطلبات -->
-            <div id="tabOrders" class="tab-content hidden"><div style="padding:15px;"><h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-calendar-check"></i> سجل الطلبات والمهام المنجزة</h3><p style="font-size:13px; color:var(--text-muted);">تظهر هنا تفاصيل الأرباح والمهام التي أتممتها.</p></div></div>
+            <div id="tabOrders" class="tab-content hidden">
+                <div style="padding:15px;">
+                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-calendar-check"></i> طلبات اشتراك الباقات</h3>
+                    <div id="userPackageRequestStatus" style="background:var(--card-bg); padding:15px; border-radius:12px; font-size:13px; margin-bottom:15px;">لا توجد طلبات باقات سابقة.</div>
+                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-list-check"></i> سجل المهام المنجزة</h3>
+                    <p style="font-size:13px; color:var(--text-muted);">جميع أرباح المهام اليومية تظهر هنا وفي رصيد الأرباح.</p>
+                </div>
+            </div>
 
             <!-- الأدمن -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الكاملة للأدمن</h3>
                     <table>
-                        <thead><tr><th>المستخدم</th><th>الرصيد المتاح</th><th>الوديعة</th><th>الأرباح</th><th>السحب</th><th>التحكم الشامل</th></tr></thead>
+                        <thead><tr><th>المستخدم</th><th>الرصيد المتاح</th><th>الوديعة</th><th>الأرباح</th><th>طلب الباقة</th><th>التحكم الشامل</th></tr></thead>
                         <tbody id="adminUserTable"></tbody>
                     </table>
                 </section>
@@ -255,14 +239,14 @@
     </nav>
 
     <!-- المودالات -->
-    <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">باقات الشحن</h3>
+    <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">اختر الباقة لطلب الاشتراك</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button onclick="subscribePackage(300, '300')" class="btn-submit" style="padding:10px;">باقة 300 EGP</button>
-            <button onclick="subscribePackage(800, '800')" class="btn-submit" style="padding:10px;">باقة 800 EGP</button>
-            <button onclick="subscribePackage(1500, '1500')" class="btn-submit" style="padding:10px;">باقة 1500 EGP</button>
-            <button onclick="subscribePackage(3000, '3000')" class="btn-submit" style="padding:10px;">باقة 3000 EGP</button>
-            <button onclick="subscribePackage(8000, '8000')" class="btn-submit" style="padding:10px;">باقة 8000 EGP</button>
-            <button onclick="subscribePackage(12000, '12000 VIP')" class="btn-submit" style="padding:10px;">باقة 12000 EGP</button>
+            <button onclick="requestPackageSubscription(300, '300')" class="btn-submit" style="padding:10px;">باقة 300 EGP</button>
+            <button onclick="requestPackageSubscription(800, '800')" class="btn-submit" style="padding:10px;">باقة 800 EGP</button>
+            <button onclick="requestPackageSubscription(1500, '1500')" class="btn-submit" style="padding:10px;">باقة 1500 EGP</button>
+            <button onclick="requestPackageSubscription(3000, '3000')" class="btn-submit" style="padding:10px;">باقة 3000 EGP</button>
+            <button onclick="requestPackageSubscription(8000, '8000')" class="btn-submit" style="padding:10px;">باقة 8000 EGP</button>
+            <button onclick="requestPackageSubscription(12000, '12000 VIP')" class="btn-submit" style="padding:10px;">باقة 12000 EGP</button>
         </div>
         <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
     </div></div>
@@ -294,6 +278,8 @@
                 profit: 0,
                 subscribed: false,
                 subscribedPackage: 'غير مشترك',
+                packageRequest: null,
+                packageRequestStatus: 'لا يوجد',
                 avatar: 'https://via.placeholder.com/150',
                 tasksCount: 5,
                 completedTasks: {},
@@ -333,11 +319,13 @@
             usersDB[phone] = {
                 name: name,
                 password: password,
-                balance: 50,
+                balance: 0,
                 deposit: 0,
                 profit: 0,
                 subscribed: false,
                 subscribedPackage: 'غير مشترك',
+                packageRequest: null,
+                packageRequestStatus: 'لا يوجد',
                 avatar: 'https://via.placeholder.com/150',
                 tasksCount: 5,
                 completedTasks: {},
@@ -345,7 +333,7 @@
                 withdrawStatus: 'لا يوجد'
             };
             saveDB();
-            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية.');
+            alert('تم إنشاء الحساب بنجاح! برجاء التواصل مع الأدمن لشحن الرصيد ليتسنى لك طلب الاشتراك.');
             showLogin();
         }
 
@@ -383,7 +371,7 @@
             document.getElementById('displayNameHeader').innerText = data.name;
             document.getElementById('displayPhone').innerText = currentUserPhone;
             document.getElementById('displayId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('balanceVal').innerText = (data.balance || 0).toFixed(2);
+            document.getElementById('depositVal').innerText = (data.deposit || 0).toFixed(2);
             document.getElementById('profitVal').innerText = (data.profit || 0).toFixed(2);
 
             const icon = document.getElementById('headerAvatarIcon');
@@ -400,7 +388,7 @@
             const vipBadge = document.getElementById('vipBadge');
             if(vipBadge) {
                 if(data.subscribed) {
-                    vipBadge.innerText = data.subscribedPackage + " (وديعة: " + data.deposit + " ج.م)";
+                    vipBadge.innerText = data.subscribedPackage;
                     vipBadge.classList.remove('hidden');
                 } else {
                     vipBadge.classList.add('hidden');
@@ -412,10 +400,12 @@
             document.getElementById('accountId').innerText = currentUserPhone.slice(-6) + '8';
             document.getElementById('accountPackage').innerText = data.subscribedPackage || 'غير مشترك';
             document.getElementById('accountDeposit').innerText = (data.deposit || 0).toFixed(2) + ' EGP';
+            document.getElementById('accountBalance').innerText = (data.balance || 0).toFixed(2) + ' EGP';
             document.getElementById('userAvatarImg').src = data.avatar || 'https://via.placeholder.com/150';
 
             updateTasksButtons();
             updateUserWithdrawUI();
+            updateUserPackageRequestUI();
         }
 
         function switchTab(tabName) {
@@ -500,7 +490,7 @@
         function doTask(taskId) {
             const user = usersDB[currentUserPhone];
             if (!user.subscribed) {
-                alert('يجب الاشتراك في إحدى الباقات أولاً لتنفيذ المهمات!');
+                alert('يجب أن يوافق الأدمن على طلب اشتراكك في باقة أولاً لتنفيذ المهمات!');
                 return;
             }
             
@@ -513,7 +503,6 @@
                 return;
             }
 
-            // حساب العائد اليومي حسب قيمة الوديعة وقسمته على 5 مهمات
             let dailyTotal = 0;
             if (user.deposit === 300) dailyTotal = 15;
             else if (user.deposit === 800) dailyTotal = 40;
@@ -562,20 +551,39 @@
             }
         }
 
-        function subscribePackage(price, name) {
+        function updateUserPackageRequestUI() {
+            const data = usersDB[currentUserPhone];
+            const box = document.getElementById('userPackageRequestStatus');
+            if(box) {
+                if(data.packageRequest) {
+                    box.innerHTML = `الباقة المطلوبة: <strong>باقة ${data.packageRequest} EGP</strong> - الحالة: <span style="color:var(--accent);">${data.packageRequestStatus}</span>`;
+                } else {
+                    box.innerHTML = `لا توجد طلبات اشتراك باقات حالياً.`;
+                }
+            }
+        }
+
+        function requestPackageSubscription(price, name) {
             const user = usersDB[currentUserPhone];
-            if (user.balance < price) {
-                alert(`رصيدك المتاح (${user.balance} ج.م) غير كافٍ للاشتراك في باقة ${name} EGP!`);
+            if (user.subscribed) {
+                alert('أنت مشترك بالفعل في باقة نشطة!');
                 return;
             }
-            user.balance -= price;
-            user.deposit = price;
-            user.subscribed = true;
-            user.subscribedPackage = `باقة ${name} EGP`;
+            if (user.packageRequestStatus === 'قيد المراجعة') {
+                alert('لديك طلب اشتراك قيد المراجعة بالفعل بانتظار موافقة الأدمن!');
+                return;
+            }
+            if (user.balance < price) {
+                alert(`رصيدك المتاح للشحن (${user.balance} ج.م) غير كافٍ للاشتراك في باقة ${name} EGP! برجاء التواصل مع الأدمن لشحن الرصيد أولاً.`);
+                return;
+            }
+
+            user.packageRequest = price;
+            user.packageRequestStatus = 'قيد المراجعة';
             saveDB();
             loadUserData();
             closePackagesModal();
-            alert(`تم الاشتراك بنجاح في باقة ${name} EGP!`);
+            alert(`تم إرسال طلب الاشتراك في باقة ${name} EGP بنجاح، وهو الآن (قيد المراجعة).`);
         }
 
         function requestWithdrawal() {
@@ -617,12 +625,12 @@
                         <td>${(u.balance || 0).toFixed(2)} ج.م</td>
                         <td>${(u.deposit || 0).toFixed(2)} ج.م</td>
                         <td>${(u.profit || 0).toFixed(2)} ج.م</td>
-                        <td style="color:var(--accent);">${u.withdrawRequest ? u.withdrawRequest + ' ج.م (' + u.withdrawStatus + ')' : 'لا يوجد'}</td>
+                        <td style="color:var(--accent);">${u.packageRequest ? 'باقة ' + u.packageRequest + ' (' + u.packageRequestStatus + ')' : 'لا يوجد'}</td>
                         <td>
-                            <button onclick="adminEditBalance('${phoneKey}', 'balance')" style="background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">المتاح</button>
-                            <button onclick="adminEditBalance('${phoneKey}', 'deposit')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">الوديعة</button>
-                            <button onclick="adminEditBalance('${phoneKey}', 'profit')" style="background:var(--neon-green); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">الأرباح</button>
-                            ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${phoneKey}')" style="background:#10b981; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة السحب</button>` : ''}
+                            <button onclick="adminEditBalance('${phoneKey}', 'balance')" style="background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">شحن متاح</button>
+                            <button onclick="adminEditBalance('${phoneKey}', 'profit')" style="background:var(--neon-green); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">أرباح</button>
+                            ${u.packageRequestStatus === 'قيد المراجعة' ? `<button onclick="adminApprovePackage('${phoneKey}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; font-weight:bold;">موافقة الباقة</button>` : ''}
+                            ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${phoneKey}')" style="background:#10b981; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة سحب</button>` : ''}
                         </td>
                     </tr>
                 `;
@@ -630,15 +638,35 @@
         }
 
         function adminEditBalance(phoneKey, fieldType) {
-            let fieldNameAr = fieldType === 'balance' ? 'الرصيد المتاح' : (fieldType === 'deposit' ? 'رصيد الوديعة' : 'رصيد الأرباح');
+            let fieldNameAr = fieldType === 'balance' ? 'الرصيد المتاح بالشحن' : 'رصيد الأرباح';
             let currentVal = usersDB[phoneKey][fieldType] || 0;
-            const newVal = parseFloat(prompt(`ادخل القيمة الجديدة لـ ${fieldNameAr} للمستخدم ${phoneKey} (الحالي: ${currentVal}):`));
+            const newVal = parseFloat(prompt(`ادخل القيمة لـ ${fieldNameAr} للمستخدم ${phoneKey}:`));
             if (!isNaN(newVal)) {
                 usersDB[phoneKey][fieldType] = newVal;
                 saveDB();
                 renderAdminPanel();
                 if(currentUserPhone === phoneKey) loadUserData();
-                alert(`تم تحديث ${fieldNameAr} بنجاح إلى ${newVal}`);
+                alert(`تم تحديث ${fieldNameAr} بنجاح`);
+            }
+        }
+
+        function adminApprovePackage(phoneKey) {
+            const u = usersDB[phoneKey];
+            if (u.packageRequest && u.packageRequestStatus === 'قيد المراجعة') {
+                const price = u.packageRequest;
+                if (u.balance < price) {
+                    alert('رصيد المستخدم المتاح غير كافٍ لقيمة الباقة المطلوبة!');
+                    return;
+                }
+                u.balance -= price;
+                u.deposit = price;
+                u.subscribed = true;
+                u.subscribedPackage = `باقة ${price} EGP`;
+                u.packageRequestStatus = 'تمت الموافقة ✓';
+                saveDB();
+                renderAdminPanel();
+                if(currentUserPhone === phoneKey) loadUserData();
+                alert(`تمت الموافقة على اشتراك الباقة بنجاح.`);
             }
         }
 
