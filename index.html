@@ -29,7 +29,7 @@
         .btn-submit { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--primary-gradient); color: white; font-weight: bold; font-size: 15px; cursor: pointer; text-align: center; }
         .switch-auth { text-align: center; margin-top: 15px; font-size: 13px; color: var(--text-muted); }
         .switch-auth span { color: var(--neon-green); cursor: pointer; font-weight: bold; }
-        .profile-header-card { background: linear-gradient(180deg, #182238 0%, #0f172a 100%); border-radius: 16px; padding: 18px; margin: 15px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .profile-header-card { background: linear-gradient(180deg, #182238 0%, #0f172a 100%); border-radius: 16px; padding: 18px; margin: 15px; border: 1px solid rgba(255, 255, 255, 0.05); display: flex; justify-content: space-between; align-items: center; }
         .user-main-info { display: flex; align-items: center; gap: 12px; }
         .avatar-3d { width: 55px; height: 55px; border-radius: 50%; background: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; overflow: hidden; cursor: pointer; }
         .user-numbers { display: flex; flex-direction: column; gap: 4px; }
@@ -44,7 +44,7 @@
         .balance-amount { font-size: 28px; font-weight: bold; color: white; display: flex; align-items: center; gap: 8px; }
         .profit-subtext { font-size: 12px; color: var(--text-muted); margin-top: 12px; }
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
-        .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255,255,255,0.05); }
+        .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
         .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
         .btn-deposit { background: linear-gradient(135deg, #22c55e, #16a34a); color: #000; font-weight: bold; padding: 12px; border-radius: 12px; border: none; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-withdraw { background: #0f172a; color: white; border: 1px solid var(--neon-green); font-weight: bold; padding: 12px; border-radius: 12px; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -57,15 +57,15 @@
         .pkg-bottom-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 11px; color: var(--text-muted); }
         .pkg-bottom-row span { color: var(--neon-green); font-weight: bold; }
         .btn-pkg-subscribe { margin-top: 10px; padding: 6px; font-size: 12px; background: var(--primary-gradient); border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
-        .account-details-card { background: var(--card-bg); border-radius: 16px; margin: 15px; padding: 20px; border: 1px solid rgba(255,255,255,0.08); }
+        .account-details-card { background: var(--card-bg); border-radius: 16px; margin: 15px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.08); }
         .user-avatar-upload-box { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; position: relative; }
         .user-avatar-preview { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--neon-green); cursor: pointer; }
         .avatar-edit-icon { position: absolute; bottom: 5px; right: calc(50% - 45px); background: var(--accent); color: black; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .info-row-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+        .info-row-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 13px; }
         .info-label { color: var(--text-muted); }
         .info-val { font-weight: bold; color: var(--text-light); }
         .menu-list-card { background: var(--card-bg); border-radius: 16px; margin: 0 15px 20px 15px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
-        .menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
+        .menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: pointer; }
         .menu-left-part { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-light); }
         .menu-left-part i { font-size: 18px; color: var(--text-muted); width: 24px; text-align: center; }
         .arrow-icon { color: var(--text-muted); font-size: 12px; }
@@ -94,7 +94,7 @@
         <div class="auth-content" style="padding-top: 30px;">
             <h2 class="welcome-title">تسجيل الدخول - تسوق بلس</h2>
             <p class="welcome-desc">أهلاً بك مجدداً! أدخل رقم الموبايل وكلمة السر.</p>
-            <form onsubmit="handleLogin(event)">
+            <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="loginPhone" required placeholder="ادخل رقم الموبايل"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" required placeholder="********"></div>
                 <button type="submit" class="btn-submit">دخول</button>
@@ -108,7 +108,7 @@
         <div class="auth-content">
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
             <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على <strong>مكافأة 50 ج.م</strong> فوراً!</p>
-            <form onsubmit="handleRegister(event)">
+            <form id="registerForm" onsubmit="handleRegister(event)">
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" required placeholder="اسمك الكريم"></div>
                 <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="regPhone" required placeholder="ادخل رقم الموبايل"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" required placeholder="********"></div>
@@ -178,6 +178,7 @@
                     <div class="info-row-item"><span class="info-label">رقم الـ ID:</span><span id="accountId" class="info-val" style="color:var(--accent);">70522459</span></div>
                     <div class="info-row-item"><span class="info-label">الباقة الحالية:</span><span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span></div>
                 </div>
+
                 <div class="menu-list-card">
                     <div class="menu-item" onclick="openProfileModal()"><div class="menu-left-part"><i class="fa-solid fa-user-gear"></i><span>تعديل كلمة المرور</span></div><i class="fa-solid fa-chevron-left arrow-icon"></i></div>
                     <div class="menu-item" onclick="openInfoModal()"><div class="menu-left-part"><i class="fa-solid fa-location-dot"></i><span>معلومات المنصة</span></div><i class="fa-solid fa-chevron-left arrow-icon"></i></div>
@@ -248,10 +249,16 @@
 
     <div id="infoModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;">معلومات المنصة</h3><p style="font-size: 13px; line-height: 1.6;">منصة تسوق بلس تتيح لك تنفيذ المهام اليومية والحصول على الأرباح بانتظام.</p><button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button></div></div>
 
-    <!-- السكريبت المدمج -->
+    <!-- السكريبت البرمجي المصحح -->
     <script>
         let currentUserPhone = null;
-        let usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
+        let usersDB = {};
+        
+        try {
+            usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
+        } catch(e) {
+            usersDB = {};
+        }
 
         if (!usersDB['01032315526']) {
             usersDB['01032315526'] = {
@@ -269,6 +276,12 @@
                 withdrawStatus: 'لا يوجد'
             };
             saveDB();
+        }
+
+        function saveDB() {
+            try {
+                localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
+            } catch(e) {}
         }
 
         function showRegister() {
@@ -329,8 +342,12 @@
             document.getElementById('bottomNav').classList.remove('hidden');
 
             if(phone === '01032315526') {
-                document.getElementById('adminNavBtn').classList.remove('hidden');
+                const adminBtn = document.getElementById('adminNavBtn');
+                if(adminBtn) adminBtn.classList.remove('hidden');
                 renderAdminPanel();
+            } else {
+                const adminBtn = document.getElementById('adminNavBtn');
+                if(adminBtn) adminBtn.classList.add('hidden');
             }
         }
 
@@ -338,17 +355,28 @@
             const data = usersDB[currentUserPhone];
             if (!data) return;
             
-            document.getElementById('displayNameHeader').innerText = data.name;
-            document.getElementById('displayPhone').innerText = currentUserPhone;
-            document.getElementById('displayId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('balanceVal').innerText = (data.balance || 0).toFixed(2);
-            document.getElementById('profitVal').innerText = (data.profit || 0).toFixed(2);
+            const nameHeader = document.getElementById('displayNameHeader');
+            if(nameHeader) nameHeader.innerText = data.name;
+            
+            const dispPhone = document.getElementById('displayPhone');
+            if(dispPhone) dispPhone.innerText = currentUserPhone;
+            
+            const dispId = document.getElementById('displayId');
+            if(dispId) dispId.innerText = currentUserPhone.slice(-6) + '8';
+            
+            const balVal = document.getElementById('balanceVal');
+            if(balVal) balVal.innerText = (data.balance || 0).toFixed(2);
+            
+            const profVal = document.getElementById('profitVal');
+            if(profVal) profVal.innerText = (data.profit || 0).toFixed(2);
 
             const icon = document.getElementById('headerAvatarIcon');
             const img = document.getElementById('headerAvatarImg');
             if (data.avatar && data.avatar !== 'https://via.placeholder.com/150') {
-                img.src = data.avatar;
-                img.classList.remove('hidden');
+                if(img) {
+                    img.src = data.avatar;
+                    img.classList.remove('hidden');
+                }
                 if (icon) icon.classList.add('hidden');
             } else {
                 if (img) img.classList.add('hidden');
@@ -356,18 +384,29 @@
             }
 
             const vipBadge = document.getElementById('vipBadge');
-            if(data.subscribed) {
-                vipBadge.innerText = data.subscribedPackage || "VIP1";
-                vipBadge.classList.remove('hidden');
-            } else {
-                vipBadge.classList.add('hidden');
+            if(vipBadge) {
+                if(data.subscribed) {
+                    vipBadge.innerText = data.subscribedPackage || "VIP1";
+                    vipBadge.classList.remove('hidden');
+                } else {
+                    vipBadge.classList.add('hidden');
+                }
             }
 
-            document.getElementById('accountName').innerText = data.name;
-            document.getElementById('accountPhone').innerText = currentUserPhone;
-            document.getElementById('accountId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('accountPackage').innerText = data.subscribedPackage || 'غير مشترك';
-            document.getElementById('userAvatarImg').src = data.avatar || 'https://via.placeholder.com/150';
+            const accName = document.getElementById('accountName');
+            if(accName) accName.innerText = data.name;
+            
+            const accPhone = document.getElementById('accountPhone');
+            if(accPhone) accPhone.innerText = currentUserPhone;
+            
+            const accId = document.getElementById('accountId');
+            if(accId) accId.innerText = currentUserPhone.slice(-6) + '8';
+            
+            const accPkg = document.getElementById('accountPackage');
+            if(accPkg) accPkg.innerText = data.subscribedPackage || 'غير مشترك';
+            
+            const userImg = document.getElementById('userAvatarImg');
+            if(userImg) userImg.src = data.avatar || 'https://via.placeholder.com/150';
 
             updateTasksButtons();
             updateUserWithdrawUI();
@@ -380,12 +419,25 @@
             const navBtns = document.querySelectorAll('.nav-btn');
             navBtns.forEach(b => b.classList.remove('active'));
 
-            if (tabName === 'home') document.getElementById('tabHome').classList.remove('hidden');
-            else if (tabName === 'account') document.getElementById('tabAccount').classList.remove('hidden');
-            else if (tabName === 'tasks') document.getElementById('tabTasks').classList.remove('hidden');
-            else if (tabName === 'transactions') document.getElementById('tabTransactions').classList.remove('hidden');
-            else if (tabName === 'orders') document.getElementById('tabOrders').classList.remove('hidden');
-            else if (tabName === 'admin') document.getElementById('tabAdmin').classList.remove('hidden');
+            if (tabName === 'home') {
+                const el = document.getElementById('tabHome');
+                if(el) el.classList.remove('hidden');
+            } else if (tabName === 'account') {
+                const el = document.getElementById('tabAccount');
+                if(el) el.classList.remove('hidden');
+            } else if (tabName === 'tasks') {
+                const el = document.getElementById('tabTasks');
+                if(el) el.classList.remove('hidden');
+            } else if (tabName === 'transactions') {
+                const el = document.getElementById('tabTransactions');
+                if(el) el.classList.remove('hidden');
+            } else if (tabName === 'orders') {
+                const el = document.getElementById('tabOrders');
+                if(el) el.classList.remove('hidden');
+            } else if (tabName === 'admin') {
+                const el = document.getElementById('tabAdmin');
+                if(el) el.classList.remove('hidden');
+            }
         }
 
         function copyId() {
@@ -427,6 +479,7 @@
 
         function updateTasksButtons() {
             const u = usersDB[currentUserPhone];
+            if(!u) return;
             const todayKey = new Date().toISOString().split('T')[0];
             if (!u.completedTasks) u.completedTasks = {};
 
@@ -447,7 +500,8 @@
                     }
                 }
             }
-            document.getElementById('tasksLeft').innerText = u.tasksCount;
+            const leftEl = document.getElementById('tasksLeft');
+            if(leftEl) leftEl.innerText = u.tasksCount;
         }
 
         function doTask(taskId) {
@@ -497,10 +551,12 @@
         function updateUserWithdrawUI() {
             const data = usersDB[currentUserPhone];
             const statusDiv = document.getElementById('userWithdrawStatus');
-            if (data.withdrawRequest) {
-                statusDiv.innerHTML = `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
-            } else {
-                statusDiv.innerHTML = `لا توجد معاملات سحب معلقة حالياً.`;
+            if(statusDiv) {
+                if (data.withdrawRequest) {
+                    statusDiv.innerHTML = `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
+                } else {
+                    statusDiv.innerHTML = `لا توجد معاملات سحب معلقة حالياً.`;
+                }
             }
         }
 
@@ -549,6 +605,7 @@
 
         function renderAdminPanel() {
             const tbody = document.getElementById('adminUserTable');
+            if(!tbody) return;
             tbody.innerHTML = '';
             for (let phoneKey in usersDB) {
                 const u = usersDB[phoneKey];
@@ -593,10 +650,6 @@
                 if(currentUserPhone === phoneKey) loadUserData();
                 alert(`تمت الموافقة على طلب السحب.`);
             }
-        }
-
-        function saveDB() {
-            localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
         }
     </script>
 </body>
