@@ -107,7 +107,7 @@
     <div id="registerScreen" class="auth-container hidden">
         <div class="auth-content">
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
-            <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على حساب تفاعلي متطور!</p>
+            <p class="welcome-desc">أنشئ حسابك الجديد الآن!</p>
             <form onsubmit="handleRegister(event)">
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" required placeholder="اسمك الكريم"></div>
                 <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="regPhone" required placeholder="ادخل رقم الموبايل"></div>
@@ -142,15 +142,15 @@
 
                 <div class="balance-card">
                     <span id="vipBadge" class="vip-badge-tag hidden">غير مشترك</span>
-                    <div class="balance-title">رصيد الوديعة</div>
+                    <div class="balance-title">مبلغ الوديعة الثابتة</div>
                     <div class="balance-amount"><span style="color:var(--neon-green);">EGP</span><span id="depositVal">0.00</span></div>
                     <div class="profit-subtext">إجمالي أرباح العمولة <br><span class="profit-val-green">EGP <span id="profitVal">0.00</span></span></div>
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
                 <div class="action-btns-row">
-                    <button onclick="openPackagesModal()" class="btn-deposit"><i class="fa-solid fa-wallet"></i> اشتراك باقة</button>
-                    <button onclick="requestWithdrawal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب</button>
+                    <button onclick="openPackagesModal()" class="btn-deposit"><i class="fa-solid fa-wallet"></i> طلب اشتراك باقة</button>
+                    <button onclick="requestWithdrawal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب الأرباح</button>
                 </div>
 
                 <div style="padding: 0 15px 5px 15px; font-weight: bold; color: var(--accent);"><i class="fa-solid fa-gem"></i> باقات الاستثمار المتاحة والعوائد اليومية</div>
@@ -177,8 +177,8 @@
                     <div class="info-row-item"><span class="info-label">رقم الموبايل:</span><span id="accountPhone" class="info-val">01000000000</span></div>
                     <div class="info-row-item"><span class="info-label">رقم الـ ID:</span><span id="accountId" class="info-val" style="color:var(--accent);">70522459</span></div>
                     <div class="info-row-item"><span class="info-label">الباقة المشترك فيها:</span><span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span></div>
-                    <div class="info-row-item"><span class="info-label">رصيد الوديعة الحالي:</span><span id="accountDeposit" class="info-val" style="color:var(--accent);">0.00 EGP</span></div>
-                    <div class="info-row-item"><span class="info-label">الرصيد المتاح بالشحن:</span><span id="accountBalance" class="info-val" style="color:var(--neon-green);">0.00 EGP</span></div>
+                    <div class="info-row-item"><span class="info-label">مبلغ الوديعة:</span><span id="accountDeposit" class="info-val" style="color:var(--accent);">0.00 EGP</span></div>
+                    <div class="info-row-item"><span class="info-label">الرصيد المتاح لشحن الأدمن:</span><span id="accountBalance" class="info-val" style="color:var(--neon-green);">0.00 EGP</span></div>
                 </div>
 
                 <div class="menu-list-card">
@@ -208,19 +208,19 @@
             <!-- الطلبات -->
             <div id="tabOrders" class="tab-content hidden">
                 <div style="padding:15px;">
-                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-calendar-check"></i> طلبات اشتراك الباقات</h3>
+                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-calendar-check"></i> حالة طلب الاشتراك في الباقة</h3>
                     <div id="userPackageRequestStatus" style="background:var(--card-bg); padding:15px; border-radius:12px; font-size:13px; margin-bottom:15px;">لا توجد طلبات باقات سابقة.</div>
-                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-list-check"></i> سجل المهام المنجزة</h3>
-                    <p style="font-size:13px; color:var(--text-muted);">جميع أرباح المهام اليومية تظهر هنا وفي رصيد الأرباح.</p>
+                    <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-list-check"></i> سجل المهام والأرباح</h3>
+                    <p style="font-size:13px; color:var(--text-muted);">جميع أرباحك تحول إلى رصيد الأرباح ولا تتأثر بها الوديعة.</p>
                 </div>
             </div>
 
             <!-- الأدمن -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
-                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الكاملة للأدمن</h3>
+                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الشاملة للأدمن</h3>
                     <table>
-                        <thead><tr><th>المستخدم</th><th>الرصيد المتاح</th><th>الوديعة</th><th>الأرباح</th><th>طلب الباقة</th><th>التحكم الشامل</th></tr></thead>
+                        <thead><tr><th>المستخدم</th><th>الرصيد المتاح</th><th>مبلغ الوديعة</th><th>الأرباح</th><th>طلب الباقة</th><th>التحكم بالأرصدة والطلبات</th></tr></thead>
                         <tbody id="adminUserTable"></tbody>
                     </table>
                 </section>
@@ -239,7 +239,7 @@
     </nav>
 
     <!-- المودالات -->
-    <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">اختر الباقة لطلب الاشتراك</h3>
+    <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">اختر الباقة لتقديم طلب الاشتراك</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <button onclick="requestPackageSubscription(300, '300')" class="btn-submit" style="padding:10px;">باقة 300 EGP</button>
             <button onclick="requestPackageSubscription(800, '800')" class="btn-submit" style="padding:10px;">باقة 800 EGP</button>
@@ -258,7 +258,7 @@
 
     <div id="infoModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;">معلومات المنصة</h3><p style="font-size: 13px; line-height: 1.6;">منصة تسوق بلس تتيح لك تنفيذ المهام اليومية والحصول على الأرباح بانتظام.</p><button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button></div></div>
 
-    <!-- السكريبت المحدث -->
+    <!-- السكريبت البرمجي المحدث -->
     <script>
         let currentUserPhone = null;
         let usersDB = {};
@@ -333,7 +333,7 @@
                 withdrawStatus: 'لا يوجد'
             };
             saveDB();
-            alert('تم إنشاء الحساب بنجاح! برجاء التواصل مع الأدمن لشحن الرصيد ليتسنى لك طلب الاشتراك.');
+            alert('تم إنشاء الحساب بنجاح! يرجى التواصل مع الأدمن لشحن الرصيد لتتمكن من تقديم طلب الاشتراك.');
             showLogin();
         }
 
@@ -490,7 +490,7 @@
         function doTask(taskId) {
             const user = usersDB[currentUserPhone];
             if (!user.subscribed) {
-                alert('يجب أن يوافق الأدمن على طلب اشتراكك في باقة أولاً لتنفيذ المهمات!');
+                alert('يجب أن يوافق الأدمن على طلب اشتراكك في الباقة لتنفيذ المهمات!');
                 return;
             }
             
@@ -628,7 +628,8 @@
                         <td style="color:var(--accent);">${u.packageRequest ? 'باقة ' + u.packageRequest + ' (' + u.packageRequestStatus + ')' : 'لا يوجد'}</td>
                         <td>
                             <button onclick="adminEditBalance('${phoneKey}', 'balance')" style="background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">شحن متاح</button>
-                            <button onclick="adminEditBalance('${phoneKey}', 'profit')" style="background:var(--neon-green); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">أرباح</button>
+                            <button onclick="adminEditBalance('${phoneKey}', 'deposit')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">تعديل الوديعة</button>
+                            <button onclick="adminEditBalance('${phoneKey}', 'profit')" style="background:var(--neon-green); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">تعديل الأرباح</button>
                             ${u.packageRequestStatus === 'قيد المراجعة' ? `<button onclick="adminApprovePackage('${phoneKey}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; font-weight:bold;">موافقة الباقة</button>` : ''}
                             ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${phoneKey}')" style="background:#10b981; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة سحب</button>` : ''}
                         </td>
@@ -638,11 +639,15 @@
         }
 
         function adminEditBalance(phoneKey, fieldType) {
-            let fieldNameAr = fieldType === 'balance' ? 'الرصيد المتاح بالشحن' : 'رصيد الأرباح';
+            let fieldNameAr = fieldType === 'balance' ? 'الرصيد المتاح بالشحن' : (fieldType === 'deposit' ? 'مبلغ الوديعة' : 'رصيد الأرباح');
             let currentVal = usersDB[phoneKey][fieldType] || 0;
-            const newVal = parseFloat(prompt(`ادخل القيمة لـ ${fieldNameAr} للمستخدم ${phoneKey}:`));
+            const newVal = parseFloat(prompt(`ادخل القيمة لـ ${fieldNameAr} للمستخدم ${phoneKey} (الحالي: ${currentVal}):`));
             if (!isNaN(newVal)) {
                 usersDB[phoneKey][fieldType] = newVal;
+                if(fieldType === 'deposit' && newVal > 0) {
+                    usersDB[phoneKey].subscribed = true;
+                    usersDB[phoneKey].subscribedPackage = `باقة ${newVal} EGP`;
+                }
                 saveDB();
                 renderAdminPanel();
                 if(currentUserPhone === phoneKey) loadUserData();
@@ -666,7 +671,7 @@
                 saveDB();
                 renderAdminPanel();
                 if(currentUserPhone === phoneKey) loadUserData();
-                alert(`تمت الموافقة على اشتراك الباقة بنجاح.`);
+                alert(`تمت الموافقة على اشتراك الباقة بنجاح، وتم تعيين الوديعة بمبلغ الباقة.`);
             }
         }
 
