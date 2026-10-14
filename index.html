@@ -46,7 +46,6 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* شريط الإشعارات المتجدد */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -244,7 +243,7 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- شريط الإشعارات المتجدد من اليمين لليسار -->
+                <!-- شريط الإشعارات المتجدد -->
                 <div class="marquee-container">
                     <div class="marquee-content">
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر <span class="marquee-divider">| 🇪🇬</span></div>
@@ -372,9 +371,9 @@
             <div class="certificate-box">
                 <div class="cert-header"><i class="fa-solid fa-shield-halved"></i> شهادة التوثيق والتأمين المالي</div>
                 <div class="cert-body">
-                    <strong>شركة تسوق بلس (Tasawuq Plus Inc.)</strong> هي مؤسسة عالمية مسبقة الاعتماد في مجال الحلول التسويقية والتجارة الرقمية، **تأسست عام 2018 بكرت ترخيص رسمي في ولاية ديلاوير (Delaware, USA)**.
+                    <strong>شركة تسوق بلس (Tasawuq Plus Inc.)</strong> هي مؤسسة عالمية مسبقة الاعتماد في مجال الحلول التسويقية والتجارة الرقمية، <strong>تأسست عام 2018 بكرت ترخيص رسمي في ولاية ديلاوير (Delaware, USA)</strong>.
                     <br><br>
-                    حرصاً على تقديم أعلى مستويات الثقة والمصداقية لعملائنا في المنطقة العربية، تم تدشين **الفرع الإقليمي الرسمي في جمهورية مصر العربية**، والذي أُسندت إدارته بالكامل لـ **طاقم عمل مصري كفء** يمتلك خبرة احترافية.
+                    حرصاً على تقديم أعلى مستويات الثقة والمصداقية لعملائنا في المنطقة العربية، تم تدشين <strong>الفرع الإقليمي الرسمي في جمهورية مصر العربية</strong>، والذي أُسندت إدارته بالكامل لـ <strong>طاقم عمل مصري كفء</strong> يمتلك خبرة احترافية.
                     <br><br>
                     🔒 <strong>الضمان المالي:</strong> كافة الأرصدة والعمولات اليومية مؤمنة ومحمية بنظام التشفير، مع ضمان استمرار السحوبات المباشرة بانتظام وبأمان تام.
                 </div>
@@ -394,7 +393,7 @@
         </div>
     </div>
 
-    <!-- سكريبت مضاد للتداخلات وأخطاء العرض في الموبايل -->
+    <!-- السكريبت الداخلي المدمج بدون أخطاء تلوين أو ملفات خارجية -->
     <script>
         var currentUserPhone = localStorage.getItem("tasawuq_logged_user") || null;
         var usersDB = {};
@@ -758,4 +757,4 @@
                     "<td>" +
                         "<button onclick=\"adminEditBalance('" + phoneKey + "', 'balance')\" style='background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;'>شحن متاح</button> " +
                         "<button onclick=\"adminEditBalance('" + phoneKey + "', 'deposit')\" style='background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;'>وديعة</button> " +
-                        (u.packageRequestStatus === "قيد المراجعة" ? "<button onclick=\"adminApprovePackage('" + phoneKey + "')\" style='background:var(--accent); color
+                        (u.packageRequestStatus === "قيد المراجعة" ? "<button onclick=\"adminApprovePackage('" + phoneKey + "')\" style='background:var(--accent); color:blac
