@@ -46,12 +46,12 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك إلى الأعلى --- */
+        /* --- تصميم الشريط المتحرك عمودياً إلى الأعلى --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
             border-bottom: 1px solid rgba(34, 197, 94, 0.25);
-            height: 36px;
+            height: 42px;
             margin: 0 15px 15px 15px;
             overflow: hidden;
             border-radius: 8px;
@@ -63,20 +63,25 @@
         .marquee-content {
             display: flex;
             flex-direction: column;
-            animation: scrollUp 15s linear infinite;
+            animation: scrollUp 35s linear infinite;
             position: absolute;
             width: 100%;
             text-align: center;
         }
         .marquee-item {
-            height: 36px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--neon-green);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
-            gap: 8px;
+            gap: 6px;
+        }
+        .marquee-divider {
+            color: var(--accent);
+            font-weight: bold;
+            margin-right: 6px;
         }
         @keyframes scrollUp {
             0% { transform: translateY(0); }
@@ -186,18 +191,38 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك عمودياً إلى الأعلى -->
+                <!-- الشريط المتحرك عمودياً مع كافة الإشعارات الجديدة -->
                 <div class="marquee-container">
                     <div class="marquee-content">
-                        <div class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></div>
-                        <div class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></div>
-                        <div class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></div>
-                        <!-- التكرار لضمان الاستمرارية العمودية السلسة -->
-                        <div class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></div>
-                        <div class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></div>
-                        <div class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></div>
+                        <!-- المجموعة الأولى -->
+                        <div class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>250 ج.م</strong> للمستخدم <strong>012****3456</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎁 تم استلام هدية دخول رابطك الخاص مكافأة لرقم <strong>011****7744</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>015****9012</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">💰 مكافأة تسجيل الدخول <strong>50 ج.م</strong> تمت إضافتها بنجاح للمستخدم <strong>010****1122</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>6000 ج.م</strong> للمستخدم <strong>012****8833</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">👋 يسعدنا الانضمام إلى منصة تسوق بلس للمستخدم <strong>015****4455</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****6677</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">💎 مكافأة شحن الباقة وتم تفعيلها بنجاح لرقم <strong>011****9988</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>10000 ج.م</strong> للمستخدم <strong>012****3344</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>15000 ج.م</strong> للمستخدم <strong>015****5566</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>18000 ج.م</strong> للمستخدم <strong>010****2233</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>8000 ج.م</strong> للمستخدم <strong>011****4455</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+
+                        <!-- المجموعة الثانية (لضمان الدوران العمودي المتصل بدون انقطاع) -->
+                        <div class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>250 ج.م</strong> للمستخدم <strong>012****3456</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎁 تم استلام هدية دخول رابطك الخاص مكافأة لرقم <strong>011****7744</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>015****9012</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">💰 مكافأة تسجيل الدخول <strong>50 ج.م</strong> تمت إضافتها بنجاح للمستخدم <strong>010****1122</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>6000 ج.م</strong> للمستخدم <strong>012****8833</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">👋 يسعدنا الانضمام إلى منصة تسوق بلس للمستخدم <strong>015****4455</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****6677</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">💎 مكافأة شحن الباقة وتم تفعيلها بنجاح لرقم <strong>011****9988</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>10000 ج.م</strong> للمستخدم <strong>012****3344</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>15000 ج.م</strong> للمستخدم <strong>015****5566</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>18000 ج.م</strong> للمستخدم <strong>010****2233</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>8000 ج.م</strong> للمستخدم <strong>011****4455</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
                     </div>
                 </div>
 
@@ -683,64 +708,4 @@
                             <button onclick="adminEditBalance('${phoneKey}', 'balance')" style="background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">شحن متاح</button>
                             <button onclick="adminEditBalance('${phoneKey}', 'deposit')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">تعديل الوديعة</button>
                             <button onclick="adminEditBalance('${phoneKey}', 'profit')" style="background:var(--neon-green); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">تعديل الأرباح</button>
-                            ${u.packageRequestStatus === 'قيد المراجعة' ? `<button onclick="adminApprovePackage('${phoneKey}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; font-weight:bold;">موافقة الباقة</button>` : ''}
-                            ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${phoneKey}')" style="background:#10b981; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة سحب</button>` : ''}
-                        </td>
-                    </tr>
-                `;
-            }
-        }
-
-        function adminEditBalance(phoneKey, fieldType) {
-            let fieldNameAr = fieldType === 'balance' ? 'الرصيد المتاح بالشحن' : (fieldType === 'deposit' ? 'مبلغ الوديعة' : 'رصيد الأرباح');
-            let currentVal = usersDB[phoneKey][fieldType] || 0;
-            const newVal = parseFloat(prompt(`ادخل القيمة لـ ${fieldNameAr} للمستخدم ${phoneKey} (الحالي: ${currentVal}):`));
-            if (!isNaN(newVal)) {
-                usersDB[phoneKey][fieldType] = newVal;
-                if(fieldType === 'deposit' && newVal > 0) {
-                    usersDB[phoneKey].subscribed = true;
-                    usersDB[phoneKey].subscribedPackage = `باقة ${newVal} EGP`;
-                }
-                saveDB();
-                renderAdminPanel();
-                if(currentUserPhone === phoneKey) loadUserData();
-                alert(`تم تحديث ${fieldNameAr} بنجاح`);
-            }
-        }
-
-        function adminApprovePackage(phoneKey) {
-            const u = usersDB[phoneKey];
-            if (u.packageRequest && u.packageRequestStatus === 'قيد المراجعة') {
-                const price = u.packageRequest;
-                if (u.balance < price) {
-                    alert('رصيد المستخدم المتاح غير كافٍ لقيمة الباقة المطلوبة!');
-                    return;
-                }
-                u.balance -= price;
-                u.deposit = price;
-                u.subscribed = true;
-                u.subscribedPackage = `باقة ${price} EGP`;
-                u.packageRequestStatus = 'تمت الموافقة ✓';
-                saveDB();
-                renderAdminPanel();
-                if(currentUserPhone === phoneKey) loadUserData();
-                alert(`تمت الموافقة على اشتراك الباقة بنجاح، وتم تعيين الوديعة بمبلغ الباقة.`);
-            }
-        }
-
-        function adminApproveWithdraw(phoneKey) {
-            const u = usersDB[phoneKey];
-            if (u.withdrawRequest) {
-                if (u.profit >= u.withdrawRequest) u.profit -= u.withdrawRequest;
-                else u.balance = Math.max(0, u.balance - u.withdrawRequest);
-                u.withdrawStatus = 'تم السحب بنجاح 🎉';
-                u.withdrawRequest = null;
-                saveDB();
-                renderAdminPanel();
-                if(currentUserPhone === phoneKey) loadUserData();
-                alert(`تمت الموافقة على طلب السحب.`);
-            }
-        }
-    </script>
-</body>
-</html>
+          
