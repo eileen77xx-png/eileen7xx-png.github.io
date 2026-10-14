@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك من اليمين إلى اليسار (مارquee أفقي) --- */
+        /* --- الشريط المتحرك من اليمين إلى اليسار --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -117,6 +117,72 @@
         .task-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 15px; }
         .modal-box { background: var(--card-bg); border-radius: 16px; padding: 20px; width: 100%; max-width: 450px; border: 1px solid var(--neon-green); }
+        
+        /* --- تصميم الشهادة المختومة للمعلومات --- */
+        .certificate-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border: 3px double var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+            text-align: center;
+        }
+        .cert-header {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 12px;
+            border-bottom: 1px dashed rgba(245, 158, 11, 0.4);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .cert-body {
+            font-size: 12.5px;
+            line-height: 1.8;
+            color: #e2e8f0;
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+        .cert-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        .cert-stamp {
+            width: 70px;
+            height: 70px;
+            border: 2px dashed var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--neon-green);
+            font-size: 9px;
+            font-weight: bold;
+            transform: rotate(-12deg);
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+            background: rgba(34, 197, 94, 0.05);
+        }
+        .cert-signature {
+            text-align: left;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .cert-signature strong {
+            display: block;
+            color: var(--text-light);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+        }
+
         .admin-panel { background: var(--card-bg); padding: 15px; border-radius: 12px; margin: 15px; border: 1px solid var(--accent); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { padding: 8px; border: 1px solid #23304d; text-align: center; font-size: 12px; }
@@ -181,7 +247,7 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- شريط الإشعارات والنبذة الجديد (من اليمين إلى اليسار) -->
+                <!-- شريط الإشعارات من اليمين إلى اليسار -->
                 <div class="marquee-container">
                     <div class="marquee-content">
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر <span class="marquee-divider">| 🇪🇬</span></div>
@@ -226,7 +292,7 @@
 
                 <div class="menu-list-card">
                     <div class="menu-item" onclick="openProfileModal()"><div class="menu-left-part"><i class="fa-solid fa-user-gear"></i><span>تعديل كلمة المرور</span></div><i class="fa-solid fa-chevron-left arrow-icon"></i></div>
-                    <div class="menu-item" onclick="openInfoModal()"><div class="menu-left-part"><i class="fa-solid fa-location-dot"></i><span>معلومات المنصة</span></div><i class="fa-solid fa-chevron-left arrow-icon"></i></div>
+                    <div class="menu-item" onclick="openInfoModal()"><div class="menu-left-part"><i class="fa-solid fa-award"></i><span>معلومات المنصة والتراخيص</span></div><i class="fa-solid fa-chevron-left arrow-icon"></i></div>
                 </div>
                 <button onclick="handleLogout()" class="btn-logout">تسجيل الخروج</button>
             </div>
@@ -299,9 +365,35 @@
         <div style="display:flex; gap:10px; margin-top:15px;"><button onclick="savePasswordChange()" class="btn-submit">حفظ</button><button onclick="closeProfileModal()" class="btn-submit" style="background:#334155;">إلغاء</button></div>
     </div></div>
 
-    <div id="infoModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;">معلومات المنصة</h3><p style="font-size: 13px; line-height: 1.6;">منصة تسوق بلس تتيح لك تنفيذ المهام اليومية والحصول على الأرباح بانتظام.</p><button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button></div></div>
+    <!-- نافذة معلومات المنصة بتصميم شهادة التوثيق المختومة -->
+    <div id="infoModal" class="modal-overlay hidden">
+        <div class="modal-box" style="border:none; background:transparent; padding:0;">
+            <div class="certificate-box">
+                <div class="cert-header"><i class="fa-solid fa-shield-halved"></i> شهادة التوثيق والتأمين المالي</div>
+                <div class="cert-body">
+                    <strong>شركة تسوق بلس (Tasawuq Plus Inc.)</strong> هي مؤسسة عالمية مسبقة الاعتماد في مجال الحلول التسويقية والتجارة الرقمية، **تأسست عام 2018 بكرت ترخيص رسمي في ولاية ديلاوير (Delaware, USA)**.
+                    <br><br>
+                    حرصاً على تقديم أعلى مستويات الثقة والمصداقية لعملائنا في المنطقة العربية، تم تدشين **الفرع الإقليمي الرسمي في جمهورية مصر العربية**، والذي أُسندت إدارته بالكامل لـ **طاقم عمل مصري كفء** يمتلك خبرة احترافية.
+                    <br><br>
+                    🔒 <strong>الضمان المالي:</strong> كافة الأرصدة والعمولات اليومية مؤمنة ومحمية بنظام التشفير الحمي، مع ضمان استمرار السحوبات المباشرة بانتظام وبأمان تام.
+                </div>
+                <div class="cert-footer-row">
+                    <div class="cert-stamp">
+                        <i class="fa-solid fa-check-double" style="font-size:14px; margin-bottom:2px;"></i>
+                        مُعتمد وموثوق
+                        <span style="font-size:7px; opacity:0.8;">OFFICIAL</span>
+                    </div>
+                    <div class="cert-signature">
+                        <span>إدارة المنصة بمصر:</span>
+                        <strong>Tasawuq Plus EG</strong>
+                    </div>
+                </div>
+            </div>
+            <button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px; background:#1e293b; border:1px solid #334155;">إغلاق الشهادة</button>
+        </div>
+    </div>
 
-    <!-- السكريبت البرمجي للمنصة -->
+    <!-- السكريبت البرمجي -->
     <script>
         let currentUserPhone = localStorage.getItem('tasawuq_logged_user') || null;
         let usersDB = {};
@@ -675,13 +767,4 @@
                 u.deposit = u.packageRequest;
                 u.subscribed = true;
                 u.subscribedPackage = `باقة ${u.packageRequest} EGP`;
-                u.packageRequestStatus = 'تمت الموافقة ✓';
-                localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
-                renderAdminPanel();
-                if(currentUserPhone === phoneKey) loadUserData();
-                alert('تمت الموافقة وتفعيل الباقة بنجاح!');
-            }
-        }
-    </script>
-</body>
-</html>
+  
