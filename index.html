@@ -53,9 +53,7 @@
             border-bottom: 2px solid var(--neon-green);
         }
 
-        .auth-content {
-            padding: 24px;
-        }
+        .auth-content { padding: 24px; }
 
         .welcome-title {
             text-align: center;
@@ -73,9 +71,7 @@
             line-height: 1.5;
         }
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+        .form-group { margin-bottom: 15px; }
 
         .form-group label {
             display: block;
@@ -129,7 +125,7 @@
             font-weight: bold;
         }
 
-        /* --- تصميم الهيدر والبروفايل المقتبس من الصورة --- */
+        /* --- تصميم البروفايل ورصيد الحساب بالواجهة الرئيسية --- */
         .profile-header-card {
             background: linear-gradient(180deg, #182238 0%, #0f172a 100%);
             border-radius: 16px;
@@ -148,17 +144,24 @@
         }
 
         .avatar-3d {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             background: #2563eb;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 28px;
             color: white;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             overflow: hidden;
+            cursor: pointer;
+        }
+
+        .avatar-3d img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .user-numbers {
@@ -168,7 +171,7 @@
         }
 
         .user-phone-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: white;
         }
@@ -189,15 +192,15 @@
         }
 
         .credit-circle {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: 3px solid var(--neon-green);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             color: white;
             box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
         }
@@ -208,7 +211,6 @@
             margin-top: 4px;
         }
 
-        /* --- كارت رصيد الحساب المظلم المطابق للصورة --- */
         .balance-card {
             background: linear-gradient(135deg, #111a2e 0%, #0a101d 100%);
             border-radius: 16px;
@@ -265,7 +267,6 @@
             color: rgba(255, 255, 255, 0.05);
         }
 
-        /* --- أزرار إيداع وسحب الناصعة --- */
         .action-btns-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -303,7 +304,6 @@
             cursor: pointer;
         }
 
-        /* --- البانر الإعلاني العريض --- */
         .banner-box {
             margin: 0 15px 20px 15px;
             border-radius: 16px;
@@ -318,7 +318,62 @@
             object-fit: cover;
         }
 
-        /* --- قائمة خيارات "حسابي" المطابقة للصورة --- */
+        /* --- قسم حسابي التفصيلي --- */
+        .account-details-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            margin: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .user-avatar-upload-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .user-avatar-preview {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--neon-green);
+            box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+            cursor: pointer;
+        }
+
+        .avatar-edit-icon {
+            position: absolute;
+            bottom: 5px;
+            right: calc(50% - 45px);
+            background: var(--accent);
+            color: black;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .info-row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+        }
+
+        .info-row-item:last-child { border-bottom: none; }
+        .info-label { color: var(--text-muted); }
+        .info-val { font-weight: bold; color: var(--text-light); }
+
         .menu-list-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -337,13 +392,8 @@
             transition: 0.2s;
         }
 
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
+        .menu-item:last-child { border-bottom: none; }
+        .menu-item:hover { background: rgba(255, 255, 255, 0.02); }
 
         .menu-left-part {
             display: flex;
@@ -378,7 +428,6 @@
             text-align: center;
         }
 
-        /* --- شريط التنقل السفلي المثبت بالأسفل (Bottom Navigation) --- */
         .bottom-nav-bar {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -404,13 +453,8 @@
             flex: 1;
         }
 
-        .nav-btn i {
-            font-size: 20px;
-        }
-
-        .nav-btn.active, .nav-btn:hover {
-            color: var(--neon-green);
-        }
+        .nav-btn i { font-size: 20px; }
+        .nav-btn.active, .nav-btn:hover { color: var(--neon-green); }
 
         .main-content {
             max-width: 800px;
@@ -448,9 +492,7 @@
             object-fit: cover;
         }
 
-        .task-body {
-            padding: 12px;
-        }
+        .task-body { padding: 12px; }
 
         .modal-overlay {
             position: fixed;
@@ -496,11 +538,7 @@
             font-size: 12px;
         }
 
-        th {
-            background: #090d16;
-            color: var(--accent);
-        }
-
+        th { background: #090d16; color: var(--accent); }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -531,7 +569,7 @@
 
     <!-- 2. شاشة إنشاء حساب جديد -->
     <div id="registerScreen" class="auth-container hidden">
-        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="تسوق بلس" class="auth-hero-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" class="auth-hero-img">
         <div class="auth-content">
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
             <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على <strong>مكافأة 50 ج.م</strong> فوراً!</p>
@@ -561,19 +599,24 @@
     <div id="appScreen" class="hidden">
         <main class="main-content">
 
-            <!-- قسم (حسابي) المطابق للصورة تماماً -->
-            <div id="tabAccount" class="tab-content">
+            <!-- الواجهة الرئيسية -->
+            <div id="tabHome" class="tab-content">
                 <!-- البروفايل العلوي -->
                 <div class="profile-header-card">
                     <div class="user-main-info">
-                        <div class="avatar-3d" onclick="openProfileModal()">
-                            <i class="fa-solid fa-user"></i>
+                        <div class="avatar-3d" id="headerAvatarBox" onclick="switchTab('account')">
+                            <i class="fa-solid fa-user" id="headerAvatarIcon"></i>
+                            <img id="headerAvatarImg" src="" class="hidden">
                         </div>
                         <div class="user-numbers">
-                            <div id="displayPhone" class="user-phone-title">01000000000</div>
+                            <div style="display:flex; align-items:center; gap:6px;">
+                                <span id="displayNameHeader" class="user-phone-title">المستخدم</span>
+                                <i class="fa-solid fa-pen-to-square" onclick="editUserName()" style="color:var(--accent); cursor:pointer; font-size:12px;"></i>
+                            </div>
                             <div class="user-id-box">
-                                <i class="fa-solid fa-id-card"></i>
-                                ID <span id="displayId">70522459</span>
+                                <i class="fa-solid fa-phone" style="font-size:10px;"></i>
+                                <span id="displayPhone">01000000000</span>
+                                | ID <span id="displayId">70522459</span>
                                 <i class="fa-regular fa-copy" onclick="copyId()" style="cursor:pointer; color:var(--neon-green);"></i>
                             </div>
                         </div>
@@ -586,9 +629,9 @@
                     </div>
                 </div>
 
-                <!-- كارت رصيد الحساب -->
+                <!-- كارت رصيد الحساب (شارة VIP تظهر فقط عند الاشتراك) -->
                 <div class="balance-card">
-                    <span id="vipBadge" class="vip-badge-tag">VIP1</span>
+                    <span id="vipBadge" class="vip-badge-tag hidden">VIP1</span>
                     <div class="balance-title">رصيد الحساب</div>
                     <div class="balance-amount">
                         <span style="color:var(--neon-green);">EGP</span>
@@ -601,7 +644,7 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- أزرار العمليات المباشرة (إيداع وسحب) -->
+                <!-- أزرار العمليات المباشرة -->
                 <div class="action-btns-row">
                     <button onclick="openPackagesModal()" class="btn-deposit">
                         <i class="fa-solid fa-wallet"></i> إيداع
@@ -611,41 +654,62 @@
                     </button>
                 </div>
 
-                <!-- بانر عجلة الحظ والعروض -->
+                <!-- بانر العروض -->
                 <div class="banner-box">
                     <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=800&auto=format&fit=crop" alt="المكافآت والعروض">
                 </div>
+            </div>
 
-                <!-- القائمة التفصيلية للمستخدم -->
+            <!-- قسم (حسابي) -->
+            <div id="tabAccount" class="tab-content hidden">
+                <div class="account-details-card">
+                    <h3 style="color:var(--neon-green); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-id-card-clip"></i> معلومات الحساب الشخصي</h3>
+                    
+                    <!-- اختيار صورة الحساب من المعرض/الاستوديو -->
+                    <div class="user-avatar-upload-box">
+                        <img id="userAvatarImg" src="https://via.placeholder.com/150" class="user-avatar-preview" onclick="document.getElementById('avatarFileInput').click()">
+                        <div class="avatar-edit-icon" onclick="document.getElementById('avatarFileInput').click()" title="اختيار صورة من الاستوديو">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <input type="file" id="avatarFileInput" class="hidden" accept="image/*" onchange="uploadUserAvatar(event)">
+                    </div>
+
+                    <!-- التفاصيل الشخصية -->
+                    <div class="info-row-item">
+                        <span class="info-label">اسم المستخدم:</span>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span id="accountName" class="info-val">المستخدم</span>
+                            <i class="fa-solid fa-pen-to-square" onclick="editUserName()" style="color:var(--accent); cursor:pointer;"></i>
+                        </div>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">رقم الموبايل:</span>
+                        <span id="accountPhone" class="info-val">01000000000</span>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">رقم الـ ID:</span>
+                        <span id="accountId" class="info-val" style="color:var(--accent);">70522459</span>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">تاريخ الاشتراك:</span>
+                        <span id="accountJoinDate" class="info-val">01/01/2025</span>
+                    </div>
+
+                    <div class="info-row-item">
+                        <span class="info-label">الباقة الحالية:</span>
+                        <span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span>
+                    </div>
+                </div>
+
+                <!-- قائمة الإعدادات -->
                 <div class="menu-list-card">
                     <div class="menu-item" onclick="openProfileModal()">
                         <div class="menu-left-part">
                             <i class="fa-solid fa-user-gear"></i>
-                            <span>المعلومات الشخصية</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="alert('بطاقتك البنكية/المحفظة مسجلة وآمنة.')">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-credit-card"></i>
-                            <span>بطاقاتي</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="switchTab('transactions')">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-receipt"></i>
-                            <span>تفاصيل الأموال المعاملات</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-left arrow-icon"></i>
-                    </div>
-
-                    <div class="menu-item" onclick="openProfileModal()">
-                        <div class="menu-left-part">
-                            <i class="fa-solid fa-lock"></i>
-                            <span>تغيير كلمة المرور</span>
+                            <span>تعديل بيانات الحساب / كلمة المرور</span>
                         </div>
                         <i class="fa-solid fa-chevron-left arrow-icon"></i>
                     </div>
@@ -670,15 +734,7 @@
                 <button onclick="handleLogout()" class="btn-logout">تسجيل الخروج</button>
             </div>
 
-            <!-- قسم (الرئيسية) -->
-            <div id="tabHome" class="tab-content hidden">
-                <div style="padding:15px;">
-                    <h3 style="color:var(--neon-green); margin-bottom:10px;">الواجهة الرئيسية - تسوق بلس</h3>
-                    <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">مرحباً بك في منصتك الاستثمارية الأولى! يمكنك الانتقال للمهمات اليومية أو تفقّد باقات الاشتراك المتاحة.</p>
-                </div>
-            </div>
-
-            <!-- قسم (مهمة) -->
+            <!-- أقسام (مهمة - المعاملات - الطلبات) -->
             <div id="tabTasks" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
@@ -701,7 +757,6 @@
                 </div>
             </div>
 
-            <!-- قسم (المعاملات) -->
             <div id="tabTransactions" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:10px;"><i class="fa-solid fa-receipt"></i> تفاصيل وسجل المعاملات</h3>
@@ -709,7 +764,6 @@
                 </div>
             </div>
 
-            <!-- قسم (الطلبات) -->
             <div id="tabOrders" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--text-light); margin-bottom:10px;"><i class="fa-solid fa-clipboard-list"></i> سجل الطلبات المنجزة</h3>
@@ -717,7 +771,7 @@
                 </div>
             </div>
 
-            <!-- لوحة تحكم صاحب الشركة (الأدمن) -->
+            <!-- لوحة تحكم الأدمن -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم صاحب الشركة (الأدمن)</h3>
@@ -740,9 +794,9 @@
         </main>
     </div>
 
-    <!-- شريط التنقل السفلي المثبت (Bottom Navigation Bar) -->
+    <!-- شريط التنقل السفلي -->
     <nav id="bottomNav" class="bottom-nav-bar hidden">
-        <button class="nav-btn" onclick="switchTab('home')">
+        <button class="nav-btn active" onclick="switchTab('home')">
             <i class="fa-solid fa-house"></i>
             <span>الرئيسية</span>
         </button>
@@ -758,7 +812,7 @@
             <i class="fa-solid fa-calendar-check"></i>
             <span>الطلبات</span>
         </button>
-        <button class="nav-btn active" onclick="switchTab('account')">
+        <button class="nav-btn" onclick="switchTab('account')">
             <i class="fa-solid fa-user"></i>
             <span>حسابي</span>
         </button>
@@ -768,7 +822,7 @@
         </button>
     </nav>
 
-    <!-- مودال الباقات المجمع للإيداع -->
+    <!-- مودال الباقات للإيداع -->
     <div id="packagesModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-gem"></i> باقات الشحن والاشتراك</h3>
@@ -798,20 +852,20 @@
         </div>
     </div>
 
-    <!-- مودال تعديل البروفايل -->
+    <!-- مودال تعديل بيانات البروفايل وكلمة المرور -->
     <div id="profileModal" class="modal-overlay hidden">
         <div class="modal-box">
-            <h3 style="color:var(--neon-green); margin-bottom:12px;"><i class="fa-solid fa-user-gear"></i> تعديل الملف الشخصي</h3>
+            <h3 style="color:var(--neon-green); margin-bottom:12px;"><i class="fa-solid fa-user-gear"></i> تعديل بيانات البروفايل</h3>
             <div class="form-group">
-                <label>تعديل اسم المستخدم:</label>
-                <input type="text" id="editNameInput" placeholder="اسمك الكريم">
+                <label>اسم المستخدم الجديد:</label>
+                <input type="text" id="editNameInputModal" placeholder="أدخل اسمك الجديد">
             </div>
             <div class="form-group">
-                <label>تغيير كلمة المرور:</label>
-                <input type="password" id="editPasswordInput" placeholder="كلمة المرور الجديدة">
+                <label>كلمة المرور الجديدة:</label>
+                <input type="password" id="editPasswordInput" placeholder="أدخل كلمة المرور الجديدة (اختياري)">
             </div>
             <div style="display:flex; gap:10px; margin-top:15px;">
-                <button onclick="saveProfileChanges()" class="btn-submit">حفظ التغييرات</button>
+                <button onclick="saveProfileModalChanges()" class="btn-submit">حفظ التغييرات</button>
                 <button onclick="closeProfileModal()" class="btn-submit" style="background:#334155;">إلغاء</button>
             </div>
         </div>
@@ -835,7 +889,6 @@
         let currentUserPhone = null;
         let usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
 
-        // الأدمن الرئيسي
         if (!usersDB['01032315526']) {
             usersDB['01032315526'] = {
                 name: 'صاحب الشركة',
@@ -844,6 +897,9 @@
                 deposit: 0,
                 profit: 0,
                 subscribed: false,
+                subscribedPackage: 'غير مشترك',
+                joinDate: new Date().toLocaleDateString('ar-EG'),
+                avatar: 'https://via.placeholder.com/150',
                 tasksCount: 5,
                 completedTasks: {},
                 withdrawRequest: null,
@@ -880,6 +936,9 @@
                 deposit: 0,
                 profit: 0,
                 subscribed: false,
+                subscribedPackage: 'غير مشترك',
+                joinDate: new Date().toLocaleDateString('ar-EG'),
+                avatar: 'https://via.placeholder.com/150',
                 tasksCount: 5,
                 completedTasks: {},
                 withdrawRequest: null,
@@ -916,16 +975,44 @@
 
         function loadUserData() {
             const data = usersDB[currentUserPhone];
+            
+            // بيانات الواجهة الرئيسية
+            document.getElementById('displayNameHeader').innerText = data.name;
             document.getElementById('displayPhone').innerText = currentUserPhone;
             document.getElementById('displayId').innerText = currentUserPhone.slice(-6) + '8';
             document.getElementById('balanceVal').innerText = data.balance.toFixed(2);
             document.getElementById('profitVal').innerText = data.profit.toFixed(2);
-            document.getElementById('tasksLeft').innerText = data.tasksCount;
 
-            if(data.subscribed) {
-                document.getElementById('vipBadge').innerText = "VIP1";
+            // تحديث صورة الهيدر العلوي
+            const icon = document.getElementById('headerAvatarIcon');
+            const img = document.getElementById('headerAvatarImg');
+            if (data.avatar && data.avatar !== 'https://via.placeholder.com/150') {
+                img.src = data.avatar;
+                img.classList.remove('hidden');
+                icon.classList.add('hidden');
+            } else {
+                img.classList.add('hidden');
+                icon.classList.remove('hidden');
             }
 
+            // إظهار شارة VIP فقط عند الاشتراك
+            const vipBadge = document.getElementById('vipBadge');
+            if(data.subscribed) {
+                vipBadge.innerText = data.subscribedPackage || "VIP1";
+                vipBadge.classList.remove('hidden');
+            } else {
+                vipBadge.classList.add('hidden');
+            }
+
+            // بيانات صفحة "حسابي"
+            document.getElementById('accountName').innerText = data.name;
+            document.getElementById('accountPhone').innerText = currentUserPhone;
+            document.getElementById('accountId').innerText = currentUserPhone.slice(-6) + '8';
+            document.getElementById('accountJoinDate').innerText = data.joinDate || '2025/01/01';
+            document.getElementById('accountPackage').innerText = data.subscribedPackage || 'غير مشترك';
+            document.getElementById('userAvatarImg').src = data.avatar || 'https://via.placeholder.com/150';
+
+            document.getElementById('tasksLeft').innerText = data.tasksCount;
             updateTasksButtons();
             updateUserWithdrawUI();
         }
@@ -937,10 +1024,10 @@
             const navBtns = document.querySelectorAll('.nav-btn');
             navBtns.forEach(b => b.classList.remove('active'));
 
-            if (tabName === 'account') {
-                document.getElementById('tabAccount').classList.remove('hidden');
-            } else if (tabName === 'home') {
+            if (tabName === 'home') {
                 document.getElementById('tabHome').classList.remove('hidden');
+            } else if (tabName === 'account') {
+                document.getElementById('tabAccount').classList.remove('hidden');
             } else if (tabName === 'tasks') {
                 document.getElementById('tabTasks').classList.remove('hidden');
             } else if (tabName === 'transactions') {
@@ -956,6 +1043,30 @@
             const idText = document.getElementById('displayId').innerText;
             navigator.clipboard.writeText(idText);
             alert('تم نسخ الـ ID بنجاح: ' + idText);
+        }
+
+        function uploadUserAvatar(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    usersDB[currentUserPhone].avatar = evt.target.result;
+                    saveDB();
+                    loadUserData();
+                    alert('تم اختيار وتحديث صورة البروفايل بنجاح!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function editUserName() {
+            const newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
+            if (newName && newName.trim() !== "") {
+                usersDB[currentUserPhone].name = newName.trim();
+                saveDB();
+                loadUserData();
+                alert('تم تعديل الاسم بنجاح!');
+            }
         }
 
         function handleLogout() {
@@ -1011,16 +1122,14 @@
             alert(`مبروك! تمت المهمة بنجاح وربحت ${earned.toFixed(2)} ج.م.`);
         }
 
-        function openProfileModal() {
-            document.getElementById('editNameInput').value = usersDB[currentUserPhone].name;
-            document.getElementById('profileModal').classList.remove('hidden');
+        function openProfileModal() { 
+            document.getElementById('editNameInputModal').value = usersDB[currentUserPhone].name;
+            document.getElementById('profileModal').classList.remove('hidden'); 
         }
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.add('hidden');
-        }
+        function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
 
-        function saveProfileChanges() {
-            const newName = document.getElementById('editNameInput').value.trim();
+        function saveProfileModalChanges() {
+            const newName = document.getElementById('editNameInputModal').value.trim();
             const newPass = document.getElementById('editPasswordInput').value.trim();
 
             if (newName) usersDB[currentUserPhone].name = newName;
@@ -1029,7 +1138,7 @@
             saveDB();
             loadUserData();
             closeProfileModal();
-            alert('تم حفظ التغييرات بنجاح!');
+            alert('تم حفظ البيانات والتغييرات بنجاح!');
         }
 
         function openPackagesModal() { document.getElementById('packagesModal').classList.remove('hidden'); }
@@ -1044,7 +1153,7 @@
             if (data.withdrawRequest) {
                 statusDiv.innerHTML = `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
             } else {
-                statusDiv.innerHTML = `لا توجد طلبات سحب معلقة حالياً.`;
+                statusDiv.innerHTML = `لا توجد معاملات سحب معلقة حالياً.`;
             }
         }
 
@@ -1057,6 +1166,7 @@
             user.balance -= price;
             user.deposit += price;
             user.subscribed = true;
+            user.subscribedPackage = `باقة ${name} VIP`;
             saveDB();
             loadUserData();
             closePackagesModal();
