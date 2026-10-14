@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك بـ CSS الحديث والمعتمد --- */
+        /* --- تصميم الشريط المتحرك المنظم والسلس --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -56,15 +56,18 @@
             overflow: hidden;
             white-space: nowrap;
             border-radius: 8px;
+            display: flex;
             position: relative;
         }
         .marquee-content {
-            display: inline-block;
+            display: flex;
             white-space: nowrap;
-            animation: marqueeScroll 25s linear infinite;
+            animation: marqueeSmooth 35s linear infinite;
+            will-change: transform;
         }
-        .marquee-content span {
-            display: inline-block;
+        .marquee-item {
+            display: inline-flex;
+            align-items: center;
             color: var(--neon-green);
             font-size: 13px;
             font-weight: 500;
@@ -74,8 +77,8 @@
             font-weight: bold;
             margin: 0 15px;
         }
-        @keyframes marqueeScroll {
-            0% { transform: translateX(0); }
+        @keyframes marqueeSmooth {
+            0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
         }
 
@@ -182,22 +185,24 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك الجديد والمضمون -->
+                <!-- الشريط المتحرك المستمر والمنظم بامتياز -->
                 <div class="marquee-container">
                     <div class="marquee-content">
-                        <span>✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🔗 تم تحويل مكافأة الدخول من الرابط الخاص بمستخدم رقم <strong>011****7744</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****5522</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>✨ مبروك انضمام مستخدم جديد رقم <strong>012****1133</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🎉 مبروك تم تحويل مبلغ <strong>15000 ج.م</strong> للمستخدم <strong>011****8899</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <!-- تكرار للحركة المستمرة -->
-                        <span>✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🔗 تم تحويل مكافأة الدخول من الرابط الخاص بمستخدم رقم <strong>011****7744</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
-                        <span>🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****5522</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <!-- المجموعة الأولى -->
+                        <span class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****5522</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>012****1133</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+
+                        <!-- المجموعة الثانية (تكرار متصل) -->
+                        <span class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>012****9012</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>015****3311</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🔗 تم تحويل مكافأة الدخول من الرابط لمستخدم رقم <strong>011****7744</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****5522</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
+                        <span class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>012****1133</strong></span><span class="brand-divider"> 🇪🇬 تسوق بلس </span>
                     </div>
                 </div>
 
@@ -742,5 +747,4 @@
             }
         }
     </script>
-</body>
-</html>
+    </body>
