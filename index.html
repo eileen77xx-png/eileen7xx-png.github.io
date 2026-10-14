@@ -45,6 +45,30 @@
         .profit-subtext { font-size: 12px; color: var(--text-muted); margin-top: 12px; }
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
+
+        /* --- تصميم الشريط المتحرك الاحترافي والمستمر --- */
+        .marquee-container {
+            background: rgba(16, 185, 129, 0.1);
+            border-top: 1px solid rgba(34, 197, 94, 0.3);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 8px 0;
+            margin: 0 15px 15px 15px;
+            overflow: hidden;
+            white-space: nowrap;
+            border-radius: 8px;
+        }
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+            color: var(--neon-green);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
         .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
         .btn-deposit { background: linear-gradient(135deg, #22c55e, #16a34a); color: #000; font-weight: bold; padding: 12px; border-radius: 12px; border: none; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-withdraw { background: #0f172a; color: white; border: 1px solid var(--neon-green); font-weight: bold; padding: 12px; border-radius: 12px; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -146,6 +170,13 @@
                     <div class="balance-amount"><span style="color:var(--neon-green);">EGP</span><span id="depositVal">0.00</span></div>
                     <div class="profit-subtext">إجمالي أرباح العمولة <br><span class="profit-val-green">EGP <span id="profitVal">0.00</span></span></div>
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
+                </div>
+
+                <!-- الشريط المتحرك تحت إجمالي الأرباح وقبل الأزرار -->
+                <div class="marquee-container">
+                    <div class="marquee-text">
+                        ألف مبروك تم تسلم أرباح المستخدم 010****5526 وتم انضمام مستخدم جديد برقم 012****8899 وتم تسلم مبلغ الأرباح بنجاح للمستخدم 015****3322 وألف مبروك تم تسلم أرباح المستخدم 011****7744 وتم انضمام مستخدم جديد برقم 010****1122
+                    </div>
                 </div>
 
                 <div class="action-btns-row">
