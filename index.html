@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* الشريط المتحرك من اليمين إلى اليسار */
+        /* --- شريط الإشعارات الأفقي المظبوط من اليمين لليسار --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -62,9 +62,7 @@
         .marquee-content {
             display: flex;
             white-space: nowrap;
-            animation: scrollRightToLeft 25s linear infinite;
-            position: absolute;
-            right: 0;
+            animation: marqueeRTL 25s linear infinite;
         }
         .marquee-item {
             display: inline-flex;
@@ -72,14 +70,14 @@
             color: var(--neon-green);
             font-size: 12px;
             font-weight: 500;
-            padding: 0 25px;
+            padding: 0 20px;
             gap: 8px;
         }
-        .marquee-divider { color: var(--accent); font-weight: bold; margin-left: 10px; }
+        .marquee-divider { color: var(--accent); font-weight: bold; margin-left: 8px; }
 
-        @keyframes scrollRightToLeft {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(100%); }
+        @keyframes marqueeRTL {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
         }
 
         .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
@@ -247,9 +245,14 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- شريط الإشعارات -->
+                <!-- شريط الإشعارات المتجدد -->
                 <div class="marquee-container">
                     <div class="marquee-content">
+                        <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر <span class="marquee-divider">| 🇪🇬</span></div>
+                        <div class="marquee-item">💼 استثمر بأمان، نفذ مهامك اليومية بسهولة، واحصل على عوائدك المالية بانتظام <span class="marquee-divider">| 🚀</span></div>
+                        <div class="marquee-item">🎉 مبروك لجميع المستخدمين الذين تم تحويل أرباحهم اليومية وعمولاتهم بنجاح <span class="marquee-divider">| 💰</span></div>
+                        <div class="marquee-item">💎 اشترك في باقاتنا الاستثمارية اليوم وضاعف أرباحك بكل ثقة وأمان <span class="marquee-divider">| ✨</span></div>
+                        <!-- مكرر للحركة المستمرة -->
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر <span class="marquee-divider">| 🇪🇬</span></div>
                         <div class="marquee-item">💼 استثمر بأمان، نفذ مهامك اليومية بسهولة، واحصل على عوائدك المالية بانتظام <span class="marquee-divider">| 🚀</span></div>
                         <div class="marquee-item">🎉 مبروك لجميع المستخدمين الذين تم تحويل أرباحهم اليومية وعمولاتهم بنجاح <span class="marquee-divider">| 💰</span></div>
@@ -375,7 +378,7 @@
                     <br><br>
                     حرصاً على تقديم أعلى مستويات الثقة والمصداقية لعملائنا في المنطقة العربية، تم تدشين **الفرع الإقليمي الرسمي في جمهورية مصر العربية**، والذي أُسندت إدارته بالكامل لـ **طاقم عمل مصري كفء** يمتلك خبرة احترافية.
                     <br><br>
-                    🔒 <strong>الضمان المالي:</strong> كافة الأرصدة والعمولات اليومية مؤمنة ومحمية بنظام التشفير الحمي، مع ضمان استمرار السحوبات المباشرة بانتظام وبأمان تام.
+                    🔒 <strong>الضمان المالي:</strong> كافة الأرصدة والعمولات اليومية مؤمنة ومحمية بنظام التشفير، مع ضمان استمرار السحوبات المباشرة بانتظام وبأمان تام.
                 </div>
                 <div class="cert-footer-row">
                     <div class="cert-stamp">
@@ -393,10 +396,10 @@
         </div>
     </div>
 
-    <!-- السكريبت البرمجي المصحح والمضبوط -->
+    <!-- السكريبت البرمجي المعدل بالكامل لتلافي الأخطاء -->
     <script>
-        let currentUserPhone = localStorage.getItem('tasawuq_logged_user') || null;
-        let usersDB = {};
+        var currentUserPhone = localStorage.getItem('tasawuq_logged_user') || null;
+        var usersDB = {};
         
         try {
             usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
@@ -425,11 +428,11 @@
         }
 
         function getTodayDateKey() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            var now = new Date();
+            var year = now.getFullYear();
+            var month = String(now.getMonth() + 1).padStart(2, '0');
+            var day = String(now.getDate()).padStart(2, '0');
+            return year + '-' + month + '-' + day;
         }
 
         window.addEventListener('DOMContentLoaded', function() {
@@ -460,15 +463,15 @@
         }
 
         function executeRegister() {
-            const nameField = document.getElementById('regName');
-            const phoneField = document.getElementById('regPhone');
-            const passwordField = document.getElementById('regPassword');
+            var nameField = document.getElementById('regName');
+            var phoneField = document.getElementById('regPhone');
+            var passwordField = document.getElementById('regPassword');
 
             if (!nameField || !phoneField || !passwordField) return;
 
-            const name = nameField.value.trim();
-            const phone = phoneField.value.trim();
-            const password = passwordField.value.trim();
+            var name = nameField.value.trim();
+            var phone = phoneField.value.trim();
+            var password = passwordField.value.trim();
 
             if (!name || !phone || !password) {
                 alert('الرجاء كتابة الاسم ورقم الموبايل وكلمة السر!');
@@ -476,7 +479,7 @@
             }
 
             if (usersDB[phone]) {
-                alert('رقم الموبايل مسجل بالفعل! قم بتسجيل الدخول مباشرة.');
+                alert('رقم الموبايل مسجل بالفعل!');
                 showLogin();
                 return;
             }
@@ -499,7 +502,6 @@
             };
             
             localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
-            
             currentUserPhone = phone;
             localStorage.setItem('tasawuq_logged_user', phone);
             loadUserData();
@@ -512,13 +514,13 @@
         }
 
         function executeLogin() {
-            const phoneField = document.getElementById('loginPhone');
-            const passwordField = document.getElementById('loginPassword');
+            var phoneField = document.getElementById('loginPhone');
+            var passwordField = document.getElementById('loginPassword');
 
             if (!phoneField || !passwordField) return;
 
-            const phone = phoneField.value.trim();
-            const password = passwordField.value.trim();
+            var phone = phoneField.value.trim();
+            var password = passwordField.value.trim();
 
             if (!usersDB[phone] || usersDB[phone].password !== password) {
                 alert('رقم الموبايل أو كلمة السر غير صحيحة!');
@@ -543,7 +545,7 @@
         }
 
         function loadUserData() {
-            const data = usersDB[currentUserPhone];
+            var data = usersDB[currentUserPhone];
             if (!data) return;
             
             document.getElementById('displayNameHeader').innerText = data.name;
@@ -552,8 +554,8 @@
             document.getElementById('depositVal').innerText = (data.deposit || 0).toFixed(2);
             document.getElementById('profitVal').innerText = (data.profit || 0).toFixed(2);
 
-            const icon = document.getElementById('headerAvatarIcon');
-            const img = document.getElementById('headerAvatarImg');
+            var icon = document.getElementById('headerAvatarIcon');
+            var img = document.getElementById('headerAvatarImg');
             if (data.avatar && data.avatar !== 'https://via.placeholder.com/150') {
                 img.src = data.avatar;
                 img.classList.remove('hidden');
@@ -563,7 +565,7 @@
                 if (icon) icon.classList.remove('hidden');
             }
 
-            const vipBadge = document.getElementById('vipBadge');
+            var vipBadge = document.getElementById('vipBadge');
             if(vipBadge) {
                 if(data.subscribed) {
                     vipBadge.innerText = data.subscribedPackage;
@@ -587,8 +589,11 @@
         }
 
         function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            var tabs = document.querySelectorAll('.tab-content');
+            for(var i=0; i<tabs.length; i++) { tabs[i].classList.add('hidden'); }
+            
+            var navBtns = document.querySelectorAll('.nav-btn');
+            for(var j=0; j<navBtns.length; j++) { navBtns[j].classList.remove('active'); }
 
             if (tabName === 'home') document.getElementById('tabHome').classList.remove('hidden');
             else if (tabName === 'account') document.getElementById('tabAccount').classList.remove('hidden');
@@ -599,9 +604,9 @@
         }
 
         function uploadUserAvatar(e) {
-            const file = e.target.files[0];
+            var file = e.target.files[0];
             if (file) {
-                const reader = new FileReader();
+                var reader = new FileReader();
                 reader.onload = function(evt) {
                     usersDB[currentUserPhone].avatar = evt.target.result;
                     localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
@@ -612,7 +617,7 @@
         }
 
         function editUserName() {
-            const newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
+            var newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
             if (newName && newName.trim() !== "") {
                 usersDB[currentUserPhone].name = newName.trim();
                 localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
@@ -629,18 +634,18 @@
         }
 
         function updateTasksButtons() {
-            const u = usersDB[currentUserPhone];
+            var u = usersDB[currentUserPhone];
             if(!u) return;
-            const todayKey = getTodayDateKey();
+            var todayKey = getTodayDateKey();
             if (!u.completedTasks) u.completedTasks = {};
 
-            let completedToday = u.completedTasks[todayKey] ? u.completedTasks[todayKey].length : 0;
+            var completedToday = u.completedTasks[todayKey] ? u.completedTasks[todayKey].length : 0;
             u.tasksCount = 5 - completedToday;
 
-            for (let i = 1; i <= 5; i++) {
-                const btn = document.getElementById(`taskBtn${i}`);
+            for (var i = 1; i <= 5; i++) {
+                var btn = document.getElementById('taskBtn' + i);
                 if (btn) {
-                    if (u.completedTasks[todayKey] && u.completedTasks[todayKey].includes(i)) {
+                    if (u.completedTasks[todayKey] && u.completedTasks[todayKey].indexOf(i) !== -1) {
                         btn.disabled = true;
                         btn.innerText = "مكتملة ✓";
                         btn.style.background = "#334155";
@@ -651,41 +656,41 @@
                     }
                 }
             }
-            const leftEl = document.getElementById('tasksLeft');
+            var leftEl = document.getElementById('tasksLeft');
             if(leftEl) leftEl.innerText = u.tasksCount;
         }
 
         function doTask(taskId) {
-            const user = usersDB[currentUserPhone];
+            var user = usersDB[currentUserPhone];
             if (!user.subscribed) {
                 alert('يجب موافقة الأدمن على اشتراك الباقة أولاً!');
                 return;
             }
             
-            const todayKey = getTodayDateKey();
+            var todayKey = getTodayDateKey();
             if (!user.completedTasks) user.completedTasks = {};
             if (!user.completedTasks[todayKey]) user.completedTasks[todayKey] = [];
 
-            if (user.completedTasks[todayKey].includes(taskId)) {
+            if (user.completedTasks[todayKey].indexOf(taskId) !== -1) {
                 alert('تم تنفيذ هذه المهمة اليوم بالفعل!');
                 return;
             }
 
-            let dailyTotal = user.deposit === 300 ? 15 : (user.deposit === 800 ? 40 : (user.deposit === 1500 ? 75 : (user.deposit === 3000 ? 150 : (user.deposit === 8000 ? 400 : 600))));
-            const taskEarn = dailyTotal / 5;
+            var dailyTotal = user.deposit === 300 ? 15 : (user.deposit === 800 ? 40 : (user.deposit === 1500 ? 75 : (user.deposit === 3000 ? 150 : (user.deposit === 8000 ? 400 : 600))));
+            var taskEarn = dailyTotal / 5;
             user.profit += taskEarn;
             user.completedTasks[todayKey].push(taskId);
 
             localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
             loadUserData();
-            alert(`مبروك! تمت المهمة وأُضيف ربح (${taskEarn.toFixed(2)} ج.م).`);
+            alert('مبروك! تمت المهمة وأُضيف ربح (' + taskEarn.toFixed(2) + ' ج.م).');
         }
 
         function openProfileModal() { document.getElementById('profileModal').classList.remove('hidden'); }
         function closeProfileModal() { document.getElementById('profileModal').classList.add('hidden'); }
 
         function savePasswordChange() {
-            const newPass = document.getElementById('editPasswordInput').value.trim();
+            var newPass = document.getElementById('editPasswordInput').value.trim();
             if (newPass) {
                 usersDB[currentUserPhone].password = newPass;
                 localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
@@ -700,23 +705,23 @@
         function closeInfoModal() { document.getElementById('infoModal').classList.add('hidden'); }
 
         function updateUserWithdrawUI() {
-            const data = usersDB[currentUserPhone];
-            const statusDiv = document.getElementById('userWithdrawStatus');
+            var data = usersDB[currentUserPhone];
+            var statusDiv = document.getElementById('userWithdrawStatus');
             if(statusDiv) {
-                statusDiv.innerHTML = data.withdrawRequest ? `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>` : `لا توجد معاملات سحب معلقة حالياً.`;
+                statusDiv.innerHTML = data.withdrawRequest ? 'مبلغ السحب: <strong>' + data.withdrawRequest + ' ج.م</strong> - الحالة: <span style="color:var(--accent);">' + data.withdrawStatus + '</span>' : 'لا توجد معاملات سحب معلقة حالياً.';
             }
         }
 
         function updateUserPackageRequestUI() {
-            const data = usersDB[currentUserPhone];
-            const box = document.getElementById('userPackageRequestStatus');
+            var data = usersDB[currentUserPhone];
+            var box = document.getElementById('userPackageRequestStatus');
             if(box) {
-                box.innerHTML = data.packageRequest ? `الباقة المطلوبة: <strong>باقة ${data.packageRequest} EGP</strong> - الحالة: <span style="color:var(--accent);">${data.packageRequestStatus}</span>` : `لا توجد طلبات اشتراك باقات حالياً.`;
+                box.innerHTML = data.packageRequest ? 'الباقة المطلوبة: <strong>باقة ' + data.packageRequest + ' EGP</strong> - الحالة: <span style="color:var(--accent);">' + data.packageRequestStatus + '</span>' : 'لا توجد طلبات اشتراك باقات حالياً.';
             }
         }
 
         function requestPackageSubscription(price, name) {
-            const user = usersDB[currentUserPhone];
+            var user = usersDB[currentUserPhone];
             if (user.subscribed) { alert('أنت مشترك بالفعل!'); return; }
             if (user.balance < price) { alert('رصيدك المتاح غير كافٍ للاشتراك!'); return; }
 
@@ -729,8 +734,8 @@
         }
 
         function requestWithdrawal() {
-            const user = usersDB[currentUserPhone];
-            const amount = parseFloat(prompt("ادخل المبلغ المراد سحبه:"));
+            var user = usersDB[currentUserPhone];
+            var amount = parseFloat(prompt("ادخل المبلغ المراد سحبه:"));
             if (amount && !isNaN(amount)) {
                 user.withdrawRequest = amount;
                 user.withdrawStatus = 'قيد المراجعة من الأدمن';
@@ -741,35 +746,18 @@
         }
 
         function renderAdminPanel() {
-            const tbody = document.getElementById('adminUserTable');
+            var tbody = document.getElementById('adminUserTable');
             if(!tbody) return;
             tbody.innerHTML = '';
-            for (let phoneKey in usersDB) {
-                const u = usersDB[phoneKey];
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${u.name} <br><span style="color:var(--neon-green);">${phoneKey}</span></td>
-                        <td>${(u.balance || 0).toFixed(2)} ج.م</td>
-                        <td>${(u.deposit || 0).toFixed(2)} ج.م</td>
-                        <td>${(u.profit || 0).toFixed(2)} ج.م</td>
-                        <td style="color:var(--accent);">${u.packageRequest ? 'باقة ' + u.packageRequest + ' (' + u.packageRequestStatus + ')' : 'لا يوجد'}</td>
-                        <td>
-                            <button onclick="adminEditBalance('${phoneKey}', 'balance')" style="background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">شحن متاح</button>
-                            <button onclick="adminEditBalance('${phoneKey}', 'deposit')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">وديعة</button>
-                            ${u.packageRequestStatus === 'قيد المراجعة' ? `<button onclick="adminApprovePackage('${phoneKey}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة الباقة</button>` : ''}
-                        </td>
-                    </tr>
-                `;
-            }
-        }
-
-        function adminEditBalance(phoneKey, fieldType) {
-            const newVal = parseFloat(prompt(`ادخل القيمة الجديدة:`));
-            if (!isNaN(newVal)) {
-                usersDB[phoneKey][fieldType] = newVal;
-                if(fieldType === 'deposit' && newVal > 0) {
-                    usersDB[phoneKey].subscribed = true;
-                    usersDB[phoneKey].subscribedPackage = `باقة ${newVal} EGP`;
-                }
-                localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
-               
+            for (var phoneKey in usersDB) {
+                var u = usersDB[phoneKey];
+                tbody.innerHTML += '<tr>' +
+                    '<td>' + u.name + '<br><span style="color:var(--neon-green);">' + phoneKey + '</span></td>' +
+                    '<td>' + (u.balance || 0).toFixed(2) + ' ج.م</td>' +
+                    '<td>' + (u.deposit || 0).toFixed(2) + ' ج.م</td>' +
+                    '<td>' + (u.profit || 0).toFixed(2) + ' ج.م</td>' +
+                    '<td style="color:var(--accent);">' + (u.packageRequest ? 'باقة ' + u.packageRequest + ' (' + u.packageRequestStatus + ')' : 'لا يوجد') + '</td>' +
+                    '<td>' +
+                        '<button onclick="adminEditBalance(\'' + phoneKey + '\', \'balance\')" style="background:#2563eb; color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">شحن متاح</button> ' +
+                        '<button onclick="adminEditBalance(\'' + phoneKey + '\', \'deposit\')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer; margin-bottom:2px;">وديعة</button> ' +
+                        (u.packageRequestStatus === 'قيد المراجعة' ? '<button onc
