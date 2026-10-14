@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #10b981;
-            --primary-gradient: linear-gradient(135deg, #10b981, #059669);
-            --neon-green: #22c55e;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
             --accent: #f59e0b;
-            --bg-dark: #090d16;
-            --card-bg: #131b2e;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
             --text-light: #f8fafc;
             --text-muted: #94a3b8;
+            --success: #10b981;
             --danger: #ef4444;
         }
 
@@ -31,32 +31,34 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 75px;
         }
 
         .auth-container {
             max-width: 440px;
-            margin: 30px auto;
+            margin: 25px auto;
             background: var(--card-bg);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             width: 90%;
         }
 
         .auth-hero-img {
             width: 100%;
-            height: 220px;
+            height: 230px;
             object-fit: cover;
-            border-bottom: 2px solid var(--neon-green);
+            object-position: center;
+            border-bottom: 2px solid var(--accent);
         }
 
-        .auth-content { padding: 24px; }
+        .auth-content {
+            padding: 24px;
+        }
 
         .welcome-title {
             text-align: center;
-            color: var(--neon-green);
+            color: var(--accent);
             font-size: 20px;
             margin-bottom: 8px;
             font-weight: bold;
@@ -70,7 +72,9 @@
             line-height: 1.5;
         }
 
-        .form-group { margin-bottom: 15px; }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
         .form-group label {
             display: block;
@@ -81,10 +85,10 @@
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #23304d;
-            background: #090d16;
+            padding: 11px;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background: #0f172a;
             color: white;
             font-size: 14px;
             outline: none;
@@ -93,9 +97,9 @@
         .btn-submit {
             width: 100%;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 8px;
             border: none;
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             font-weight: bold;
             font-size: 15px;
@@ -106,147 +110,211 @@
             display: inline-block;
         }
 
-        /* --- هيدر الواجهة الرئيسية المطور (تسوق بلس + سلة + صوره فتاة) --- */
-        .brand-header-banner {
-            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
-            padding: 15px 20px;
-            border-bottom: 2px solid var(--accent);
+        .btn-submit:disabled {
+            background: #475569;
+            cursor: not-allowed;
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            opacity: 0.9;
+        }
+
+        .switch-auth {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .switch-auth span {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .app-header {
+            background: var(--card-bg);
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .top-user-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-info-group {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .user-name-display {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-light);
+        }
+
+        .user-id-display {
+            font-size: 11px;
+            color: var(--accent);
+        }
+
+        .top-profit-box {
+            background: #0f172a;
+            border: 1px solid var(--accent);
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .top-profit-box .p-label {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .top-profit-box .p-val {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .stat-card .value {
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 3px;
+        }
+
+        /* ----- تصميم علم مصر والمتحرك ----- */
+        .egypt-bar-wrapper {
+            width: 100%;
+            background: #0b0f19;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--accent);
+            display: flex;
+            align-items: center;
+            height: 44px;
             overflow: hidden;
             position: relative;
         }
 
-        .brand-title-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .brand-title-group h1 {
-            font-size: 22px;
-            color: var(--text-light);
-            font-weight: 800;
-        }
-
-        .brand-title-group h1 span { color: var(--accent); }
-
-        .cart-icon-3d {
-            font-size: 26px;
-            color: var(--neon-green);
-            background: rgba(34, 197, 94, 0.15);
-            padding: 8px 12px;
-            border-radius: 12px;
-            border: 1px solid var(--neon-green);
-        }
-
-        .hero-girl-img {
-            width: 75px;
-            height: 75px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid var(--accent);
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
-        }
-
-        /* --- كروت الأرصدة الثلاثية (شحن - أرباح - مسحوبات) --- */
-        .balances-grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            padding: 15px;
-        }
-
-        .balance-box-item {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 12px 8px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .balance-box-item .b-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .balance-box-item .b-val {
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--neon-green);
-        }
-
-        /* --- صفحة حسابي والمعلومات الشاملة --- */
-        .account-details-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            margin: 15px;
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .user-avatar-upload-box {
+        .waving-flag-box {
+            width: 55px;
+            height: 32px;
+            margin: 0 10px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
             position: relative;
+            flex-shrink: 0;
+            z-index: 5;
+            animation: flagWave 3.5s ease-in-out infinite alternate;
+            transform-origin: left center;
         }
 
-        .user-avatar-preview {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--neon-green);
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+        .flag-stripe {
+            width: 100%;
+            height: 33.33%;
         }
-
-        .avatar-edit-icon {
-            position: absolute;
-            bottom: 25px;
-            right: calc(50% - 45px);
-            background: var(--accent);
-            color: black;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+        .stripe-red { background: #ce1126; }
+        .stripe-white { 
+            background: #ffffff; 
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            font-size: 12px;
+            position: relative;
+        }
+        .stripe-black { background: #000000; }
+
+        .eagle-icon {
+            font-size: 9px;
+            color: #c09300;
         }
 
-        .info-row-item {
+        @keyframes flagWave {
+            0% { transform: skewY(0deg) scaleY(1); }
+            50% { transform: skewY(2deg) scaleY(1.03); }
+            100% { transform: skewY(-2deg) scaleY(0.97); }
+        }
+
+        .ticker-container {
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            height: 100%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 13px;
         }
 
-        .info-row-item:last-child { border-bottom: none; }
+        .ticker-track {
+            display: inline-block;
+            white-space: nowrap;
+            padding-right: 100%;
+            animation: scrollTicker 28s linear infinite;
+        }
 
-        .info-label { color: var(--text-muted); }
-        .info-val { font-weight: bold; color: var(--text-light); }
+        .ticker-item {
+            display: inline-block;
+            padding: 0 20px;
+            font-size: 13px;
+            color: #facc15;
+            font-weight: 500;
+        }
 
-        /* --- شريط التنقل السفلي المثبت --- */
-        .bottom-nav-bar {
+        @keyframes scrollTicker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
-            background: #090d16;
-            border-top: 1px solid #1e293b;
+            background: #0f172a;
+            border-top: 1px solid #334155;
             display: flex;
             justify-content: space-around;
-            padding: 8px 0;
-            z-index: 999;
+            padding: 10px 0;
+            z-index: 900;
         }
 
-        .nav-btn {
+        .nav-item {
             background: none;
             border: none;
             color: var(--text-muted);
@@ -254,47 +322,124 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
             cursor: pointer;
             transition: 0.2s;
-            flex: 1;
         }
 
-        .nav-btn i { font-size: 20px; }
-        .nav-btn.active, .nav-btn:hover { color: var(--neon-green); }
+        .nav-item i {
+            font-size: 18px;
+            margin-bottom: 3px;
+            color: var(--accent);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-light);
+        }
 
         .main-content {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 15px auto;
+            padding: 0 12px 80px 12px;
             flex-grow: 1;
             width: 100%;
+        }
+
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .package-card, .task-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+
+        .task-card {
+            padding: 0;
+            overflow: hidden;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .task-img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+        }
+
+        .task-body {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .package-price {
+            font-size: 20px;
+            color: var(--accent);
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .badge-active {
+            background: var(--success);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-right: 5px;
         }
 
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.8);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2000;
+            z-index: 1000;
             padding: 15px;
         }
 
         .modal-box {
             background: var(--card-bg);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 20px;
             width: 100%;
             max-width: 450px;
-            border: 1px solid var(--neon-green);
+            border: 1px solid var(--accent);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .admin-panel {
             background: var(--card-bg);
             padding: 15px;
-            border-radius: 12px;
-            margin: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
             border: 1px solid var(--accent);
             overflow-x: auto;
         }
@@ -307,12 +452,16 @@
 
         th, td {
             padding: 8px;
-            border: 1px solid #23304d;
+            border: 1px solid #334155;
             text-align: center;
             font-size: 12px;
         }
 
-        th { background: #090d16; color: var(--accent); }
+        th {
+            background: #0f172a;
+            color: var(--accent);
+        }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -335,15 +484,15 @@
                 </div>
                 <button type="submit" class="btn-submit">دخول</button>
             </form>
-            <div style="text-align:center; margin-top:15px; font-size:13px; color:var(--text-muted);">
-                ليس لديك حساب؟ <span onclick="showRegister()" style="color:var(--neon-green); cursor:pointer; font-weight:bold;">إنشاء حساب جديد</span>
+            <div class="switch-auth">
+                ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span>
             </div>
         </div>
     </div>
 
     <!-- 2. شاشة إنشاء حساب جديد -->
     <div id="registerScreen" class="auth-container hidden">
-        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" class="auth-hero-img">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop" alt="تسوق بلس" class="auth-hero-img">
         <div class="auth-content">
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
             <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على <strong>مكافأة 50 ج.م</strong> فوراً!</p>
@@ -363,183 +512,274 @@
                 </div>
                 <button type="submit" class="btn-submit">تسجيل حساب جديد (+50 ج.م هدية)</button>
             </form>
-            <div style="text-align:center; margin-top:15px; font-size:13px; color:var(--text-muted);">
-                لديك حساب بالفعل؟ <span onclick="showLogin()" style="color:var(--neon-green); cursor:pointer; font-weight:bold;">تسجيل الدخول</span>
+            <div class="switch-auth">
+                لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span>
             </div>
         </div>
     </div>
 
-    <!-- 3. تطبيق المنصة الرئيسي -->
+    <!-- 3. الواجهة الرئيسية للمستخدم -->
     <div id="appScreen" class="hidden">
+        <header class="app-header">
+            <div class="top-user-row">
+                <div class="user-info-group">
+                    <div class="avatar-wrapper" onclick="openProfileModal()" title="تعديل الاسم والصورة">
+                        <img id="userAvatar" src="https://via.placeholder.com/150" class="user-avatar">
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span id="displayName" class="user-name-display">اسم المستخدم</span>
+                            <span id="subBadge" class="badge-active hidden">مشترك</span>
+                        </div>
+                        <div id="displayPhone" class="user-id-display">الموبايل: 01000000000</div>
+                    </div>
+                </div>
+
+                <div class="top-profit-box">
+                    <div class="p-label">الأرباح اليومية</div>
+                    <div id="profitVal" class="p-val">0 ج.م</div>
+                </div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="label">الرصيد المتاح</div>
+                    <div id="balanceVal" class="value">0 ج.م</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">الوديعة (الباقة)</div>
+                    <div id="depositVal" class="value">0 ج.م</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- علم مصر المتحرك المصمم خصيصاً مع الشريط الجانبي -->
+        <div class="egypt-bar-wrapper">
+            <div class="waving-flag-box" title="علم جمهورية مصر العربية">
+                <div class="flag-stripe stripe-red"></div>
+                <div class="flag-stripe stripe-white">
+                    <i class="fa-solid fa-feather-pointed eagle-icon"></i>
+                </div>
+                <div class="flag-stripe stripe-black"></div>
+            </div>
+
+            <div class="ticker-container">
+                <div class="ticker-track" id="dynamicTicker">
+                    <div class="ticker-item">🎉 مبروك تم الاشتراك في باقة 1500 ج.م (رقم: 010****391)</div>
+                    <div class="ticker-item">💸 تم إرسال الأرباح بنجاح بقيمة 425.5 ج.م</div>
+                    <div class="ticker-item">🌟 مبروك تم إرسال المكافأة الترحيبية بقيمة 50 ج.م للرقم 011****821</div>
+                </div>
+            </div>
+        </div>
+
         <main class="main-content">
-
-            <!-- الواجهة الرئيسية الافتراضية (تسوق بلس) -->
-            <div id="tabHome" class="tab-content">
-                <!-- الهيدر المميز بالصورة والمكونات -->
-                <div class="brand-header-banner">
-                    <div class="brand-title-group">
-                        <i class="fa-solid fa-cart-shopping cart-icon-3d"></i>
-                        <h1>تسوق <span>بلس</span></h1>
-                    </div>
-                    <!-- صورة فتاة تسوق إلكتروني فريدة ومميزة -->
-                    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&auto=format&fit=crop" class="hero-girl-img" title="تسوق بلس">
-                </div>
-
-                <!-- الأرصدة الثلاثية: رصيد الشحن | رصيد الأرباح | إجمالي المسحوبات -->
-                <div class="balances-grid-3">
-                    <div class="balance-box-item">
-                        <div class="b-label">رصيد الشحن المتاح</div>
-                        <div class="b-val"><span id="chargeBalVal">0.00</span> ج.م</div>
-                    </div>
-                    <div class="balance-box-item">
-                        <div class="b-label">رصيد الأرباح</div>
-                        <div class="b-val" style="color:var(--accent);"><span id="profitBalVal">0.00</span> ج.م</div>
-                    </div>
-                    <div class="balance-box-item">
-                        <div class="b-label">إجمالي المسحوبات</div>
-                        <div class="b-val" style="color:#60a5fa;"><span id="withdrawnTotalVal">0.00</span> ج.م</div>
-                    </div>
-                </div>
-
-                <div style="padding: 0 15px 15px 15px;">
-                    <button onclick="openPackagesModal()" class="btn-submit" style="background: linear-gradient(135deg, var(--accent), #d97706); padding: 14px;">
-                        <i class="fa-solid fa-gem"></i> تصفح باقات الاستثمار للشحن والاشتراك
-                    </button>
-                </div>
-            </div>
-
-            <!-- قسم (حسابي) ومعلومات الحساب التفصيلية -->
-            <div id="tabAccount" class="tab-content hidden">
-                <div class="account-details-card">
-                    <h3 style="color:var(--neon-green); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-id-card-clip"></i> معلومات الحساب الشخصي</h3>
-                    
-                    <!-- صورة بروفايل المستخدم مع إمكانية التغيير -->
-                    <div class="user-avatar-upload-box">
-                        <img id="userAvatarImg" src="https://via.placeholder.com/150" class="user-avatar-preview">
-                        <div class="avatar-edit-icon" onclick="document.getElementById('avatarFileInput').click()" title="تغيير الصورة">
-                            <i class="fa-solid fa-camera"></i>
-                        </div>
-                        <input type="file" id="avatarFileInput" class="hidden" accept="image/*" onchange="uploadUserAvatar(event)">
-                    </div>
-
-                    <!-- التفاصيل البيانية للحساب -->
-                    <div class="info-row-item">
-                        <span class="info-label">اسم المستخدم:</span>
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span id="accountName" class="info-val">المستخدم</span>
-                            <i class="fa-solid fa-pen-to-square" onclick="editUserName()" style="color:var(--accent); cursor:pointer;"></i>
-                        </div>
-                    </div>
-
-                    <div class="info-row-item">
-                        <span class="info-label">رقم الموبايل:</span>
-                        <span id="accountPhone" class="info-val">01000000000</span>
-                    </div>
-
-                    <div class="info-row-item">
-                        <span class="info-label">رقم الـ ID:</span>
-                        <span id="accountId" class="info-val" style="color:var(--accent);">70522459</span>
-                    </div>
-
-                    <div class="info-row-item">
-                        <span class="info-label">تاريخ الاشتراك:</span>
-                        <span id="accountJoinDate" class="info-val">01/01/2025</span>
-                    </div>
-
-                    <div class="info-row-item">
-                        <span class="info-label">الباقة المشترك فيها:</span>
-                        <span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span>
-                    </div>
-
-                    <button onclick="handleLogout()" class="btn-submit" style="background:#1e293b; border:1px solid #334155; margin-top:20px;">تسجيل الخروج</button>
-                </div>
-            </div>
-
-            <!-- باقي الأقسام (مهمة - المعاملات) -->
-            <div id="tabTasks" class="tab-content hidden">
-                <div style="padding:15px;">
-                    <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
-                    <div style="display:grid; gap:12px;">
-                        <div style="background:var(--card-bg); border-radius:12px; padding:12px; border:1px solid #23304d;">
+            <!-- المهمات اليومية المتناسقة -->
+            <section style="margin-bottom: 25px;">
+                <h3 class="section-title"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
+                <div class="tasks-grid">
+                    <div class="task-card">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" class="task-img">
+                        <div class="task-body">
                             <h5>تقييم هاتف ذكي حديث</h5>
-                            <button id="taskBtn1" onclick="doTask(1)" class="btn-submit" style="margin-top: 10px;">تنفيذ المهمة (+5%)</button>
+                            <button id="taskBtn1" onclick="doTask(1)" class="btn-submit" style="margin-top: 10px; padding: 8px;">تنفيذ المهمة (+5%)</button>
+                        </div>
+                    </div>
+                    <div class="task-card">
+                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400" class="task-img">
+                        <div class="task-body">
+                            <h5>تقييم سماعات لاسلكية</h5>
+                            <button id="taskBtn2" onclick="doTask(2)" class="btn-submit" style="margin-top: 10px; padding: 8px;">تنفيذ المهمة (+5%)</button>
+                        </div>
+                    </div>
+                    <div class="task-card">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" class="task-img">
+                        <div class="task-body">
+                            <h5>ترويج شاحن سريع</h5>
+                            <button id="taskBtn3" onclick="doTask(3)" class="btn-submit" style="margin-top: 10px; padding: 8px;">تنفيذ المهمة (+5%)</button>
+                        </div>
+                    </div>
+                    <div class="task-card">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" class="task-img">
+                        <div class="task-body">
+                            <h5>تأكيد شحنة ساعة ذكية</h5>
+                            <button id="taskBtn4" onclick="doTask(4)" class="btn-submit" style="margin-top: 10px; padding: 8px;">تنفيذ المهمة (+5%)</button>
+                        </div>
+                    </div>
+                    <div class="task-card">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400" class="task-img">
+                        <div class="task-body">
+                            <h5>مراجعة أجهزة منزلية</h5>
+                            <button id="taskBtn5" onclick="doTask(5)" class="btn-submit" style="margin-top: 10px; padding: 8px;">تنفيذ المهمة (+5%)</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="tabTransactions" class="tab-content hidden">
-                <div style="padding:15px;">
-                    <h3 style="color:var(--neon-green); margin-bottom:10px;"><i class="fa-solid fa-receipt"></i> سجل طلبات السحب والمعاملات</h3>
-                    <div id="userWithdrawStatus" style="background:var(--card-bg); padding:15px; border-radius:12px; font-size:13px;">لا توجد معاملات سحب معلقة حالياً.</div>
-                    <button onclick="requestWithdrawal()" class="btn-submit" style="margin-top:15px;">طلب سحب الأرباح</button>
+            <!-- زر فتح الباقات المجمع -->
+            <section style="margin-bottom: 25px; text-align: center;">
+                <button onclick="openPackagesModal()" class="btn-submit" style="background: linear-gradient(135deg, var(--accent), #d97706); padding: 15px; font-size: 16px;">
+                    <i class="fa-solid fa-gem"></i> عرض جميع الباقات الاستثمارية المتاحة
+                </button>
+            </section>
+
+            <!-- قسم السحب ومعاملات المستخدم -->
+            <section style="margin-bottom: 25px;">
+                <h3 class="section-title"><i class="fa-solid fa-wallet"></i> طلب سحب الأرباح (الأحد والأربعاء فقط)</h3>
+                <div class="package-card" style="text-align: right;">
+                    <div class="form-group">
+                        <label>اختر مبلغ السحب:</label>
+                        <select id="withdrawAmount">
+                            <option value="250">250 ج.م</option>
+                            <option value="800">800 ج.م</option>
+                            <option value="1500">1500 ج.م</option>
+                            <option value="2000">2000 ج.م</option>
+                            <option value="5000">5000 ج.م</option>
+                        </select>
+                    </div>
+                    <button id="withdrawBtn" onclick="requestWithdrawal()" class="btn-submit" style="padding: 10px;">إرسال طلب السحب للمسئول</button>
+                    
+                    <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #334155;">
+                        <h4 style="font-size: 13px; color: var(--accent); margin-bottom: 5px;">سجل طلبات السحب الخاصة بك:</h4>
+                        <div id="userWithdrawStatus" style="font-size: 12px; color: var(--text-muted);">لا توجد طلبات سحب حالية.</div>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- لوحة تحكم صاحب الشركة (الأدمن) -->
-            <div id="tabAdmin" class="tab-content hidden">
-                <section class="admin-panel">
-                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم الأدمن</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>المستخدم</th>
-                                <th>الشحن المتاح</th>
-                                <th>الوديعة</th>
-                                <th>الأرباح</th>
-                                <th>المسحوبات</th>
-                                <th>الإدارة</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminUserTable"></tbody>
-                    </table>
-                </section>
-            </div>
-
+            <!-- لوحة الأدمن (تظهر فقط للأدمن) -->
+            <section id="adminSection" class="admin-panel hidden">
+                <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة تحكم صاحب الشركة (الأدمن)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الاسم / رقم الموبايل</th>
+                            <th>المتاح</th>
+                            <th>الوديعة</th>
+                            <th>الأرباح</th>
+                            <th>السحب الحالي</th>
+                            <th>الإدارة</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUserTable"></tbody>
+                </table>
+            </section>
         </main>
     </div>
 
-    <!-- شريط التنقل السفلي المثبت (Bottom Navigation Bar) -->
-    <nav id="bottomNav" class="bottom-nav-bar hidden">
-        <button class="nav-btn active" onclick="switchTab('home')">
-            <i class="fa-solid fa-house"></i>
-            <span>الرئيسية</span>
+    <!-- الشريط السفلي الثابت -->
+    <nav id="bottomNav" class="bottom-nav hidden">
+        <button class="nav-item" onclick="openPackagesModal()">
+            <i class="fa-solid fa-box-open"></i>
+            <span>الباقات</span>
         </button>
-        <button class="nav-btn" onclick="switchTab('tasks')">
-            <i class="fa-solid fa-crown"></i>
-            <span>مهمة</span>
+        <button class="nav-item" onclick="window.open('https://t.me/tasawwoq_plus', '_blank')">
+            <i class="fa-brands fa-telegram"></i>
+            <span>الدعم</span>
         </button>
-        <button class="nav-btn" onclick="switchTab('transactions')">
-            <i class="fa-solid fa-receipt"></i>
-            <span>المعاملات</span>
+        <button class="nav-item" onclick="openInfoModal()">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>معلومات المنصة</span>
         </button>
-        <button class="nav-btn" onclick="switchTab('account')">
-            <i class="fa-solid fa-user"></i>
-            <span>حسابي</span>
-        </button>
-        <button id="adminNavBtn" class="nav-btn hidden" onclick="switchTab('admin')">
+        <button id="adminNavBtn" class="nav-item hidden" onclick="scrollToAdmin()">
             <i class="fa-solid fa-user-shield"></i>
             <span>الإدارة</span>
         </button>
     </nav>
 
-    <!-- مودال الباقات للإيداع -->
+    <!-- مودال الباقات المجمع -->
     <div id="packagesModal" class="modal-overlay hidden">
         <div class="modal-box">
-            <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-gem"></i> باقات الشحن والاشتراك</h3>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <div style="background:#090d16; padding:10px; border-radius:10px; text-align:center; border:1px solid #23304d;">
+            <h3 style="color:var(--accent); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-gem"></i> باقات الشحن والاشتراك</h3>
+            <div class="packages-grid">
+                <div class="package-card">
                     <h4>باقة 300</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; margin:5px 0;">300 ج.م</div>
-                    <button onclick="subscribePackage(300, '300')" class="btn-submit" style="padding:6px;">اشتراك</button>
+                    <div class="package-price">300 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(300, '300')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
                 </div>
-                <div style="background:#090d16; padding:10px; border-radius:10px; text-align:center; border:1px solid #23304d;">
+                <div class="package-card">
+                    <h4>باقة 800</h4>
+                    <div class="package-price">800 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(800, '800')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
+                </div>
+                <div class="package-card">
                     <h4>باقة 1500</h4>
-                    <div style="color:var(--neon-green); font-weight:bold; margin:5px 0;">1500 ج.م</div>
-                    <button onclick="subscribePackage(1500, '1500')" class="btn-submit" style="padding:6px;">اشتراك</button>
+                    <div class="package-price">1500 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(1500, '1500')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
+                </div>
+                <div class="package-card">
+                    <h4>باقة 2000</h4>
+                    <div class="package-price">2000 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(2000, '2000')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
+                </div>
+                <div class="package-card">
+                    <h4>باقة 3000</h4>
+                    <div class="package-price">3000 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(3000, '3000')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
+                </div>
+                <div class="package-card">
+                    <h4>باقة 6000</h4>
+                    <div class="package-price">6000 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(6000, '6000')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
+                </div>
+                <div class="package-card">
+                    <h4>باقة 8000</h4>
+                    <div class="package-price">8000 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(8000, '8000')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
+                </div>
+                <div class="package-card">
+                    <h4>باقة 12000 VIP</h4>
+                    <div class="package-price">12000 ج.م</div>
+                    <p style="font-size: 11px; color: var(--text-muted);">عائد 5% يومياً على 5 مهام</p>
+                    <button onclick="subscribePackage(12000, '12000 VIP')" class="btn-submit" style="margin-top: 8px; padding: 6px;">اشتراك</button>
                 </div>
             </div>
-            <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
+            <button onclick="closePackagesModal()" class="btn-submit" style="background:#475569; margin-top:10px;">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- مودال تعديل الملف الشخصي -->
+    <div id="profileModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-user-gear"></i> تعديل الملف الشخصي</h3>
+            <div class="form-group">
+                <label>رقم الموبايل (ثابت ولا يمكن تغييره):</label>
+                <input type="text" id="modalUserPhone" readonly style="color:var(--accent); font-weight:bold;">
+            </div>
+            <div class="form-group">
+                <label>تعديل اسم المستخدم:</label>
+                <input type="text" id="editNameInput" placeholder="اسمك الكريم">
+            </div>
+            <div class="form-group">
+                <label>تغيير الصورة الشخصية:</label>
+                <input type="file" id="editAvatarInput" accept="image/*">
+            </div>
+            <div style="display:flex; gap:10px; margin-top:15px;">
+                <button onclick="saveProfileChanges()" class="btn-submit">حفظ التغييرات</button>
+                <button onclick="closeProfileModal()" class="btn-submit" style="background:#475569;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال معلومات المنصة -->
+    <div id="infoModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color:var(--accent); margin-bottom:10px; text-align:center;"><i class="fa-solid fa-shield-halved"></i> عن منصة تسوق بلس (Tasawwoq Plus)</h3>
+            <p style="font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 12px;">
+                تأسست منصة <strong>تسوق بلس</strong> كشركة أمريكية عالمية رائدة في مجالات الاستثمار الرقمي، تقييم المنتجات، وزيادة المبيعات الإلكترونية الذكية.
+            </p>
+            <p style="font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 12px;">
+                🏢 <strong>فرع جمهورية مصر العربية:</strong> يُدار الفرع الرسمي في مصر عبر طاقم وموظفين مصريين محترفين يعملون على مدار الساعة للتحقق من المهام وإرسال كافة الأرباح والسحوبات بانتظام عبر الحسابات والمحافظ الرسمية المعتمدة لضمان أمان تام وسرعة التحويل.
+            </p>
+            <p style="font-size: 12px; color: var(--success); text-align:center; font-weight:bold;">
+                🔒 أمان تام 100% - جميع حقوقك وأرباحك محفوظة بحماية عالمية.
+            </p>
+            <button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">حسناً، فهمت</button>
         </div>
     </div>
 
@@ -554,13 +794,10 @@
                 balance: 0,
                 deposit: 0,
                 profit: 0,
-                withdrawn: 0,
-                subscribedPackage: 'لا يوجد',
-                joinDate: new Date().toLocaleDateString('ar-EG'),
-                avatar: 'https://via.placeholder.com/150',
                 subscribed: false,
                 tasksCount: 5,
                 completedTasks: {},
+                avatar: 'https://via.placeholder.com/150',
                 withdrawRequest: null,
                 withdrawStatus: 'لا يوجد'
             };
@@ -594,19 +831,16 @@
                 balance: 50,
                 deposit: 0,
                 profit: 0,
-                withdrawn: 0,
-                subscribedPackage: 'غير مشترك',
-                joinDate: new Date().toLocaleDateString('ar-EG'),
-                avatar: 'https://via.placeholder.com/150',
                 subscribed: false,
                 tasksCount: 5,
                 completedTasks: {},
+                avatar: 'https://via.placeholder.com/150',
                 withdrawRequest: null,
                 withdrawStatus: 'لا يوجد'
             };
             saveDB();
 
-            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية.');
+            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية. يمكنك تسجيل الدخول الآن.');
             showLogin();
         }
 
@@ -628,6 +862,7 @@
             document.getElementById('bottomNav').classList.remove('hidden');
 
             if(phone === '01032315526') {
+                document.getElementById('adminSection').classList.remove('hidden');
                 document.getElementById('adminNavBtn').classList.remove('hidden');
                 renderAdminPanel();
             }
@@ -635,115 +870,141 @@
 
         function loadUserData() {
             const data = usersDB[currentUserPhone];
-            document.getElementById('chargeBalVal').innerText = data.balance.toFixed(2);
-            document.getElementById('profitBalVal').innerText = data.profit.toFixed(2);
-            document.getElementById('withdrawnTotalVal').innerText = (data.withdrawn || 0).toFixed(2);
-
-            document.getElementById('accountName').innerText = data.name;
-            document.getElementById('accountPhone').innerText = currentUserPhone;
-            document.getElementById('accountId').innerText = currentUserPhone.slice(-6) + '8';
-            document.getElementById('accountJoinDate').innerText = data.joinDate || '2025/01/01';
-            document.getElementById('accountPackage').innerText = data.subscribedPackage || 'غير مشترك';
-            document.getElementById('userAvatarImg').src = data.avatar || 'https://via.placeholder.com/150';
-
+            document.getElementById('displayName').innerText = data.name;
+            document.getElementById('displayPhone').innerText = `الموبايل: ${currentUserPhone}`;
+            document.getElementById('balanceVal').innerText = data.balance + ' ج.م';
+            document.getElementById('depositVal').innerText = data.deposit + ' ج.م';
+            document.getElementById('profitVal').innerText = data.profit + ' ج.م';
             document.getElementById('tasksLeft').innerText = data.tasksCount;
+            document.getElementById('userAvatar').src = data.avatar;
+
+            if(data.subscribed) {
+                document.getElementById('subBadge').classList.remove('hidden');
+            }
+
+            updateTasksButtons();
             updateUserWithdrawUI();
+            checkWithdrawDay();
         }
 
-        function switchTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(t => t.classList.add('hidden'));
+        function updateTasksButtons() {
+            const u = usersDB[currentUserPhone];
+            const todayKey = new Date().toISOString().split('T')[0];
+            if (!u.completedTasks) u.completedTasks = {};
 
-            const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(b => b.classList.remove('active'));
-
-            if (tabName === 'home') {
-                document.getElementById('tabHome').classList.remove('hidden');
-            } else if (tabName === 'account') {
-                document.getElementById('tabAccount').classList.remove('hidden');
-            } else if (tabName === 'tasks') {
-                document.getElementById('tabTasks').classList.remove('hidden');
-            } else if (tabName === 'transactions') {
-                document.getElementById('tabTransactions').classList.remove('hidden');
-            } else if (tabName === 'admin') {
-                document.getElementById('tabAdmin').classList.remove('hidden');
+            for (let i = 1; i <= 5; i++) {
+                const btn = document.getElementById(`taskBtn${i}`);
+                if (btn) {
+                    if (u.completedTasks[todayKey] && u.completedTasks[todayKey].includes(i)) {
+                        btn.disabled = true;
+                        btn.innerText = "مكتملة اليوم ✓";
+                        btn.style.background = "#475569";
+                    } else {
+                        btn.disabled = false;
+                        btn.innerText = "تنفيذ المهمة (+5%)";
+                        btn.style.background = "";
+                    }
+                }
             }
         }
 
-        function uploadUserAvatar(e) {
-            const file = e.target.files[0];
-            if (file) {
+        function doTask(taskId) {
+            const user = usersDB[currentUserPhone];
+            if (!user.subscribed) {
+                alert('يجب الاشتراك في إحدى الباقات أولاً لتنفيذ المهمات!');
+                return;
+            }
+            
+            const todayKey = new Date().toISOString().split('T')[0];
+            if (!user.completedTasks) user.completedTasks = {};
+            if (!user.completedTasks[todayKey]) user.completedTasks[todayKey] = [];
+
+            if (user.completedTasks[todayKey].includes(taskId)) {
+                alert('لقد قمت بتنفيذ هذه المهمة اليوم بالفعل!');
+                return;
+            }
+
+            if (user.tasksCount <= 0) {
+                alert('استنفذت مهامك اليومية الـ 5!');
+                return;
+            }
+
+            const earned = user.deposit * 0.05;
+            user.profit += earned;
+            user.tasksCount -= 1;
+            user.completedTasks[todayKey].push(taskId);
+
+            saveDB();
+            loadUserData();
+            alert(`مبروك! تمت المهمة بنجاح وربحت ${earned} ج.م تمت إضافتها لأرباحك اليومية.`);
+        }
+
+        function openProfileModal() {
+            document.getElementById('modalUserPhone').value = currentUserPhone;
+            document.getElementById('editNameInput').value = usersDB[currentUserPhone].name;
+            document.getElementById('profileModal').classList.remove('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+
+        function saveProfileChanges() {
+            const newName = document.getElementById('editNameInput').value.trim();
+            const avatarFile = document.getElementById('editAvatarInput').files[0];
+
+            if (!newName) {
+                alert('يرجى كتابة اسم صحيح!');
+                return;
+            }
+
+            usersDB[currentUserPhone].name = newName;
+
+            if (avatarFile) {
                 const reader = new FileReader();
                 reader.onload = function(evt) {
                     usersDB[currentUserPhone].avatar = evt.target.result;
                     saveDB();
                     loadUserData();
-                    alert('تم تغيير الصورة الشخصية بنجاح!');
+                    closeProfileModal();
+                    alert('تم تحديث الملف الشخصي بنجاح!');
                 };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function editUserName() {
-            const newName = prompt("ادخل الاسم الجديد:", usersDB[currentUserPhone].name);
-            if (newName && newName.trim() !== "") {
-                usersDB[currentUserPhone].name = newName.trim();
+                reader.readAsDataURL(avatarFile);
+            } else {
                 saveDB();
                 loadUserData();
-                alert('تم تعديل الاسم بنجاح!');
+                closeProfileModal();
+                alert('تم تحديث الملف الشخصي بنجاح!');
             }
         }
 
-        function handleLogout() {
-            currentUserPhone = null;
-            document.getElementById('appScreen').classList.add('hidden');
-            document.getElementById('bottomNav').classList.add('hidden');
-            document.getElementById('loginScreen').classList.remove('hidden');
+        function openPackagesModal() {
+            document.getElementById('packagesModal').classList.remove('hidden');
+        }
+        function closePackagesModal() {
+            document.getElementById('packagesModal').classList.add('hidden');
         }
 
-        function openPackagesModal() { document.getElementById('packagesModal').classList.remove('hidden'); }
-        function closePackagesModal() { document.getElementById('packagesModal').classList.add('hidden'); }
-
-        function subscribePackage(price, name) {
-            const user = usersDB[currentUserPhone];
-            if (user.balance < price) {
-                alert(`رصيدك المتاح (${user.balance} ج.م) غير كافٍ للاشتراك! يرجى التواصل مع الأدمن للشحن.`);
-                return;
-            }
-            user.balance -= price;
-            user.deposit += price;
-            user.subscribed = true;
-            user.subscribedPackage = `باقة ${name} ج.م`;
-            saveDB();
-            loadUserData();
-            closePackagesModal();
-            alert(`تم الاشتراك بنجاح في باقة ${name} ج.م!`);
+        function openInfoModal() {
+            document.getElementById('infoModal').classList.remove('hidden');
+        }
+        function closeInfoModal() {
+            document.getElementById('infoModal').classList.add('hidden');
         }
 
-        function requestWithdrawal() {
+        function scrollToAdmin() {
+            document.getElementById('adminSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function checkWithdrawDay() {
             const today = new Date().getDay();
-            if (today !== 0 && today !== 3) {
-                alert('طلب السحب متاح يومي الأحد والأربعاء فقط!');
-                return;
-            }
-
-            const user = usersDB[currentUserPhone];
-            if (user.withdrawRequest) {
-                alert('لديك طلب سحب قيد المراجعة بالفعل!');
-                return;
-            }
-
-            const amount = parseFloat(prompt("ادخل المبلغ المراد سحبه:"));
-            if (amount && !isNaN(amount)) {
-                if (user.profit < amount && user.balance < amount) {
-                    alert('رصيدك غير كافٍ!');
-                    return;
-                }
-                user.withdrawRequest = amount;
-                user.withdrawStatus = 'قيد المراجعة من الأدمن';
-                saveDB();
-                loadUserData();
-                alert(`تم إرسال طلب سحب بقيمة ${amount} ج.م بنجاح!`);
+            const btn = document.getElementById('withdrawBtn');
+            if (today === 0 || today === 3) {
+                btn.disabled = false;
+                btn.innerText = "إرسال طلب السحب للمسئول";
+            } else {
+                btn.disabled = true;
+                btn.innerText = "السحب متاح يومي الأحد والأربعاء فقط";
             }
         }
 
@@ -751,10 +1012,44 @@
             const data = usersDB[currentUserPhone];
             const statusDiv = document.getElementById('userWithdrawStatus');
             if (data.withdrawRequest) {
-                statusDiv.innerHTML = `مبلغ السحب: <strong>${data.withdrawRequest} ج.م</strong> - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
+                statusDiv.innerHTML = `مبلغ ${data.withdrawRequest} ج.م - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
             } else {
                 statusDiv.innerHTML = `لا توجد طلبات سحب معلقة حالياً.`;
             }
+        }
+
+        function subscribePackage(price, name) {
+            const user = usersDB[currentUserPhone];
+            if (user.balance < price) {
+                alert(`رصيدك المتاح (${user.balance} ج.م) غير كافٍ للاشتراك في باقة ${name} ج.م! تواصل مع الدعم للشحن.`);
+                return;
+            }
+            user.balance -= price;
+            user.deposit += price;
+            user.subscribed = true;
+            saveDB();
+            loadUserData();
+            closePackagesModal();
+            alert(`تم الاشتراك بنجاح في باقة ${name} ج.م!`);
+        }
+
+        function requestWithdrawal() {
+            const user = usersDB[currentUserPhone];
+            if (user.withdrawRequest) {
+                alert('لديك طلب سحب قيد المراجعة بالفعل!');
+                return;
+            }
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            if (user.profit < amount && user.balance < amount) {
+                alert('رصيدك غير كافٍ لهذا المبلغ!');
+                return;
+            }
+
+            user.withdrawRequest = amount;
+            user.withdrawStatus = 'قيد المراجعة من الأدمن';
+            saveDB();
+            loadUserData();
+            alert(`تم إرسال طلب سحب بقيمة ${amount} ج.م للمسئول بنجاح!`);
         }
 
         function renderAdminPanel() {
@@ -764,13 +1059,13 @@
                 const u = usersDB[phoneKey];
                 tbody.innerHTML += `
                     <tr>
-                        <td>${u.name} <br><span style="color:var(--neon-green);">${phoneKey}</span></td>
-                        <td>${u.balance.toFixed(2)} ج.م</td>
-                        <td>${u.deposit.toFixed(2)} ج.م</td>
-                        <td>${u.profit.toFixed(2)} ج.م</td>
-                        <td>${(u.withdrawn || 0).toFixed(2)} ج.م</td>
+                        <td>${u.name} <br><span style="color:var(--accent);">${phoneKey}</span></td>
+                        <td>${u.balance} ج.م</td>
+                        <td>${u.deposit} ج.م</td>
+                        <td>${u.profit} ج.م</td>
+                        <td style="color:var(--accent);">${u.withdrawRequest ? u.withdrawRequest + ' ج.م (' + u.withdrawStatus + ')' : 'لا يوجد'}</td>
                         <td>
-                            <button onclick="adminAction('${phoneKey}', 'charge')" style="background:var(--neon-green); color:#000; border:none; padding:4px 6px; border-radius:4px; font-weight:bold; cursor:pointer;">شحن</button>
+                            <button onclick="adminAction('${phoneKey}', 'charge')" style="background:var(--success); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">شحن</button>
                             <button onclick="adminAction('${phoneKey}', 'deduct')" style="background:var(--danger); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">خصم</button>
                             ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${phoneKey}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة</button>` : ''}
                         </td>
@@ -797,13 +1092,11 @@
         function adminApproveWithdraw(phoneKey) {
             const u = usersDB[phoneKey];
             if (u.withdrawRequest) {
-                const reqAmt = u.withdrawRequest;
-                if (u.profit >= reqAmt) {
-                    u.profit -= reqAmt;
+                if (u.profit >= u.withdrawRequest) {
+                    u.profit -= u.withdrawRequest;
                 } else {
-                    u.balance = Math.max(0, u.balance - reqAmt);
+                    u.balance = Math.max(0, u.balance - u.withdrawRequest);
                 }
-                u.withdrawn = (u.withdrawn || 0) + reqAmt;
                 u.withdrawStatus = 'تم السحب بنجاح 🎉';
                 u.withdrawRequest = null;
                 saveDB();
@@ -816,6 +1109,24 @@
         function saveDB() {
             localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
         }
+
+        setInterval(() => {
+            const ticker = document.getElementById('dynamicTicker');
+            if (ticker) {
+                const rNum = Math.floor(100 + Math.random() * 899);
+                const rVal = (Math.random() * 600).toFixed(1);
+                const randType = Math.random();
+                let msg = "";
+                if(randType < 0.33) {
+                    msg = `🎉 مبروك تم الاشتراك في باقة ${rVal > 300 ? 1500 : 800} ج.م (رقم: 010****${rNum})`;
+                } else if(randType < 0.66) {
+                    msg = `💸 تم إرسال الأرباح المستحقة بقيمة ${rVal} ج.م بنجاح`;
+                } else {
+                    msg = `🌟 مبروك تم إرسال المكافأة الترحيبية بقيمة 50 ج.م للرقم 011****${rNum}`;
+                }
+                ticker.innerHTML += `<div class="ticker-item">${msg}</div>`;
+            }
+        }, 7000);
     </script>
 </body>
 </html>
