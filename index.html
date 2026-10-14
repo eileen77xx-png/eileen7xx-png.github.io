@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك عمودياً إلى الأعلى --- */
+        /* --- الشريط المتحرك عمودياً --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -152,10 +152,10 @@
             <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
             <p class="welcome-desc">أنشئ حسابك الجديد الآن!</p>
             <div id="registerForm">
-                <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" required placeholder="اسمك الكريم"></div>
-                <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="regPhone" required placeholder="ادخل رقم الموبايل"></div>
-                <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" required placeholder="********"></div>
-                <button type="button" onclick="handleRegister()" class="btn-submit">تسجيل حساب جديد والدخول فوراً</button>
+                <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
+                <div class="form-group"><label>رقم الموبايل</label><input type="tel" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
+                <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
+                <button type="button" id="regBtn" class="btn-submit">تسجيل حساب جديد والدخول فوراً</button>
             </div>
             <div class="switch-auth">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
         </div>
@@ -336,7 +336,7 @@
 
     <div id="infoModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;">معلومات المنصة</h3><p style="font-size: 13px; line-height: 1.6;">منصة تسوق بلس تتيح لك تنفيذ المهام اليومية والحصول على الأرباح بانتظام.</p><button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button></div></div>
 
-    <!-- السكريبت البرمجي الكامل والمكتمل -->
+    <!-- السكريبت البرمجي -->
     <script>
         let currentUserPhone = null;
         let usersDB = {};
@@ -347,7 +347,6 @@
             usersDB = {};
         }
 
-        // إنشاء حساب الأدمن الافتراضي إن لم يكن موجوداً
         if (!usersDB['01032315526']) {
             usersDB['01032315526'] = {
                 name: 'صاحب الشركة',
@@ -389,14 +388,17 @@
             const phoneInput = document.getElementById('regPhone');
             const passwordInput = document.getElementById('regPassword');
 
-            if (!nameInput || !phoneInput || !passwordInput) return;
+            if (!nameInput || !phoneInput || !passwordInput) {
+                alert('عذراً، حقول الإدخال غير موجودة!');
+                return;
+            }
 
             const name = nameInput.value.trim();
             const phone = phoneInput.value.trim();
             const password = passwordInput.value.trim();
 
             if (!name || !phone || !password) {
-                alert('يرجى ملء جميع الحقول المطلوبة!');
+                alert('يرجى ملء جميع الحقول (الاسم، رقم الموبايل، كلمة السر)!');
                 return;
             }
 
@@ -435,6 +437,14 @@
 
             alert('تم إنشاء الحساب بنجاح! أهلاً بك في منصة تسوق بلس 🇪🇬');
         }
+
+        // ربط الحدث مباشرة عند تحميل الصفحة لضمان الاستجابة
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('regBtn');
+            if(btn) {
+                btn.addEventListener('click', handleRegister);
+            }
+        });
 
         function handleLogin(e) {
             e.preventDefault();
@@ -723,9 +733,4 @@
             const tbody = document.getElementById('adminUserTable');
             if(!tbody) return;
             tbody.innerHTML = '';
-            for (let phoneKey in usersDB) {
-                const u = usersDB[phoneKey];
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${u.name} <br><span style="color:var(--neon-green);">${phoneKey}</span></td>
-                        <td>${(u.balance || 0).toFixed(2)} ج.م</td
+            for (let phoneKey in usersDB)
