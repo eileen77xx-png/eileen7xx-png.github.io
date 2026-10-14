@@ -31,7 +31,6 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding-bottom: 70px; /* مساحة للشريط السفلي الثابت */
         }
 
         .auth-container {
@@ -221,64 +220,100 @@
             margin-top: 3px;
         }
 
-        /* شريط مصر المتحرك */
-        .egypt-ticker-container {
-            background: #1e1b4b;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        /* ----- تصميم علم مصر والمتحرك الجديد (يرفرف ببطء) ----- */
+        .egypt-bar-wrapper {
+            width: 100%;
+            background: #0b0f19;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--accent);
             display: flex;
             align-items: center;
+            height: 44px;
             overflow: hidden;
-            height: 40px;
+            position: relative;
         }
 
-        .egypt-badge {
-            background: linear-gradient(135deg, #ce1126, #000000);
-            color: white;
-            padding: 0 12px;
-            font-size: 13px;
-            font-weight: bold;
+        /* تصميم علم مصر ذو 3 ألوان مع النسر وتأثير الرفرفة البطيئة */
+        .waving-flag-box {
+            width: 55px;
+            height: 32px;
+            margin: 0 10px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            flex-shrink: 0;
+            z-index: 5;
+            /* حركة الرفرفة البطيئة والناعمة */
+            animation: flagWave 3.5s ease-in-out infinite alternate;
+            transform-origin: left center;
+        }
+
+        .flag-stripe {
+            width: 100%;
+            height: 33.33%;
+        }
+        .stripe-red { background: #ce1126; }
+        .stripe-white { 
+            background: #ffffff; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .stripe-black { background: #000000; }
+
+        /* نسر علم مصر */
+        .eagle-icon {
+            font-size: 9px;
+            color: #c09300;
+        }
+
+        /* كود انيميشن الرفرفة البطيئة للعلم */
+        @keyframes flagWave {
+            0% {
+                transform: skewY(0deg) scaleY(1);
+            }
+            50% {
+                transform: skewY(2deg) scaleY(1.03);
+            }
+            100% {
+                transform: skewY(-2deg) scaleY(0.97);
+            }
+        }
+
+        /* الشريط المتحرك المستمر المستقل */
+        .ticker-container {
+            flex-grow: 1;
+            overflow: hidden;
+            white-space: nowrap;
             height: 100%;
             display: flex;
             align-items: center;
-            gap: 6px;
-            border-left: 2px solid var(--accent);
-            white-space: nowrap;
-            z-index: 2;
-            animation: flagPulse 2s infinite alternate;
         }
 
-        @keyframes flagPulse {
-            0% { opacity: 0.9; }
-            100% { opacity: 1; text-shadow: 0 0 8px var(--accent); }
-        }
-
-        .ticker-wrap {
-            flex-grow: 1;
-            overflow: hidden;
-            height: 40px;
-            line-height: 40px;
-        }
-
-        .ticker {
+        .ticker-track {
             display: inline-block;
             white-space: nowrap;
             padding-right: 100%;
-            animation: ticker 30s linear infinite;
+            animation: scrollTicker 28s linear infinite;
         }
 
         .ticker-item {
             display: inline-block;
-            padding: 0 25px;
-            font-size: 12px;
-            color: #fbbf24;
+            padding: 0 20px;
+            font-size: 13px;
+            color: #facc15;
+            font-weight: 500;
         }
 
-        @keyframes ticker {
+        @keyframes scrollTicker {
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-100%, 0, 0); }
         }
 
-        /* الشريط السفلي العائم */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
@@ -315,7 +350,7 @@
         .main-content {
             max-width: 800px;
             margin: 15px auto;
-            padding: 0 12px;
+            padding: 0 12px 80px 12px;
             flex-grow: 1;
             width: 100%;
         }
@@ -447,12 +482,12 @@
     <div id="loginScreen" class="auth-container">
         <div class="auth-content" style="padding-top: 30px;">
             <h2 class="welcome-title">تسجيل الدخول - تسوق بلس</h2>
-            <p class="welcome-desc">أهلاً بك مجدداً! أدخل رقم حسابك وكلمة السر.</p>
+            <p class="welcome-desc">أهلاً بك مجدداً! أدخل رقم الموبايل وكلمة السر.</p>
             
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label>رقم المستخدم (المعرف)</label>
-                    <input type="text" id="loginUsername" required placeholder="مثال: 010xxxxxx أو رقمك">
+                    <label>رقم الموبايل</label>
+                    <input type="tel" id="loginPhone" required placeholder="ادخل رقم الموبايل">
                 </div>
                 <div class="form-group">
                     <label>كلمة السر</label>
@@ -475,15 +510,15 @@
             
             <form onsubmit="handleRegister(event)">
                 <div class="form-group">
-                    <label>اختر اسم المستخدم</label>
+                    <label>اسم المستخدم</label>
                     <input type="text" id="regName" required placeholder="اسمك الكريم">
                 </div>
                 <div class="form-group">
-                    <label>رقم المستخدم الفريد (يتم توليده تلقائياً)</label>
-                    <input type="text" id="regUsername" readonly style="color:var(--accent); font-weight:bold;">
+                    <label>رقم الموبايل</label>
+                    <input type="tel" id="regPhone" required placeholder="ادخل رقم الموبايل">
                 </div>
                 <div class="form-group">
-                    <label>أنشئ كلمة السر</label>
+                    <label>كلمة السر</label>
                     <input type="password" id="regPassword" required placeholder="********">
                 </div>
                 <button type="submit" class="btn-submit">تسجيل حساب جديد (+50 ج.م هدية)</button>
@@ -507,7 +542,7 @@
                             <span id="displayName" class="user-name-display">اسم المستخدم</span>
                             <span id="subBadge" class="badge-active hidden">مشترك</span>
                         </div>
-                        <div id="displayId" class="user-id-display">الرقم: 000000</div>
+                        <div id="displayPhone" class="user-id-display">الموبايل: 01000000000</div>
                     </div>
                 </div>
 
@@ -529,16 +564,23 @@
             </div>
         </header>
 
-        <!-- شريط مصر المتحرك والأرباح المستمرة -->
-        <div class="egypt-ticker-container">
-            <div class="egypt-badge">
-                <span>🇪🇬 مصر</span>
+        <!-- علم مصر المتحرك المصمم خصيصاً مع الشريط الجانبي -->
+        <div class="egypt-bar-wrapper">
+            <!-- علم مصر الذي يرفرف ببطء -->
+            <div class="waving-flag-box" title="علم جمهورية مصر العربية">
+                <div class="flag-stripe stripe-red"></div>
+                <div class="flag-stripe stripe-white">
+                    <i class="fa-solid fa-feather-pointed eagle-icon"></i>
+                </div>
+                <div class="flag-stripe stripe-black"></div>
             </div>
-            <div class="ticker-wrap">
-                <div class="ticker" id="dynamicTicker">
-                    <div class="ticker-item">🎉 مبروك تم الاشتراك في باقة 1500 ج.م (رقم: 84)</div>
+
+            <!-- الشريط المتحرك للأرباح والإشعارات -->
+            <div class="ticker-container">
+                <div class="ticker-track" id="dynamicTicker">
+                    <div class="ticker-item">🎉 مبروك تم الاشتراك في باقة 1500 ج.م (رقم: 010****391)</div>
                     <div class="ticker-item">💸 تم إرسال الأرباح بنجاح بقيمة 425.5 ج.م</div>
-                    <div class="ticker-item">🌟 مبروك تم ارسال المكافأة بقيمة 50.3 ج.م</div>
+                    <div class="ticker-item">🌟 مبروك تم إرسال المكافأة الترحيبية بقيمة 50 ج.م للرقم 011****821</div>
                 </div>
             </div>
         </div>
@@ -593,7 +635,7 @@
                 </button>
             </section>
 
-            <!-- قسم السحب والمعاملات -->
+            <!-- قسم السحب ومعاملات المستخدم -->
             <section style="margin-bottom: 25px;">
                 <h3 class="section-title"><i class="fa-solid fa-wallet"></i> طلب سحب الأرباح (الأحد والأربعاء فقط)</h3>
                 <div class="package-card" style="text-align: right;">
@@ -622,7 +664,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>رقم / اسم المستخدم</th>
+                            <th>الاسم / رقم الموبايل</th>
                             <th>المتاح</th>
                             <th>الوديعة</th>
                             <th>الأرباح</th>
@@ -636,8 +678,8 @@
         </main>
     </div>
 
-    <!-- الشريط السفلي الثابت (الباقات، الدعم، معلومات المنصة، الإدارة) -->
-    <nav class="bottom-nav">
+    <!-- الشريط السفلي الثابت -->
+    <nav id="bottomNav" class="bottom-nav hidden">
         <button class="nav-item" onclick="openPackagesModal()">
             <i class="fa-solid fa-box-open"></i>
             <span>الباقات</span>
@@ -656,7 +698,7 @@
         </button>
     </nav>
 
-    <!-- مودال الباقات المجمع (من 300 إلى 12000) -->
+    <!-- مودال الباقات المجمع -->
     <div id="packagesModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--accent); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-gem"></i> باقات الشحن والاشتراك</h3>
@@ -714,13 +756,13 @@
         </div>
     </div>
 
-    <!-- مودال تعديل الملف الشخصي (الاسم فقط، الرقم ثابت) -->
+    <!-- مودال تعديل الملف الشخصي -->
     <div id="profileModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-user-gear"></i> تعديل الملف الشخصي</h3>
             <div class="form-group">
-                <label>رقم المستخدم (ثابت ولا يمكن تغييره):</label>
-                <input type="text" id="modalUserId" readonly style="color:var(--accent); font-weight:bold;">
+                <label>رقم الموبايل (ثابت ولا يمكن تغييره):</label>
+                <input type="text" id="modalUserPhone" readonly style="color:var(--accent); font-weight:bold;">
             </div>
             <div class="form-group">
                 <label>تعديل اسم المستخدم:</label>
@@ -737,7 +779,7 @@
         </div>
     </div>
 
-    <!-- مودال معلومات المنصة وأمان الشركة -->
+    <!-- مودال معلومات المنصة -->
     <div id="infoModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--accent); margin-bottom:10px; text-align:center;"><i class="fa-solid fa-shield-halved"></i> عن منصة تسوق بلس (Tasawwoq Plus)</h3>
@@ -755,10 +797,9 @@
     </div>
 
     <script>
-        let currentUserKey = null; // يمثل رقم المستخدم الثابت
+        let currentUserPhone = null;
         let usersDB = JSON.parse(localStorage.getItem('tasawuq_users')) || {};
 
-        // الأدمن الأساسي بصلاحيات كاملة وشحن لنفسه
         if (!usersDB['01032315526']) {
             usersDB['01032315526'] = {
                 name: 'صاحب الشركة',
@@ -776,15 +817,9 @@
             saveDB();
         }
 
-        // توليد رقم مستخدم عشوائي فريد عند فتح صفحة التسجيل
-        function generateUserId() {
-            return '01' + Math.floor(10000000 + Math.random() * 90000000);
-        }
-
         function showRegister() {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('registerScreen').classList.remove('hidden');
-            document.getElementById('regUsername').value = generateUserId();
         }
 
         function showLogin() {
@@ -795,16 +830,15 @@
         function handleRegister(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value.trim();
-            const phoneId = document.getElementById('regUsername').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
             const password = document.getElementById('regPassword').value.trim();
 
-            if (usersDB[phoneId]) {
-                alert('رقم المستخدم موجود مسبقاً!');
+            if (usersDB[phone]) {
+                alert('رقم الموبايل مسجل بالفعل!');
                 return;
             }
 
-            // مكافأة 50 ج.م للمستخدم الجديد
-            usersDB[phoneId] = {
+            usersDB[phone] = {
                 name: name,
                 password: password,
                 balance: 50,
@@ -819,26 +853,28 @@
             };
             saveDB();
 
-            alert(`تم إنشاء الحساب بنجاح! رقم حسابك التعريفي هو: ${phoneId}. تم إضافة 50 ج.م مكافأة ترحيبية.`);
+            alert('تم إنشاء الحساب بنجاح! تم إضافة 50 ج.م مكافأة ترحيبية. يمكنك تسجيل الدخول الآن.');
             showLogin();
         }
 
         function handleLogin(e) {
             e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
+            const phone = document.getElementById('loginPhone').value.trim();
             const password = document.getElementById('loginPassword').value.trim();
 
-            if (!usersDB[username] || usersDB[username].password !== password) {
-                alert('رقم المستخدم أو كلمة السر غير صحيحة!');
+            if (!usersDB[phone] || usersDB[phone].password !== password) {
+                alert('رقم الموبايل أو كلمة السر غير صحيحة!');
                 return;
             }
 
-            currentUserKey = username;
+            currentUserPhone = phone;
             loadUserData();
+            
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('appScreen').classList.remove('hidden');
+            document.getElementById('bottomNav').classList.remove('hidden');
 
-            if(username === '01032315526') {
+            if(phone === '01032315526') {
                 document.getElementById('adminSection').classList.remove('hidden');
                 document.getElementById('adminNavBtn').classList.remove('hidden');
                 renderAdminPanel();
@@ -846,9 +882,9 @@
         }
 
         function loadUserData() {
-            const data = usersDB[currentUserKey];
+            const data = usersDB[currentUserPhone];
             document.getElementById('displayName').innerText = data.name;
-            document.getElementById('displayId').innerText = `الرقم: ${currentUserKey}`;
+            document.getElementById('displayPhone').innerText = `الموبايل: ${currentUserPhone}`;
             document.getElementById('balanceVal').innerText = data.balance + ' ج.م';
             document.getElementById('depositVal').innerText = data.deposit + ' ج.م';
             document.getElementById('profitVal').innerText = data.profit + ' ج.م';
@@ -865,7 +901,7 @@
         }
 
         function updateTasksButtons() {
-            const u = usersDB[currentUserKey];
+            const u = usersDB[currentUserPhone];
             const todayKey = new Date().toISOString().split('T')[0];
             if (!u.completedTasks) u.completedTasks = {};
 
@@ -886,7 +922,7 @@
         }
 
         function doTask(taskId) {
-            const user = usersDB[currentUserKey];
+            const user = usersDB[currentUserPhone];
             if (!user.subscribed) {
                 alert('يجب الاشتراك في إحدى الباقات أولاً لتنفيذ المهمات!');
                 return;
@@ -916,10 +952,9 @@
             alert(`مبروك! تمت المهمة بنجاح وربحت ${earned} ج.م تمت إضافتها لأرباحك اليومية.`);
         }
 
-        /* تعديل الاسم والصورة (الرقم ثابت لا يتبدل) */
         function openProfileModal() {
-            document.getElementById('modalUserId').value = currentUserKey;
-            document.getElementById('editNameInput').value = usersDB[currentUserKey].name;
+            document.getElementById('modalUserPhone').value = currentUserPhone;
+            document.getElementById('editNameInput').value = usersDB[currentUserPhone].name;
             document.getElementById('profileModal').classList.remove('hidden');
         }
 
@@ -936,12 +971,12 @@
                 return;
             }
 
-            usersDB[currentUserKey].name = newName;
+            usersDB[currentUserPhone].name = newName;
 
             if (avatarFile) {
                 const reader = new FileReader();
                 reader.onload = function(evt) {
-                    usersDB[currentUserKey].avatar = evt.target.result;
+                    usersDB[currentUserPhone].avatar = evt.target.result;
                     saveDB();
                     loadUserData();
                     closeProfileModal();
@@ -987,7 +1022,7 @@
         }
 
         function updateUserWithdrawUI() {
-            const data = usersDB[currentUserKey];
+            const data = usersDB[currentUserPhone];
             const statusDiv = document.getElementById('userWithdrawStatus');
             if (data.withdrawRequest) {
                 statusDiv.innerHTML = `مبلغ ${data.withdrawRequest} ج.م - الحالة: <span style="color:var(--accent);">${data.withdrawStatus}</span>`;
@@ -997,7 +1032,7 @@
         }
 
         function subscribePackage(price, name) {
-            const user = usersDB[currentUserKey];
+            const user = usersDB[currentUserPhone];
             if (user.balance < price) {
                 alert(`رصيدك المتاح (${user.balance} ج.م) غير كافٍ للاشتراك في باقة ${name} ج.م! تواصل مع الدعم للشحن.`);
                 return;
@@ -1012,7 +1047,7 @@
         }
 
         function requestWithdrawal() {
-            const user = usersDB[currentUserKey];
+            const user = usersDB[currentUserPhone];
             if (user.withdrawRequest) {
                 alert('لديك طلب سحب قيد المراجعة بالفعل!');
                 return;
@@ -1033,42 +1068,42 @@
         function renderAdminPanel() {
             const tbody = document.getElementById('adminUserTable');
             tbody.innerHTML = '';
-            for (let uname in usersDB) {
-                const u = usersDB[uname];
+            for (let phoneKey in usersDB) {
+                const u = usersDB[phoneKey];
                 tbody.innerHTML += `
                     <tr>
-                        <td>${u.name} <br><span style="color:var(--accent);">${uname}</span></td>
+                        <td>${u.name} <br><span style="color:var(--accent);">${phoneKey}</span></td>
                         <td>${u.balance} ج.م</td>
                         <td>${u.deposit} ج.م</td>
                         <td>${u.profit} ج.م</td>
                         <td style="color:var(--accent);">${u.withdrawRequest ? u.withdrawRequest + ' ج.م (' + u.withdrawStatus + ')' : 'لا يوجد'}</td>
                         <td>
-                            <button onclick="adminAction('${uname}', 'charge')" style="background:var(--success); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">شحن</button>
-                            <button onclick="adminAction('${uname}', 'deduct')" style="background:var(--danger); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">خصم</button>
-                            ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${uname}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة</button>` : ''}
+                            <button onclick="adminAction('${phoneKey}', 'charge')" style="background:var(--success); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">شحن</button>
+                            <button onclick="adminAction('${phoneKey}', 'deduct')" style="background:var(--danger); color:white; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">خصم</button>
+                            ${u.withdrawRequest && u.withdrawStatus.includes('قيد المراجعة') ? `<button onclick="adminApproveWithdraw('${phoneKey}')" style="background:var(--accent); color:black; border:none; padding:4px 6px; border-radius:4px; cursor:pointer;">موافقة</button>` : ''}
                         </td>
                     </tr>
                 `;
             }
         }
 
-        function adminAction(uname, type) {
-            const amount = parseFloat(prompt(`ادخل المبلغ المراد ${type === 'charge' ? 'شحنه لـ' : 'خصمه من'} المستخدم ${uname}:`));
+        function adminAction(phoneKey, type) {
+            const amount = parseFloat(prompt(`ادخل المبلغ المراد ${type === 'charge' ? 'شحنه لـ' : 'خصمه من'} الرقم ${phoneKey}:`));
             if (amount && !isNaN(amount)) {
                 if (type === 'charge') {
-                    usersDB[uname].balance += amount;
+                    usersDB[phoneKey].balance += amount;
                 } else {
-                    usersDB[uname].balance = Math.max(0, usersDB[uname].balance - amount);
+                    usersDB[phoneKey].balance = Math.max(0, usersDB[phoneKey].balance - amount);
                 }
                 saveDB();
                 renderAdminPanel();
-                if(currentUserKey === uname) loadUserData();
+                if(currentUserPhone === phoneKey) loadUserData();
                 alert(`تم ${type === 'charge' ? 'شحن' : 'خصم'} المبلغ بنجاح`);
             }
         }
 
-        function adminApproveWithdraw(uname) {
-            const u = usersDB[uname];
+        function adminApproveWithdraw(phoneKey) {
+            const u = usersDB[phoneKey];
             if (u.withdrawRequest) {
                 if (u.profit >= u.withdrawRequest) {
                     u.profit -= u.withdrawRequest;
@@ -1079,7 +1114,7 @@
                 u.withdrawRequest = null;
                 saveDB();
                 renderAdminPanel();
-                if(currentUserKey === uname) loadUserData();
+                if(currentUserPhone === phoneKey) loadUserData();
                 alert(`تمت الموافقة على طلب السحب بنجاح.`);
             }
         }
@@ -1088,24 +1123,24 @@
             localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
         }
 
-        // توليد محتوى عشوائي متجدد للشريط المتحرك مع أرقام عشوائية
+        // توليد إشعارات عشوائية مستمرة
         setInterval(() => {
             const ticker = document.getElementById('dynamicTicker');
             if (ticker) {
-                const rNum = Math.floor(10 + Math.random() * 89);
-                const rVal = (Math.random() * 500).toFixed(1);
+                const rNum = Math.floor(100 + Math.random() * 899);
+                const rVal = (Math.random() * 600).toFixed(1);
                 const randType = Math.random();
                 let msg = "";
                 if(randType < 0.33) {
-                    msg = `🎉 مبروك تم الاشتراك في باقة ${rVal > 250 ? 1500 : 800} ج.م (رقم المستخدم: 010${rNum})`;
+                    msg = `🎉 مبروك تم الاشتراك في باقة ${rVal > 300 ? 1500 : 800} ج.م (رقم: 010****${rNum})`;
                 } else if(randType < 0.66) {
                     msg = `💸 تم إرسال الأرباح المستحقة بقيمة ${rVal} ج.م بنجاح`;
                 } else {
-                    msg = `🌟 مبروك تم إرسال المكافأة الترحيبية بقيمة ${rVal/5} ج.م للمستخدم رقم 010${rNum}`;
+                    msg = `🌟 مبروك تم إرسال المكافأة الترحيبية بقيمة 50 ج.م للرقم 011****${rNum}`;
                 }
                 ticker.innerHTML += `<div class="ticker-item">${msg}</div>`;
             }
-        }, 8000);
+        }, 7000);
     </script>
 </body>
 </html>
