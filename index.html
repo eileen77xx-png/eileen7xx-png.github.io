@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* --- تصميم الشريط المتحرك اللانهائي وبدون فواصل (Continuous Loop) --- */
+        /* --- تصميم الشريط المتحرك البطيء والمستمر --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -61,7 +61,7 @@
         .marquee-wrapper {
             display: flex;
             width: max-content;
-            animation: marqueeContinuous 80s linear infinite;
+            animation: marqueeContinuous 60s linear infinite;
         }
         .marquee-content {
             display: flex;
@@ -100,7 +100,7 @@
         .info-row-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 13px; }
         .info-label { color: var(--text-muted); }
         .info-val { font-weight: bold; color: var(--text-light); }
-        .menu-list-card { background: var(--card-bg); border-radius: 16px; margin: 0 15px 20px 15px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
+        .menu-list-card { background: var(--card-bg); border-radius: 16px; margin: 0 15px 20px 15px; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
         .menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); cursor: pointer; }
         .menu-left-part { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text-light); }
         .menu-left-part i { font-size: 18px; color: var(--text-muted); width: 24px; text-align: center; }
@@ -184,7 +184,7 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك المستمر بدون انقطاع برمجياً -->
+                <!-- الشريط المتحرك المستمر -->
                 <div class="marquee-container">
                     <div class="marquee-wrapper">
                         <div class="marquee-content" id="marqueeBlock1"></div>
@@ -302,7 +302,7 @@
 
     <div id="infoModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;">معلومات المنصة</h3><p style="font-size: 13px; line-height: 1.6;">منصة تسوق بلس تتيح لك تنفيذ المهام اليومية والحصول على الأرباح بانتظام.</p><button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button></div></div>
 
-    <!-- السكريبت البرمجي المحدث -->
+    <!-- السكريبت البرمجي المصحح -->
     <script>
         let currentUserPhone = null;
         let usersDB = {};
@@ -333,13 +333,12 @@
             saveDB();
         }
 
-        // --- دالة توليد محتوى الشريط الشامل والمستمر بدون فواصل ---
+        // --- دالة توليد محتوى الشريط الشامل والمستمر ---
         function generateRandomMarqueeText() {
             const prefixes = ['010', '011', '012', '015'];
             const amounts = [250, 500, 1800, 5000, 8000, 10000, 15000];
             let htmlContent = '';
 
-            // توليد سلسلة متنوعة من الإشعارات والمبالغ والمكافآت
             for (let i = 0; i < 20; i++) {
                 const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
                 const last4 = Math.floor(1000 + Math.random() * 9000);
@@ -348,11 +347,11 @@
                 
                 const type = i % 4;
                 if (type === 0) {
-                    htmlContent += `✨ مبروك انضمام مستخدم جديد برقم <strong>${phone}</strong>`;
+                    htmlContent += `✨ مبروك انضمام مستخدم جديد رقم <strong>${phone}</strong>`;
                 } else if (type === 1) {
-                    htmlContent += `🎉 ألف مبروك تم تحويل مبلغ <strong>${amount} ج.م</strong> للمستخدم <strong>${phone}</strong>`;
+                    htmlContent += `🎉 مبروك تم تحويل مبلغ <strong>${amount} ج.م</strong> للمستخدم <strong>${phone}</strong>`;
                 } else if (type === 2) {
-                    htmlContent += `🎁 ألف مبروك تم استلام مكافأة للمستخدم برقم <strong>${phone}</strong>`;
+                    htmlContent += `🎁 مبروك تم استلام مكافأة لمستخدم رقم <strong>${phone}</strong>`;
                 } else {
                     htmlContent += `🔗 تم تحويل مكافأة الدخول من الرابط الخاص بمستخدم رقم <strong>${phone}</strong>`;
                 }
@@ -364,11 +363,16 @@
             const b2 = document.getElementById('marqueeBlock2');
             if (b1 && b2) {
                 b1.innerHTML = htmlContent;
-                b2.innerHTML = htmlContent; // نسخ متطابق للحركة الدائرية المستمرة
+                b2.innerHTML = htmlContent;
             }
         }
 
-        window.addEventListener('DOMContentLoaded', generateRandomMarqueeText);
+        // تنفيذ الدالة فور تحميل العناصر بالكامل
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', generateRandomMarqueeText);
+        } else {
+            generateRandomMarqueeText();
+        }
 
         function saveDB() {
             try {
@@ -665,7 +669,7 @@
             saveDB();
             loadUserData();
             closePackagesModal();
-            alert(`تم إرسال طلب الاشتراك في باقة ${name} EGP بنجاح، وهو الآن (قيد المراجعة).`);
+            alert(`تم إرسال طلب الاشتراك في باقة ${name} EGP بنجاح، وهو الآن (قيد المراجعة).` );
         }
 
         function requestWithdrawal() {
