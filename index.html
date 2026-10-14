@@ -46,7 +46,7 @@
         .profit-val-green { color: var(--neon-green); font-weight: bold; }
         .wallet-icon-bg { position: absolute; bottom: 10px; left: 15px; font-size: 55px; color: rgba(255, 255, 255, 0.05); }
 
-        /* الشريط المتحرك */
+        /* --- تصميم الشريط المتحرك من اليمين إلى اليسار (مارquee أفقي) --- */
         .marquee-container {
             background: rgba(16, 185, 129, 0.08);
             border-top: 1px solid rgba(34, 197, 94, 0.25);
@@ -58,30 +58,28 @@
             position: relative;
             display: flex;
             align-items: center;
-            justify-content: center;
         }
         .marquee-content {
             display: flex;
-            flex-direction: column;
-            animation: scrollUp 35s linear infinite;
+            white-space: nowrap;
+            animation: scrollRightToLeft 25s linear infinite;
             position: absolute;
-            width: 100%;
-            text-align: center;
+            right: 0;
         }
         .marquee-item {
-            height: 42px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            justify-content: center;
             color: var(--neon-green);
             font-size: 12px;
             font-weight: 500;
-            gap: 6px;
+            padding: 0 25px;
+            gap: 8px;
         }
-        .marquee-divider { color: var(--accent); font-weight: bold; margin-right: 6px; }
-        @keyframes scrollUp {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
+        .marquee-divider { color: var(--accent); font-weight: bold; margin-left: 10px; }
+
+        @keyframes scrollRightToLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
         }
 
         .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
@@ -183,22 +181,13 @@
                     <i class="fa-solid fa-wallet wallet-icon-bg"></i>
                 </div>
 
-                <!-- الشريط المتحرك -->
+                <!-- شريط الإشعارات والنبذة الجديد (من اليمين إلى اليسار) -->
                 <div class="marquee-container">
                     <div class="marquee-content">
-                        <div class="marquee-item">✨ مبروك انضمام مستخدم جديد رقم <strong>010****4829</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>250 ج.م</strong> للمستخدم <strong>012****3456</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎁 تم استلام هدية دخول رابطك الخاص مكافأة لرقم <strong>011****7744</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>1800 ج.م</strong> للمستخدم <strong>015****9012</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">💰 مكافأة تسجيل الدخول <strong>50 ج.م</strong> تمت إضافتها بنجاح للمستخدم <strong>010****1122</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>6000 ج.م</strong> للمستخدم <strong>012****8833</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">👋 يسعدنا الانضمام إلى منصة تسوق بلس للمستخدم <strong>015****4455</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>5000 ج.م</strong> للمستخدم <strong>010****6677</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">💎 مكافأة شحن الباقة وتم تفعيلها بنجاح لرقم <strong>011****9988</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>10000 ج.م</strong> للمستخدم <strong>012****3344</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>15000 ج.م</strong> للمستخدم <strong>015****5566</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>18000 ج.م</strong> للمستخدم <strong>010****2233</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
-                        <div class="marquee-item">🎉 مبروك تم تحويل مبلغ <strong>8000 ج.م</strong> للمستخدم <strong>011****4455</strong> <span class="marquee-divider">| تسوق بلس 🇪🇬</span></div>
+                        <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر <span class="marquee-divider">| 🇪🇬</span></div>
+                        <div class="marquee-item">💼 استثمر بأمان، نفذ مهامك اليومية بسهولة، واحصل على عوائدك المالية بانتظام <span class="marquee-divider">| 🚀</span></div>
+                        <div class="marquee-item">🎉 مبروك لجميع المستخدمين الذين تم تحويل أرباحهم اليومية وعمولاتهم بنجاح <span class="marquee-divider">| 💰</span></div>
+                        <div class="marquee-item">💎 اشترك في باقاتنا الاستثمارية اليوم وضاعف أرباحك بكل ثقة وأمان <span class="marquee-divider">| ✨</span></div>
                     </div>
                 </div>
 
@@ -312,7 +301,7 @@
 
     <div id="infoModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:10px; text-align:center;">معلومات المنصة</h3><p style="font-size: 13px; line-height: 1.6;">منصة تسوق بلس تتيح لك تنفيذ المهام اليومية والحصول على الأرباح بانتظام.</p><button onclick="closeInfoModal()" class="btn-submit" style="margin-top: 15px;">إغلاق</button></div></div>
 
-    <!-- السكريبت المحدث لتجديد المهام تلقائياً بعد الساعة 12 منتصف الليل -->
+    <!-- السكريبت البرمجي للمنصة -->
     <script>
         let currentUserPhone = localStorage.getItem('tasawuq_logged_user') || null;
         let usersDB = {};
@@ -343,7 +332,6 @@
             localStorage.setItem('tasawuq_users', JSON.stringify(usersDB));
         }
 
-        // دالة للحصول على تاريخ اليوم الحالي بالتوقيت المحلي (تتغير تلقائياً بعد 12 منتصف الليل)
         function getTodayDateKey() {
             const now = new Date();
             const year = now.getFullYear();
@@ -533,7 +521,7 @@
         function updateTasksButtons() {
             const u = usersDB[currentUserPhone];
             if(!u) return;
-            const todayKey = getTodayDateKey(); // استخدام التاريخ المتجدد تلقائياً بعد منتصف الليل
+            const todayKey = getTodayDateKey();
             if (!u.completedTasks) u.completedTasks = {};
 
             let completedToday = u.completedTasks[todayKey] ? u.completedTasks[todayKey].length : 0;
@@ -564,7 +552,7 @@
                 return;
             }
             
-            const todayKey = getTodayDateKey(); // جلب التاريخ الحالي المتجدد
+            const todayKey = getTodayDateKey();
             if (!user.completedTasks) user.completedTasks = {};
             if (!user.completedTasks[todayKey]) user.completedTasks[todayKey] = [];
 
