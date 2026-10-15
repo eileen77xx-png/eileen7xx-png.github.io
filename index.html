@@ -122,7 +122,6 @@
     <!-- 3. التطبيق الرئيسي -->
     <div id="appScreen" class="hidden">
         <main class="main-content">
-            <!-- الرئيسية -->
             <div id="tabHome" class="tab-content">
                 <div class="profile-header-card">
                     <div class="user-main-info">
@@ -148,7 +147,6 @@
                     <div style="font-size:12px; color:var(--text-muted); margin-top:12px;">إجمالي الأرباح المتاحة للسحب: <span style="color:var(--neon-green); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
                 </div>
 
-                <!-- إشعار حالة طلب الباقة المعلق -->
                 <div id="pendingAlertBox" class="hidden" style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent); padding: 12px 15px; border-radius: 10px; margin: 0 15px 15px 15px; font-size: 13px; color: var(--accent); display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-triangle-exclamation" style="font-size: 18px;"></i>
                     <div>لديك طلب اشتراك في <strong id="pendingPkgName"></strong> بقيمة <strong id="pendingPkgPrice"></strong> قيد المراجعة بواسطة الإدارة...</div>
@@ -167,7 +165,6 @@
                     <button onclick="openWithdrawModal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب الأرباح</button>
                 </div>
 
-                <!-- كارت سجل المعاملات وسحوبات الأرباح -->
                 <div style="margin: 0 15px 20px 15px; background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid rgba(255,255,255,0.08);">
                     <div style="font-weight: bold; color: var(--neon-green); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
                         <i class="fa-solid fa-clock-rotate-left"></i> سجل معاملات وسحوبات الأرباح
@@ -200,17 +197,14 @@
                 </div>
             </div>
 
-            <!-- حسابي -->
             <div id="tabAccount" class="tab-content hidden">
                 <div class="account-details-card">
                     <h3 style="color:var(--neon-green); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-id-card-clip"></i> معلومات الحساب</h3>
-                    
                     <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:15px; position:relative;">
                         <img id="userAvatarImg" src="https://via.placeholder.com/150" style="width:85px; height:85px; border-radius:50%; object-fit:cover; border:3px solid var(--neon-green); cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()">
                         <span style="font-size:11px; color:var(--accent); margin-top:5px; cursor:pointer;" onclick="document.getElementById('avatarFileInput').click()"><i class="fa-solid fa-camera"></i> تغيير الصورة الشخصية</span>
                         <input type="file" id="avatarFileInput" class="hidden" accept="image/*" onchange="uploadUserAvatar(event)">
                     </div>
-
                     <div class="info-row-item">
                         <span class="info-label">اسم المستخدم:</span>
                         <div style="display:flex; align-items:center; gap:8px;">
@@ -223,14 +217,12 @@
                     <div class="info-row-item"><span class="info-label">مبلغ الوديعة:</span><span id="accountDeposit" class="info-val" style="color:var(--accent);">0.00 EGP</span></div>
                     <div class="info-row-item"><span class="info-label">الرصيد المتاح:</span><span id="accountBalance" class="info-val" style="color:var(--neon-green);">0.00 EGP</span></div>
                 </div>
-                
                 <div class="menu-list-card">
                     <div class="menu-item" onclick="openInfoModal()"><div style="display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-award"></i><span>معلومات المنصة والتراخيص</span></div><i class="fa-solid fa-chevron-left"></i></div>
                 </div>
                 <button onclick="handleLogout()" class="btn-logout">تسجيل الخروج</button>
             </div>
 
-            <!-- مهمة -->
             <div id="tabTasks" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
@@ -244,7 +236,6 @@
                 </div>
             </div>
 
-            <!-- لوحة التحكم الإدارية (الأدمن) -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب الأرباح المعلقة</h3>
@@ -300,7 +291,6 @@
         </main>
     </div>
 
-    <!-- الشريط السفلي -->
     <nav id="bottomNav" class="bottom-nav-bar hidden">
         <button class="nav-btn active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
         <button class="nav-btn" onclick="switchTab('tasks')"><i class="fa-solid fa-crown"></i><span>مهمة</span></button>
@@ -308,7 +298,6 @@
         <button id="adminNavBtn" class="nav-btn hidden" onclick="switchTab('admin')"><i class="fa-solid fa-user-shield"></i><span>الإدارة</span></button>
     </nav>
 
-    <!-- المودالات -->
     <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">اختر الباقة لتقديم طلب الاشتراك</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <button onclick="requestPackageSubscription(300)" class="btn-submit">باقة 300 EGP</button>
@@ -321,7 +310,6 @@
         <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
     </div></div>
 
-    <!-- مودال سحب الأرباح -->
     <div id="withdrawModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-money-bill-wave"></i> طلب سحب الأرباح</h3>
@@ -366,16 +354,15 @@
             withdrawRequests = [];
         }
 
-        // إنشاء حساب الأدمن الافتراضي إذا لم يكن موجوداً
         if (!usersDB["01032315526"]) {
             usersDB["01032315526"] = {
-                name: "صاحب الشركة",
+                name: "Owner",
                 password: "asmael",
                 balance: 5000,
                 deposit: 300,
                 profit: 0,
                 subscribed: true,
-                subscribedPackage: "باقة 300 EGP",
+                subscribedPackage: "300 EGP",
                 completedTasks: {},
                 avatar: "https://via.placeholder.com/150"
             };
@@ -477,14 +464,14 @@
                 return;
             }
 
-            myHistory.reverse().forEach(function(item) {
+            myHistory.slice().reverse().forEach(function(item) {
                 var statusHTML = "";
                 if (item.status === "pending") {
-                    statusHTML = "<span class='status-badge status-pending'>قيد المراجعة ⏳</span>";
+                    statusHTML = "<span class='status-badge status-pending'>قيد المراجعة</span>";
                 } else if (item.status === "approved") {
-                    statusHTML = "<span class='status-badge status-success'>تم ارسال المبلغ ✅</span>";
+                    statusHTML = "<span class='status-badge status-success'>تم ارسال المبلغ</span>";
                 } else {
-                    statusHTML = "<span class='status-badge status-rejected'>مرفوض ❌</span>";
+                    statusHTML = "<span class='status-badge status-rejected'>مرفوض</span>";
                 }
 
                 tbody.innerHTML += "<tr>" +
@@ -738,9 +725,9 @@
 
                     renderAdminPanel();
                     if (currentUserPhone === req.phone) loadUserData();
-                    alert("تمت الموافقة على طلب السحب وخصم " + req.amount + " EGP من أرباح المستخدم بنجاح!");
+                    alert("تمت الموافقة على طلب السحب بنجاح!");
                 } else {
-                    alert("رصيد الأرباح الحالي للمستخدم لم يعد كافياً لوصل هذا المبلغ!");
+                    alert("رصيد الأرباح غير كافٍ!");
                 }
             }
         }
@@ -769,4 +756,17 @@
                     user.subscribedPackage = req.packageName;
 
                     delete pendingRequests[phone];
-                    localStorage.setItem("tasawuq_users
+                    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+                    localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
+
+                    renderAdminPanel();
+                    if (currentUserPhone === phone) loadUserData();
+                    alert("تمت الموافقة على طلب الباقة وتفعيلها بنجاح!");
+                } else {
+                    alert("رصيد المستخدم غير كافٍ.");
+                }
+            }
+        }
+
+        function rejectPackageRequest(phone) {
+            if (confirm("هل أنت مت
