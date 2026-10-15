@@ -84,7 +84,6 @@ th { background: #090d16; color: var(--accent); }
 .status-rejected { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 .hidden { display: none !important; }
 
-/* تصميم البحث المتقدم للأدمن */
 .admin-search-box { display: flex; gap: 8px; margin-bottom: 15px; }
 .admin-search-box input { flex-grow: 1; padding: 10px; border-radius: 8px; border: 1px solid #23304d; background: #090d16; color: white; }
 .admin-search-box button { padding: 10px 15px; background: var(--neon-green); color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; }
