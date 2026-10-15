@@ -9,22 +9,17 @@
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول بالتصميم والترتيب الجديد -->
+    <!-- 1. شاشة تسجيل الدخول (صورة اليد والأموال فوق العناوين) -->
     <div id="loginScreen" class="auth-bg-wrapper">
         <div class="auth-container">
             <div class="auth-content">
-                <!-- 1. الصورة المباشرة المدمجة كودياً -->
                 <div style="text-align: center; margin-bottom: 15px;">
-                    <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop" alt="تسوق بلس" style="width: 100%; max-height: 160px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(34, 197, 94, 0.4);">
+                    <img src="1000082071_2.jpg" alt="تسجيل الدخول - تسوق بلس" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(34, 197, 94, 0.4);">
                 </div>
 
-                <!-- 2. فوق كلمة أهلاً بك -->
                 <h2 class="welcome-title">✨ أهلاً بك في منصة تسوق بلس</h2>
-
-                <!-- 3. تحت النبذة عن المنصة -->
                 <p class="welcome-desc">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
                 
-                <!-- 4. خانة تسجيل الدخول -->
                 <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael"></div>
                 <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
@@ -33,22 +28,17 @@
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب جديد بالتصميم والترتيب الجديد -->
+    <!-- 2. شاشة إنشاء حساب جديد (صورة البيتكوين والعملات فوق العناوين) -->
     <div id="registerScreen" class="auth-bg-wrapper hidden">
         <div class="auth-container">
             <div class="auth-content">
-                <!-- 1. الصورة المباشرة المدمجة كودياً -->
                 <div style="text-align: center; margin-bottom: 15px;">
-                    <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop" alt="تسوق بلس" style="width: 100%; max-height: 160px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(34, 197, 94, 0.4);">
+                    <img src="1000082070.jpg" alt="إنشاء حساب - تسوق بلس" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(34, 197, 94, 0.4);">
                 </div>
 
-                <!-- 2. فوق عنوان الانضمام -->
                 <h2 class="welcome-title">🚀 انضم اليوم إلى تسوق بلس</h2>
-
-                <!-- 3. تحت النبذة عن المنصة -->
                 <p class="welcome-desc">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
 
-                <!-- 4. خانة إنشاء الحساب -->
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
                 <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
@@ -86,7 +76,7 @@
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">مبلغ الوديعة الثابتة</div>
                     <div class="balance-amount"><span>EGP</span><span id="depositVal">0.00</span></div>
                     
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">الرصيد المتاح للاشتراك أو السحب: <span style="color:var(--neon-green); font-weight:bold; font-size:15px;">EGP <span id="balanceVal">0.00</span></span></div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">الرصيد المتاح للااشتراك أو السحب: <span style="color:var(--neon-green); font-weight:bold; font-size:15px;">EGP <span id="balanceVal">0.00</span></span></div>
                     <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">إجمالي الأرباح المتاحة (شاملة مكافآت الإحالات): <span style="color:var(--accent); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
                 </div>
 
