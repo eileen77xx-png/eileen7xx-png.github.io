@@ -1,3 +1,47 @@
+// ==========================================
+// إعداد الاتصال بقاعدة بيانات Supabase السحابية
+// ==========================================
+const SUPABASE_URL = 'https://aogqqgqpmrjarkubzkck.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_2jtMwMHLyFmZkb0EFbhp-A_FkRrMB3h';
+const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+// دالة لجلب وتحديث بيانات المستخدمين من السحابة تلقائياً
+async function syncUsersFromCloud() {
+    if (!supabase) return;
+    try {
+        const { data, error } = await supabase.from('users').select('*');
+        if (!error && data) {
+            // تحويل البيانات القادمة من السحابة إلى النظام المحلي للمنصة
+            data.forEach(function(u) {
+                usersDB[u.phone] = {
+                    name: u.name,
+                    password: u.password,
+                    balance: u.balance || 0,
+                    deposit: u.deposit || 0,
+                    profit: u.profit || 0,
+                    subscribed: u.subscribed || false,
+                    subscribedPackage: u.subscribedPackage || 'غير مشترك',
+                    referrals: u.referrals || []
+                };
+            });
+            if (typeof renderAdminPanel === 'function') {
+                renderAdminPanel();
+            }
+        }
+    } catch (err) {
+        console.error('خطأ في مزامنة البيانات من السحابة:', err);
+    }
+}
+
+// تشغيل المزامنة عند فتح لوحة التحكم
+document.addEventListener('DOMContentLoaded', () => {
+    syncUsersFromCloud();
+});
+
+// ==========================================
+// دوال لوحة التحكم الأصلية (مع دعم الحفظ السحابي)
+// ==========================================
+
 function renderAdminPanel() {
     renderAdminUsersList();
     renderAdminWithdrawRequests();
@@ -85,19 +129,27 @@ function renderAdminPendingRequests() {
     });
 }
 
-function adminModifyBalance(phone) {
+async function adminModifyBalance(phone) {
     var u = usersDB[phone];
     var newBal = prompt("أدخل الرصيد المتاح الجديد للمستخدم " + u.name + ":", u.balance);
     if (newBal !== null && !isNaN(parseFloat(newBal))) {
         u.balance = parseFloat(newBal);
+        
+        // تحديث محلي
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        
+        // تحديث سحابي في Supabase
+        if (supabase) {
+            await supabase.from('users').update({ balance: u.balance }).eq('phone', phone);
+        }
+
         renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم تحديث الرصيد بنجاح!");
+        if (typeof currentUserPhone !== 'undefined' && currentUserPhone === phone && typeof loadUserData === 'function') loadUserData();
+        alert("تم تحديث الرصيد بنجاح وحفظه سحابياً!");
     }
 }
 
-function adminModifyDeposit(phone) {
+async function adminModifyDeposit(phone) {
     var u = usersDB[phone];
     var newDep = prompt("أدخل مبلغ الوديعة الجديد للمستخدم " + u.name + ":", u.deposit);
     if (newDep !== null && !isNaN(parseFloat(newDep))) {
@@ -109,35 +161,58 @@ function adminModifyDeposit(phone) {
             u.subscribed = false;
             u.subscribedPackage = "غير مشترك";
         }
+        
+        // تحديث محلي
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        
+        // تحديث سحابي في Supabase
+        if (supabase) {
+            await supabase.from('users').update({ 
+                deposit: u.deposit, 
+                subscribed: u.subscribed, 
+                subscribedPackage: u.subscribedPackage 
+            }).eq('phone', phone);
+        }
+
         renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم تحديث الوديعة والباقة بنجاح!");
+        if (typeof currentUserPhone !== 'undefined' && currentUserPhone === phone && typeof loadUserData === 'function') loadUserData();
+        alert("تم تحديث الوديعة والباقة بنجاح وحفظها سحابياً!");
     }
 }
 
-function adminDeleteUser(phone) {
+async function adminDeleteUser(phone) {
     if (confirm("هل أنت متأكد من حذف هذا المستخدم نهائياً؟")) {
         delete usersDB[phone];
+        
+        // تحديث محلي
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        
+        // حذف من سحابة Supabase
+        if (supabase) {
+            await supabase.from('users').delete().eq('phone', phone);
+        }
+
         renderAdminPanel();
-        alert("تم حذف المستخدم بنجاح.");
+        alert("تم حذف المستخدم بنجاح من النظام والسحابة.");
     }
 }
 
-function approveWithdrawRequest(reqId) {
+async function approveWithdrawRequest(reqId) {
     var index = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
     if (index !== -1) {
         var req = withdrawRequests[index];
         var u = usersDB[req.phone];
         if (u) {
             u.profit = Math.max(0, (u.profit || 0) - req.amount);
+            if (supabase) {
+                await supabase.from('users').update({ profit: u.profit }).eq('phone', req.phone);
+            }
         }
         req.status = "approved";
         localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         renderAdminPanel();
-        if (currentUserPhone === req.phone) loadUserData();
+        if (typeof currentUserPhone !== 'undefined' && currentUserPhone === req.phone && typeof loadUserData === 'function') loadUserData();
         alert("تمت الموافقة على طلب السحب بنجاح وخصم المبلغ من أرباح المستخدم!");
     }
 }
@@ -152,18 +227,28 @@ function rejectWithdrawRequest(reqId) {
     }
 }
 
-function approvePackageRequest(phone) {
+async function approvePackageRequest(phone) {
     var req = pendingRequests[phone];
     if (req && usersDB[phone]) {
         usersDB[phone].deposit = req.price;
         usersDB[phone].subscribed = true;
         usersDB[phone].subscribedPackage = req.packageName;
         delete pendingRequests[phone];
+        
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
+        
+        if (supabase) {
+            await supabase.from('users').update({ 
+                deposit: usersDB[phone].deposit, 
+                subscribed: true, 
+                subscribedPackage: req.packageName 
+            }).eq('phone', phone);
+        }
+
         renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تمت الموافقة على تفعيل الباقة بنجاح!");
+        if (typeof currentUserPhone !== 'undefined' && currentUserPhone === phone && typeof loadUserData === 'function') loadUserData();
+        alert("تمت الموافقة على تفعيل الباقة بنجاح وحفظها سحابياً!");
     }
 }
 
