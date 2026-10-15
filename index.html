@@ -377,7 +377,7 @@
             showMainApp();
         }
 
-        function executeRegister() {
+        async function executeRegister() {
             var name = document.getElementById("regName").value.trim();
             var phone = document.getElementById("regPhone").value.trim();
             var pass = document.getElementById("regPassword").value.trim();
@@ -393,25 +393,39 @@
                 localStorage.removeItem("tasawuq_referrer");
             }
 
-            usersDB[phone] = {
+            var newUser = {
                 name: name,
+                phone: phone,
                 password: pass,
                 balance: 50,
                 deposit: 0,
                 profit: 0,
                 subscribed: false,
                 subscribedPackage: "غير مشترك",
-                completedTasks: {},
                 referrals: [],
                 refBonusEarned: 0,
                 createdAt: new Date().toISOString().slice(0, 10),
                 avatar: "https://via.placeholder.com/150"
             };
 
+            usersDB[phone] = newUser;
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+
+            // الحفظ السحابي المباشر في Supabase
+            if (window.supabaseClient) {
+                try {
+                    const { error } = await window.supabaseClient.from('users').insert([newUser]);
+                    if (error) {
+                        console.error("خطأ في الحفظ السحابي:", error.message);
+                    }
+                } catch (err) {
+                    console.error("تعذر الاتصال بالسحابة:", err);
+                }
+            }
+
             currentUserPhone = phone;
             localStorage.setItem("tasawuq_logged_user", phone);
-            alert("مرحباً بك! تم إنشاء حسابك بنجاح وحصلت على مكافأة ترحيبية 50 جنيه في رصيدك المتاح 🎉");
+            alert("مرحباً بك! تم إنشاء حسابك بنجاح وحفظه سحابياً وحصلت على مكافأة ترحيبية 50 جنيه في رصيدك المتاح 🎉");
             showMainApp();
         }
 
