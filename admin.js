@@ -211,6 +211,6 @@ function adminEditProfit(phone) {
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
-        alert("تم تعديل الأرباح بنجاح!");
+        alert("تم تعديل الأرباح بنجاحِّ!");
     }
 }
