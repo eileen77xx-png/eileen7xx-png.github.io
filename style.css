@@ -12,9 +12,9 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
 body { background-color: var(--bg-dark); color: var(--text-light); min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 75px; }
 
-/* خلفية الصورة تملأ الشاشة بوضوح وشفافية متوازنة لإظهار تفاصيل اللابتوب والأموال */
+/* غلاف الصورة الفخم ملء الشاشة مع الرابط المباشر لضمان الظهور الفوري */
 .auth-bg-wrapper {
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('1000082071.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://i.ibb.co/3yk55N5/1000082071.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -29,7 +29,7 @@ body { background-color: var(--bg-dark); color: var(--text-light); min-height: 1
 /* بطاقة الدخول الشفافة الزجاجية */
 .auth-container { 
     max-width: 420px; 
-    background: rgba(10, 15, 26, 0.7) !important; 
+    background: rgba(10, 15, 26, 0.65) !important; 
     backdrop-filter: blur(12px); 
     -webkit-backdrop-filter: blur(12px);
     border-radius: 20px; 
