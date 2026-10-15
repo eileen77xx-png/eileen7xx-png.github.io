@@ -453,7 +453,6 @@
             if (data.subscribed) { vipBadge.innerText = data.subscribedPackage; vipBadge.classList.remove("hidden"); }
             else { vipBadge.classList.add("hidden"); }
 
-            // التحقق من وجود طلب معلق لـ الباقة
             var alertBox = document.getElementById("pendingAlertBox");
             if (pendingRequests[currentUserPhone]) {
                 document.getElementById("pendingPkgName").innerText = pendingRequests[currentUserPhone].packageName;
@@ -608,7 +607,6 @@
             alert("تم تقديم طلب الاشتراك في الباقة بنجاح، وهو الآن قيد المراجعة من طرف الإدارة.");
         }
 
-        /* ------------------ إدارة طلبات سحب الأرباح ------------------ */
         function openWithdrawModal() {
             var user = usersDB[currentUserPhone];
             document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
@@ -660,9 +658,7 @@
             alert("تم تقديم طلب سحب الأرباح بنجاح، وستتم معالجته بواسطة الأدمن قريباً!");
         }
 
-        /* ------------------ أدوات الإدارة الشاملة (الأدمن) ------------------ */
         function renderAdminPanel() {
-            // 1. عرض طلبات سحب الأرباح المعلقة
             var wTbody = document.getElementById("adminWithdrawRequestsTable");
             if (wTbody) {
                 wTbody.innerHTML = "";
@@ -685,7 +681,6 @@
                 }
             }
 
-            // 2. عرض طلبات الباقات المعلقة
             var reqTbody = document.getElementById("adminRequestsTable");
             if (reqTbody) {
                 reqTbody.innerHTML = "";
@@ -708,7 +703,6 @@
                 }
             }
 
-            // 3. عرض جدول المستخدمين والأرصدة
             var tbody = document.getElementById("adminUserTable");
             if (!tbody) return;
             tbody.innerHTML = "";
@@ -729,7 +723,6 @@
             }
         }
 
-        // موافقة الأدمن على طلب سحب الأرباح وخصمه فوراً من رصيد الأرباح
         function approveWithdrawRequest(reqId) {
             var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
             if (reqIndex !== -1) {
@@ -737,7 +730,7 @@
                 var user = usersDB[req.phone];
 
                 if (user && (user.profit || 0) >= req.amount) {
-                    user.profit -= req.amount; // خصم المبلغ من رصيد الأرباح
+                    user.profit -= req.amount;
                     req.status = "approved";
 
                     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
@@ -752,7 +745,6 @@
             }
         }
 
-        // رفض الأدمن لطلب سحب الأرباح
         function rejectWithdrawRequest(reqId) {
             var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
             if (reqIndex !== -1) {
@@ -766,4 +758,15 @@
             }
         }
 
-        // موافقة الأدمن على طلب البا
+        function approvePackageRequest(phone) {
+            var req = pendingRequests[phone];
+            var user = usersDB[phone];
+            if (req && user) {
+                if ((user.balance || 0) >= req.price) {
+                    user.balance -= req.price;
+                    user.deposit = req.price;
+                    user.subscribed = true;
+                    user.subscribedPackage = req.packageName;
+
+                    delete pendingRequests[phone];
+                    localStorage.setItem("tasawuq_users
