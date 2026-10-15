@@ -6,37 +6,72 @@
     <title>تسوق بلس</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيقات مستقلة ومباشرة لشاشات الدخول والإنشاء للشفافية المطلقة */
+        .custom-auth-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://i.ibb.co/3yk55N5/1000082071.jpg') !important;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-repeat: no-repeat !important;
+            min-height: 100vh !important;
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 20px !important;
+        }
+
+        .custom-glass-card {
+            max-width: 420px !important;
+            width: 100% !important;
+            background: rgba(10, 16, 28, 0.35) !important;
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border-radius: 20px !important;
+            border: 1px solid rgba(34, 197, 94, 0.5) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+            padding: 28px 24px !important;
+            overflow: hidden !important;
+        }
+
+        .custom-glass-card input {
+            background: rgba(5, 9, 17, 0.5) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+        }
+
+        .custom-glass-card input:focus {
+            border-color: #22c55e !important;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.4) !important;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول بخلفية صورة كاملة وبطاقة شفافة -->
-    <div id="loginScreen" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://i.ibb.co/3yk55N5/1000082071.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;">
-        <div class="auth-container" style="background: rgba(9, 13, 22, 0.38) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(34, 197, 94, 0.6); box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
-            <div class="auth-content">
-                <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">✨ أهلاً بك في منصة تسوق بلس</h2>
-                <p class="welcome-desc" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
-                
-                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526" style="background: rgba(9, 13, 22, 0.6);"></div>
-                <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael" style="background: rgba(9, 13, 22, 0.6);"></div>
-                <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
-                <div class="switch-auth">ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span></div>
-            </div>
+    <!-- 1. شاشة تسجيل الدخول الزجاجية الشفافة -->
+    <div id="loginScreen" class="custom-auth-bg">
+        <div class="custom-glass-card">
+            <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">✨ أهلاً بك في منصة تسوق بلس</h2>
+            <p class="welcome-desc" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
+            
+            <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526"></div>
+            <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael"></div>
+            <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
+            <div class="switch-auth">ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span></div>
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب بخلفية صورة كاملة وبطاقة شفافة -->
-    <div id="registerScreen" class="hidden" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://i.ibb.co/3yk55N5/1000082071.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;">
-        <div class="auth-container" style="background: rgba(9, 13, 22, 0.38) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(34, 197, 94, 0.6); box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
-            <div class="auth-content">
-                <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">🚀 انضم اليوم إلى تسوق بلس</h2>
-                <p class="welcome-desc" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
-                
-                <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم" style="background: rgba(9, 13, 22, 0.6);"></div>
-                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل" style="background: rgba(9, 13, 22, 0.6);"></div>
-                <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********" style="background: rgba(9, 13, 22, 0.6);"></div>
-                <button type="button" onclick="executeRegister()" class="btn-submit">تسجيل حساب جديد</button>
-                <div class="switch-auth">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
-            </div>
+    <!-- 2. شاشة إنشاء حساب الزجاجية الشفافة -->
+    <div id="registerScreen" class="custom-auth-bg hidden">
+        <div class="custom-glass-card">
+            <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">🚀 انضم اليوم إلى تسوق بلس</h2>
+            <p class="welcome-desc" style="background: rgba(0,0,0,0.45); backdrop-filter: blur(4px);">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
+            
+            <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
+            <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
+            <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
+            <button type="button" onclick="executeRegister()" class="btn-submit">تسجيل حساب جديد</button>
+            <div class="switch-auth">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
         </div>
     </div>
 
