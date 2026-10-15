@@ -9,26 +9,28 @@
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول بخلفية الصورة الفخمة -->
+    <!-- 1. شاشة تسجيل الدخول بخلفية الصورة الفخمة والنص التحفيزي -->
     <div id="loginScreen" class="auth-bg-wrapper">
         <div class="auth-container">
-            <div class="auth-content" style="padding-top: 30px;">
-                <h2 class="welcome-title">تسجيل الدخول - تسوق بلس</h2>
-                <p class="welcome-desc">أهلاً بك! أدخل رقم الموبايل وكلمة السر.</p>
+            <div class="auth-content">
+                <h2 class="welcome-title">✨ أهلاً بك في منصة تسوق بلس</h2>
+                <p class="welcome-desc">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
+                
                 <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael"></div>
-                <button type="button" onclick="executeLogin()" class="btn-submit">دخول</button>
+                <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
                 <div class="switch-auth">ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span></div>
             </div>
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب بخلفية الصورة الفخمة -->
+    <!-- 2. شاشة إنشاء حساب بخلفية الصورة الفخمة والنص الملهم -->
     <div id="registerScreen" class="auth-bg-wrapper hidden">
         <div class="auth-container">
             <div class="auth-content">
-                <h2 class="welcome-title">أهلاً بك في تسوق بلس</h2>
-                <p class="welcome-desc">أنشئ حسابك الجديد الآن واحصل على مكافأة ترحيبية 50 جنيه!</p>
+                <h2 class="welcome-title">🚀 انضم اليوم إلى تسوق بلس</h2>
+                <p class="welcome-desc">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
+                
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
                 <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
@@ -61,7 +63,6 @@
                     <div style="display:flex; flex-direction:column; align-items:center;"><div class="credit-circle">100</div><span style="font-size:10px; color:var(--neon-green); margin-top:4px;">الائتمان</span></div>
                 </div>
 
-                <!-- بطاقة الأرصدة وترتيب الوديعة وتحتها الرصيد المتاح والأرباح -->
                 <div class="balance-card">
                     <span id="vipBadge" class="vip-badge-tag hidden" onclick="openPackageOptionsModal()"><i class="fa-solid fa-crown" style="color: #ffd700;"></i> <span id="vipBadgeText">غير مشترك</span> ⚙️</span>
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">مبلغ الوديعة الثابتة</div>
@@ -76,14 +77,12 @@
                     <div>لديك طلب اشتراك في <strong id="pendingPkgName"></strong> بقيمة <strong id="pendingPkgPrice"></strong> قيد المراجعة بواسطة الإدارة...</div>
                 </div>
 
-                <!-- الشريط المتحرك الطويل الراقي بدون فراغات -->
                 <div class="marquee-container">
                     <div class="marquee-content">
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس (Tasawuq Plus)</strong> الوجهة الأولى والرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر | 🇪🇬</div>
                         <div class="marquee-item">💼 استثمر بأمان تام، وادِر ودائعك وعوائدك المالية بكل مرونة وشفافية مطلقة | 🚀</div>
                         <div class="marquee-item">🎯 نفذ مهامك اليومية بسهولة واحصل على عوائدك المالية المحدثة بانتظام وثقة | 💰</div>
                         <div class="marquee-item">⭐ نعتز بثقة جميع عملائنا ونتمنى لكم تجربة استثمارية مثمرة وناجحة معنا على مدار الساعة | 🏆</div>
-                        <!-- تكرار دقيق لضمان الدوران المستمر بدون فراغات -->
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس (Tasawuq Plus)</strong> الوجهة الأولى والرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر | 🇪🇬</div>
                         <div class="marquee-item">💼 استثمر بأمان تام، وادِر ودائعك وعوائدك المالية بكل مرونة وشفافية مطلقة | 🚀</div>
                         <div class="marquee-item">🎯 نفذ مهامك اليومية بسهولة واحصل على عوائدك المالية المحدثة بانتظام وثقة | 💰</div>
@@ -96,7 +95,6 @@
                     <button onclick="openWithdrawModal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب الأرباح</button>
                 </div>
 
-                <!-- قسم الإحالات ودعوة الأصدقاء الجديد -->
                 <div style="margin: 0 15px 20px 15px; background: var(--card-bg); border-radius: 14px; padding: 18px; border: 1px solid rgba(34, 197, 94, 0.3);">
                     <div style="font-weight: bold; color: var(--neon-green); margin-bottom: 8px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
                         <i class="fa-solid fa-share-nodes"></i> نظام الإحالة والمكافآت (100 جنيه لكل صديق)
@@ -352,7 +350,6 @@
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         }
 
-        // فحص رابط الإحالة عند فتح الموقع لأول مرة
         window.onload = function() {
             var urlParams = new URLSearchParams(window.location.search);
             var refPhone = urlParams.get("ref");
@@ -384,21 +381,19 @@
             if (!name || !phone || !pass) { alert("املأ الحقول المطلوبة!"); return; }
             if (usersDB[phone]) { alert("الموبايل مسجل مسبقاً!"); return; }
 
-            // التحقق من وجود معرف إحالة لمنح المكافأة (100 جنيه) وصاحب الرابط
             var referrerPhone = localStorage.getItem("tasawuq_referrer");
             if (referrerPhone && usersDB[referrerPhone] && referrerPhone !== phone) {
                 if (!usersDB[referrerPhone].referrals) usersDB[referrerPhone].referrals = [];
                 usersDB[referrerPhone].referrals.push(phone);
-                usersDB[referrerPhone].profit += 100; // إضافة 100 جنيه لرصيد أرباح الداعي
+                usersDB[referrerPhone].profit += 100;
                 usersDB[referrerPhone].refBonusEarned = (usersDB[referrerPhone].refBonusEarned || 0) + 100;
                 localStorage.removeItem("tasawuq_referrer");
             }
 
-            // إنشاء المستخدم الجديد مع مكافأة التسجيل الترحيبية (50 جنيه)
             usersDB[phone] = {
                 name: name,
                 password: pass,
-                balance: 50, // مكافأة 50 جنيه عند إنشاء الحساب لأول مرة
+                balance: 50,
                 deposit: 0,
                 profit: 0,
                 subscribed: false,
@@ -446,7 +441,6 @@
             document.getElementById("accountDeposit").innerText = (data.deposit || 0).toFixed(2) + " EGP";
             document.getElementById("accountBalance").innerText = (data.balance || 0).toFixed(2) + " EGP";
             
-            // توليد وتحديث رابط الإحالة الخاص بالمستخدم
             var refLink = window.location.origin + window.location.pathname + "?ref=" + currentUserPhone;
             document.getElementById("referralLinkInput").value = refLink;
             document.getElementById("refCountDisplay").innerText = data.referrals ? data.referrals.length : 0;
