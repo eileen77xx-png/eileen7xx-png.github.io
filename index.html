@@ -57,11 +57,14 @@
                     <div style="display:flex; flex-direction:column; align-items:center;"><div class="credit-circle">100</div><span style="font-size:10px; color:var(--neon-green); margin-top:4px;">الائتمان</span></div>
                 </div>
 
+                <!-- بطاقة الأرصدة الجديدة وترتيب الوديعة وتحتها الرصيد المتاح -->
                 <div class="balance-card">
-                    <span id="vipBadge" class="vip-badge-tag hidden" onclick="openPackageOptionsModal()">غير مشترك ⚙️</span>
-                    <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">مبلغ الوديعة الثابتة</div>
+                    <span id="vipBadge" class="vip-badge-tag hidden" onclick="openPackageOptionsModal()"><i class="fa-solid fa-crown" style="color: #ffd700;"></i> <span id="vipBadgeText">غير مشترك</span> ⚙️</span>
+                    <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">مبلغ الوديعة الثابتة</div>
                     <div class="balance-amount"><span>EGP</span><span id="depositVal">0.00</span></div>
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:12px;">إجمالي الأرباح المتاحة للسحب: <span style="color:var(--neon-green); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
+                    
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">الرصيد المتاح للاشتراك أو السحب: <span style="color:var(--neon-green); font-weight:bold; font-size:15px;">EGP <span id="balanceVal">0.00</span></span></div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">إجمالي الأرباح المتاحة: <span style="color:var(--accent); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
                 </div>
 
                 <div id="pendingAlertBox" class="hidden" style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent); padding: 12px 15px; border-radius: 10px; margin: 0 15px 15px 15px; font-size: 13px; color: var(--accent); display: flex; align-items: center; gap: 10px;">
@@ -69,8 +72,13 @@
                     <div>لديك طلب اشتراك في <strong id="pendingPkgName"></strong> بقيمة <strong id="pendingPkgPrice"></strong> قيد المراجعة بواسطة الإدارة...</div>
                 </div>
 
+                <!-- الشريط المتحرك المتصل بدون فراغات -->
                 <div class="marquee-container">
                     <div class="marquee-content">
+                        <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر | 🇪🇬</div>
+                        <div class="marquee-item">💼 استثمر بأمان، نفذ مهامك اليومية بسهولة، واحصل على عوائدك المالية بانتظام | 🚀</div>
+                        <div class="marquee-item">🎉 مبروك لجميع المستخدمين الذين تم تحويل أرباحهم اليومية وعمولاتهم بنجاح | 💰</div>
+                        <!-- تكرار العناصر لضمان استمرارية الحركة بدون فراغات -->
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس</strong> الرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر | 🇪🇬</div>
                         <div class="marquee-item">💼 استثمر بأمان، نفذ مهامك اليومية بسهولة، واحصل على عوائدك المالية بانتظام | 🚀</div>
                         <div class="marquee-item">🎉 مبروك لجميع المستخدمين الذين تم تحويل أرباحهم اليومية وعمولاتهم بنجاح | 💰</div>
@@ -84,12 +92,12 @@
 
                 <div style="padding: 0 15px 5px 15px; font-weight: bold; color: var(--accent);"><i class="fa-solid fa-gem"></i> باقات الاستثمار المتاحة والعوائد</div>
                 <div class="packages-grid-custom">
-                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">300 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 15 EGP</div></div><button onclick="requestPackageSubscription(300)" class="btn-pkg-subscribe">طلب اشتراك</button></div>
-                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">800 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 40 EGP</div></div><button onclick="requestPackageSubscription(800)" class="btn-pkg-subscribe">طلب اشتراك</button></div>
-                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">1500 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 75 EGP</div></div><button onclick="requestPackageSubscription(1500)" class="btn-pkg-subscribe">طلب اشتراك</button></div>
-                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">3000 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 150 EGP</div></div><button onclick="requestPackageSubscription(3000)" class="btn-pkg-subscribe">طلب اشتراك</button></div>
-                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">8000 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 400 EGP</div></div><button onclick="requestPackageSubscription(8000)" class="btn-pkg-subscribe">طلب اشتراك</button></div>
-                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">12000 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 600 EGP</div></div><button onclick="requestPackageSubscription(12000)" class="btn-pkg-subscribe">طلب اشتراك</button></div>
+                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">300 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 15 EGP</div></div><button onclick="subscribeDirectPackage(300)" class="btn-pkg-subscribe">اشتراك فوري</button></div>
+                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">800 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 40 EGP</div></div><button onclick="subscribeDirectPackage(800)" class="btn-pkg-subscribe">اشتراك فوري</button></div>
+                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">1500 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 75 EGP</div></div><button onclick="subscribeDirectPackage(1500)" class="btn-pkg-subscribe">اشتراك فوري</button></div>
+                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">3000 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 150 EGP</div></div><button onclick="subscribeDirectPackage(3000)" class="btn-pkg-subscribe">اشتراك فوري</button></div>
+                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">8000 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 400 EGP</div></div><button onclick="subscribeDirectPackage(8000)" class="btn-pkg-subscribe">اشتراك فوري</button></div>
+                    <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">12000 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 600 EGP</div></div><button onclick="subscribeDirectPackage(12000)" class="btn-pkg-subscribe">اشتراك فوري</button></div>
                 </div>
             </div>
 
@@ -236,14 +244,14 @@
     </nav>
 
     <!-- المودالات -->
-    <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">اختر الباقة لتقديم طلب الاشتراك</h3>
+    <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">اختر الباقة للاشتراك الفوري</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <button onclick="requestPackageSubscription(300)" class="btn-submit">باقة 300 EGP</button>
-            <button onclick="requestPackageSubscription(800)" class="btn-submit">باقة 800 EGP</button>
-            <button onclick="requestPackageSubscription(1500)" class="btn-submit">باقة 1500 EGP</button>
-            <button onclick="requestPackageSubscription(3000)" class="btn-submit">باقة 3000 EGP</button>
-            <button onclick="requestPackageSubscription(8000)" class="btn-submit">باقة 8000 EGP</button>
-            <button onclick="requestPackageSubscription(12000)" class="btn-submit">باقة 12000 EGP</button>
+            <button onclick="subscribeDirectPackage(300)" class="btn-submit">باقة 300 EGP</button>
+            <button onclick="subscribeDirectPackage(800)" class="btn-submit">باقة 800 EGP</button>
+            <button onclick="subscribeDirectPackage(1500)" class="btn-submit">باقة 1500 EGP</button>
+            <button onclick="subscribeDirectPackage(3000)" class="btn-submit">باقة 3000 EGP</button>
+            <button onclick="subscribeDirectPackage(8000)" class="btn-submit">باقة 8000 EGP</button>
+            <button onclick="subscribeDirectPackage(12000)" class="btn-submit">باقة 12000 EGP</button>
         </div>
         <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
     </div></div>
@@ -251,9 +259,9 @@
     <div id="packageOptionsModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-arrows-rotate"></i> خيارات الباقة والوديعة</h3>
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px; text-align:center;">يمكنك استرجاع قيمة الوديعة الحالية إلى رصيد الوديعة المتاح، أو اختيار الترقية لباقة أعلى.</p>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px; text-align:center;">يمكنك استرجاع قيمة الوديعة إلى الرصيد المتاح، أو اختيار الترقية والاشتراك الفوري.</p>
             <button onclick="refundDepositToBalance()" class="btn-submit" style="background:var(--accent); color:black; margin-bottom:10px;">استرجاع الوديعة إلى الرصيد وإلغاء الباقة</button>
-            <button onclick="closePackageOptionsModal(); openPackagesModal();" class="btn-submit" style="margin-bottom:10px;">ترقية الباقة واختيار باقة أعلى</button>
+            <button onclick="closePackageOptionsModal(); openPackagesModal();" class="btn-submit" style="margin-bottom:10px;">الاشتراك في باقة جديدة (من الرصيد المتاح)</button>
             <button onclick="closePackageOptionsModal()" class="btn-submit" style="background:#334155;">إغلاق</button>
         </div>
     </div>
@@ -383,6 +391,7 @@
             document.getElementById("displayNameHeader").innerText = data.name;
             document.getElementById("displayPhone").innerText = currentUserPhone;
             document.getElementById("depositVal").innerText = (data.deposit || 0).toFixed(2);
+            document.getElementById("balanceVal").innerText = (data.balance || 0).toFixed(2);
             document.getElementById("profitVal").innerText = (data.profit || 0).toFixed(2);
             document.getElementById("accountName").innerText = data.name;
             document.getElementById("accountPhone").innerText = currentUserPhone;
@@ -398,8 +407,13 @@
             }
 
             var vipBadge = document.getElementById("vipBadge");
-            if (data.subscribed) { vipBadge.innerText = data.subscribedPackage + " ⚙️"; vipBadge.classList.remove("hidden"); }
-            else { vipBadge.classList.add("hidden"); }
+            var vipText = document.getElementById("vipBadgeText");
+            if (data.subscribed) { 
+                vipText.innerText = data.subscribedPackage; 
+                vipBadge.classList.remove("hidden"); 
+            } else { 
+                vipBadge.classList.add("hidden"); 
+            }
 
             var alertBox = document.getElementById("pendingAlertBox");
             if (pendingRequests[currentUserPhone]) {
@@ -469,7 +483,7 @@
             document.getElementById("packageOptionsModal").classList.add("hidden");
         }
 
-        // استرجاع قيمة الوديعة إلى الرصيد وإلغاء الباقة الحالية
+        // استرجاع قيمة الوديعة بالكامل إلى الرصيد المتاح مباشرة
         function refundDepositToBalance() {
             var user = usersDB[currentUserPhone];
             if (!user.deposit || user.deposit <= 0) {
@@ -488,6 +502,34 @@
                 closePackageOptionsModal();
                 alert("تم استرجاع مبلغ الوديعة بنجاح إلى رصيدك المتاح!");
             }
+        }
+
+        // اشتراك المستخدم فوريًا من الرصيد المتاح لديه
+        function subscribeDirectPackage(price) {
+            var user = usersDB[currentUserPhone];
+            
+            if ((user.balance || 0) < price) {
+                alert("رصيدك المتاح (" + (user.balance || 0).toFixed(2) + " EGP) غير كافٍ للاشتراك في هذه الباقة! يرجى التواصل مع الأدمن لشحن الرصيد.");
+                closePackagesModal();
+                return;
+            }
+
+            if (user.deposit > 0) {
+                if (!confirm("لديك وديعة سابقة بقيمة " + user.deposit + " EGP. هل تريد استبدالها والاشتراك في الباقة الجديدة؟")) {
+                    return;
+                }
+                user.balance += user.deposit; // إعادة الوديعة السابقة للرصيد مؤقتاً
+            }
+
+            user.balance -= price;
+            user.deposit = price;
+            user.subscribed = true;
+            user.subscribedPackage = "باقة " + price + " EGP";
+
+            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+            loadUserData();
+            closePackagesModal();
+            alert("مبروك! تم الاشتراك في الباقة بنجاح وتم تفعيلها فوريًا من رصيدك المتاح 🚀");
         }
 
         function updateTasksButtons() {
@@ -539,7 +581,7 @@
             }
         }
 
-        // توزيع أرباح المهام اليومية بناءً على قيمة الباقة المشترك فيها بالتساوي على 5 مهام
+        // توزيع الأرباح اليومية بالتساوي على الـ 5 مهام تلقائياً
         function doTask(taskId) {
             var user = usersDB[currentUserPhone];
             if (!user.subscribed) { alert("يجب الاشتراك في باقة أولاً لتنفيذ المهام!"); return; }
@@ -553,7 +595,6 @@
                 return;
             }
 
-            // تحديد إجمالي الربح اليومي حسب قيمة الوديعة/الباقة
             var dailyTotal = 0;
             if (user.deposit === 300) dailyTotal = 15;
             else if (user.deposit === 800) dailyTotal = 40;
@@ -561,42 +602,14 @@
             else if (user.deposit === 3000) dailyTotal = 150;
             else if (user.deposit === 8000) dailyTotal = 400;
             else if (user.deposit === 12000) dailyTotal = 600;
-            else dailyTotal = (user.deposit * 0.05); // قيمة افتراضية مرنة لو وديعة مخصصة من الأدمن
+            else dailyTotal = (user.deposit * 0.05);
 
-            var earn = dailyTotal / 5; // توزيع الربح بالتساوي على الـ 5 مهام
+            var earn = dailyTotal / 5; // توزيع دقيق ومتساوٍ على الخمس مهام
             user.profit += earn;
             user.completedTasks[today].push(taskId);
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             loadUserData();
             alert("تم تنفيذ المهمة بنجاح وأُضيف ربح المهمة (" + earn.toFixed(2) + " EGP)!");
-        }
-
-        function requestPackageSubscription(price) {
-            var user = usersDB[currentUserPhone];
-
-            if (pendingRequests[currentUserPhone]) {
-                alert("لديك طلب اشتراك معلق بالفعل بانتظار موافقة الإدارة!");
-                closePackagesModal();
-                return;
-            }
-
-            if ((user.balance || 0) < price) {
-                alert("رصيدك المتاح (" + (user.balance || 0).toFixed(2) + " EGP) غير كافٍ للاشتراك في هذه الباقة!");
-                closePackagesModal();
-                return;
-            }
-
-            pendingRequests[currentUserPhone] = {
-                phone: currentUserPhone,
-                name: user.name,
-                price: price,
-                packageName: "باقة " + price + " EGP"
-            };
-
-            localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
-            loadUserData();
-            closePackagesModal();
-            alert("تم تقديم طلب الاشتراك في الباقة بنجاح، وهو الآن قيد المراجعة من طرف الإدارة.");
         }
 
         function openWithdrawModal() {
