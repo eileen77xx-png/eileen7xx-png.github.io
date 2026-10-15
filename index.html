@@ -85,6 +85,10 @@
         th, td { padding: 8px; border: 1px solid #23304d; text-align: center; font-size: 12px; }
         th { background: #090d16; color: var(--accent); }
         .btn-action-sm { border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; margin: 2px; }
+        .status-badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .status-pending { background: rgba(245, 158, 11, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+        .status-success { background: rgba(34, 197, 94, 0.2); color: var(--neon-green); border: 1px solid var(--neon-green); }
+        .status-rejected { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -141,10 +145,10 @@
                     <span id="vipBadge" class="vip-badge-tag hidden">غير مشترك</span>
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">مبلغ الوديعة الثابتة</div>
                     <div class="balance-amount"><span>EGP</span><span id="depositVal">0.00</span></div>
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:12px;">إجمالي الأرباح: <span style="color:var(--neon-green); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:12px;">إجمالي الأرباح المتاحة للسحب: <span style="color:var(--neon-green); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
                 </div>
 
-                <!-- إشعار حالة الطلب المعلق للمستخدم -->
+                <!-- إشعار حالة طلب الباقة المعلق -->
                 <div id="pendingAlertBox" class="hidden" style="background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent); padding: 12px 15px; border-radius: 10px; margin: 0 15px 15px 15px; font-size: 13px; color: var(--accent); display: flex; align-items: center; gap: 10px;">
                     <i class="fa-solid fa-triangle-exclamation" style="font-size: 18px;"></i>
                     <div>لديك طلب اشتراك في <strong id="pendingPkgName"></strong> بقيمة <strong id="pendingPkgPrice"></strong> قيد المراجعة بواسطة الإدارة...</div>
@@ -160,7 +164,29 @@
 
                 <div class="action-btns-row">
                     <button onclick="openPackagesModal()" class="btn-deposit"><i class="fa-solid fa-wallet"></i> اشتراك باقة</button>
-                    <button onclick="requestWithdrawal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب الأرباح</button>
+                    <button onclick="openWithdrawModal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب الأرباح</button>
+                </div>
+
+                <!-- كارت سجل المعاملات وسحوبات الأرباح -->
+                <div style="margin: 0 15px 20px 15px; background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="font-weight: bold; color: var(--neon-green); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> سجل معاملات وسحوبات الأرباح
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>المحفظة</th>
+                                    <th>المبلغ</th>
+                                    <th>حالة الطلب</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userWithdrawHistoryTable">
+                                <tr><td colspan="4" style="color:var(--text-muted);">لا توجد عمليات سحب سابقة</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div style="padding: 0 15px 5px 15px; font-weight: bold; color: var(--accent);"><i class="fa-solid fa-gem"></i> باقات الاستثمار المتاحة والعوائد</div>
@@ -221,6 +247,24 @@
             <!-- لوحة التحكم الإدارية (الأدمن) -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
+                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب الأرباح المعلقة</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المستخدم</th>
+                                <th>رقم المحفظة</th>
+                                <th>المبلغ المطلوب</th>
+                                <th>التاريخ</th>
+                                <th>قرار الأدمن</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminWithdrawRequestsTable">
+                            <tr><td colspan="5" style="color:var(--text-muted);">لا توجد طلبات سحب معلقة حالياً</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-list-check"></i> طلبات اشتراك الباقات المعلقة</h3>
                     <table>
                         <thead>
@@ -277,6 +321,27 @@
         <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
     </div></div>
 
+    <!-- مودال سحب الأرباح -->
+    <div id="withdrawModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-money-bill-wave"></i> طلب سحب الأرباح</h3>
+            <div style="background:#090d16; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid #23304d;">
+                <span style="font-size:12px; color:var(--text-muted);">رصيد الأرباح المتاح للسحب:</span>
+                <div style="font-size:20px; font-weight:bold; color:var(--neon-green);" id="withdrawAvailableProfit">0.00 EGP</div>
+            </div>
+            <div class="form-group">
+                <label>رقم المحفظة الإلكترونية (Vodafone Cash, Orange, WE, Etisalat, إلخ)</label>
+                <input type="text" id="withdrawWalletNumber" placeholder="أدخل رقم المحفظة">
+            </div>
+            <div class="form-group">
+                <label>المبلغ المراد سحبه (EGP)</label>
+                <input type="number" id="withdrawAmountInput" placeholder="أدخل المبلغ">
+            </div>
+            <button onclick="submitWithdrawRequest()" class="btn-submit">تقديم طلب السحب</button>
+            <button onclick="closeWithdrawModal()" class="btn-submit" style="background:#334155; margin-top:10px;">إغلاق</button>
+        </div>
+    </div>
+
     <div id="infoModal" class="modal-overlay hidden"><div class="modal-box">
         <div class="certificate-box">
             <h3 style="color:var(--accent); margin-bottom:10px;">شهادة التوثيق والتأمين</h3>
@@ -289,13 +354,16 @@
         var currentUserPhone = localStorage.getItem("tasawuq_logged_user") || null;
         var usersDB = {};
         var pendingRequests = {};
+        var withdrawRequests = [];
 
         try {
             usersDB = JSON.parse(localStorage.getItem("tasawuq_users")) || {};
             pendingRequests = JSON.parse(localStorage.getItem("tasawuq_pending_requests")) || {};
+            withdrawRequests = JSON.parse(localStorage.getItem("tasawuq_withdraw_requests")) || [];
         } catch(e) {
             usersDB = {};
             pendingRequests = {};
+            withdrawRequests = [];
         }
 
         // إنشاء حساب الأدمن الافتراضي إذا لم يكن موجوداً
@@ -385,7 +453,7 @@
             if (data.subscribed) { vipBadge.innerText = data.subscribedPackage; vipBadge.classList.remove("hidden"); }
             else { vipBadge.classList.add("hidden"); }
 
-            // التحقق من وجود طلب معلق لهذا المستخدم
+            // التحقق من وجود طلب معلق لـ الباقة
             var alertBox = document.getElementById("pendingAlertBox");
             if (pendingRequests[currentUserPhone]) {
                 document.getElementById("pendingPkgName").innerText = pendingRequests[currentUserPhone].packageName;
@@ -395,7 +463,38 @@
                 alertBox.classList.add("hidden");
             }
 
+            renderUserWithdrawHistory();
             updateTasksButtons();
+        }
+
+        function renderUserWithdrawHistory() {
+            var tbody = document.getElementById("userWithdrawHistoryTable");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+            var myHistory = withdrawRequests.filter(function(r) { return r.phone === currentUserPhone; });
+
+            if (myHistory.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد عمليات سحب سابقة</td></tr>";
+                return;
+            }
+
+            myHistory.reverse().forEach(function(item) {
+                var statusHTML = "";
+                if (item.status === "pending") {
+                    statusHTML = "<span class='status-badge status-pending'>قيد المراجعة ⏳</span>";
+                } else if (item.status === "approved") {
+                    statusHTML = "<span class='status-badge status-success'>تم ارسال المبلغ ✅</span>";
+                } else {
+                    statusHTML = "<span class='status-badge status-rejected'>مرفوض ❌</span>";
+                }
+
+                tbody.innerHTML += "<tr>" +
+                    "<td>" + item.date + "</td>" +
+                    "<td>" + item.wallet + "</td>" +
+                    "<td>" + item.amount.toFixed(2) + " EGP</td>" +
+                    "<td>" + statusHTML + "</td>" +
+                "</tr>";
+            });
         }
 
         function updateTasksButtons() {
@@ -475,32 +574,27 @@
             var dailyTotal = user.deposit === 300 ? 15 : (user.deposit === 800 ? 40 : (user.deposit === 1500 ? 75 : (user.deposit === 3000 ? 150 : (user.deposit === 8000 ? 400 : 600))));
             var earn = dailyTotal / 5;
             user.profit += earn;
-            user.balance += earn;
             user.completedTasks[today].push(taskId);
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             loadUserData();
             alert("تم تنفيذ المهمة بنجاح وأُضيف ربح (" + earn.toFixed(2) + " EGP)!");
         }
 
-        // طلب الاشتراك في الباقة مع التحقق من الرصيد والطلبات المعلقة
         function requestPackageSubscription(price) {
             var user = usersDB[currentUserPhone];
 
-            // التحقق مما إذا كان لديه طلب معلق بالفعل
             if (pendingRequests[currentUserPhone]) {
                 alert("لديك طلب اشتراك معلق بالفعل بانتظار موافقة الإدارة!");
                 closePackagesModal();
                 return;
             }
 
-            // التحقق من كفاية الرصيد المتاح
             if ((user.balance || 0) < price) {
                 alert("رصيدك المتاح (" + (user.balance || 0).toFixed(2) + " EGP) غير كافٍ للاشتراك في هذه الباقة!");
                 closePackagesModal();
                 return;
             }
 
-            // إنشاء الطلب وإرساله للإدارة
             pendingRequests[currentUserPhone] = {
                 phone: currentUserPhone,
                 name: user.name,
@@ -514,9 +608,84 @@
             alert("تم تقديم طلب الاشتراك في الباقة بنجاح، وهو الآن قيد المراجعة من طرف الإدارة.");
         }
 
+        /* ------------------ إدارة طلبات سحب الأرباح ------------------ */
+        function openWithdrawModal() {
+            var user = usersDB[currentUserPhone];
+            document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
+            document.getElementById("withdrawModal").classList.remove("hidden");
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById("withdrawModal").classList.add("hidden");
+        }
+
+        function submitWithdrawRequest() {
+            var user = usersDB[currentUserPhone];
+            var wallet = document.getElementById("withdrawWalletNumber").value.trim();
+            var amount = parseFloat(document.getElementById("withdrawAmountInput").value);
+
+            if (!wallet) {
+                alert("يرجى إدخال رقم المحفظة الإلكترونية الخاصة بك!");
+                return;
+            }
+
+            if (isNaN(amount) || amount <= 0) {
+                alert("يرجى إدخال مبلغ سحب صحيح!");
+                return;
+            }
+
+            if (amount > (user.profit || 0)) {
+                alert("تنبيه: مبلغ السحب أكثر من رصيد الأرباح المتاح لديك (" + (user.profit || 0).toFixed(2) + " EGP)!");
+                return;
+            }
+
+            var todayStr = new Date().toISOString().slice(0, 10);
+            var newReq = {
+                id: Date.now(),
+                phone: currentUserPhone,
+                name: user.name,
+                wallet: wallet,
+                amount: amount,
+                date: todayStr,
+                status: "pending"
+            };
+
+            withdrawRequests.push(newReq);
+            localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
+            
+            document.getElementById("withdrawWalletNumber").value = "";
+            document.getElementById("withdrawAmountInput").value = "";
+            closeWithdrawModal();
+            loadUserData();
+            alert("تم تقديم طلب سحب الأرباح بنجاح، وستتم معالجته بواسطة الأدمن قريباً!");
+        }
+
         /* ------------------ أدوات الإدارة الشاملة (الأدمن) ------------------ */
         function renderAdminPanel() {
-            // 1. عرض طلبات الباقات المعلقة
+            // 1. عرض طلبات سحب الأرباح المعلقة
+            var wTbody = document.getElementById("adminWithdrawRequestsTable");
+            if (wTbody) {
+                wTbody.innerHTML = "";
+                var pendingWithdraws = withdrawRequests.filter(function(r) { return r.status === "pending"; });
+                if (pendingWithdraws.length === 0) {
+                    wTbody.innerHTML = "<tr><td colspan='5' style='color:var(--text-muted);'>لا توجد طلبات سحب معلقة حالياً</td></tr>";
+                } else {
+                    pendingWithdraws.forEach(function(req) {
+                        wTbody.innerHTML += "<tr>" +
+                            "<td><strong>" + req.name + "</strong><br><span style='color:var(--neon-green);'>" + req.phone + "</span></td>" +
+                            "<td><strong style='color:var(--accent);'>" + req.wallet + "</strong></td>" +
+                            "<td>" + req.amount.toFixed(2) + " EGP</td>" +
+                            "<td>" + req.date + "</td>" +
+                            "<td>" +
+                                "<button onclick=\"approveWithdrawRequest(" + req.id + ")\" class='btn-action-sm' style='background:var(--neon-green); color:black;'>موافقة</button>" +
+                                "<button onclick=\"rejectWithdrawRequest(" + req.id + ")\" class='btn-action-sm' style='background:var(--danger); color:white;'>رفض</button>" +
+                            "</td>" +
+                        "</tr>";
+                    });
+                }
+            }
+
+            // 2. عرض طلبات الباقات المعلقة
             var reqTbody = document.getElementById("adminRequestsTable");
             if (reqTbody) {
                 reqTbody.innerHTML = "";
@@ -539,7 +708,7 @@
                 }
             }
 
-            // 2. عرض جدول المستخدمين والأرصدة
+            // 3. عرض جدول المستخدمين والأرصدة
             var tbody = document.getElementById("adminUserTable");
             if (!tbody) return;
             tbody.innerHTML = "";
@@ -560,96 +729,41 @@
             }
         }
 
-        // موافقة الأدمن على طلب الباقة
-        function approvePackageRequest(phone) {
-            var req = pendingRequests[phone];
-            var user = usersDB[phone];
-            if (req && user) {
-                // خصم سعر الباقة من رصيد المستخدم المتاح وتحديث الوديعة
-                if ((user.balance || 0) >= req.price) {
-                    user.balance -= req.price;
-                    user.deposit = req.price;
-                    user.subscribed = true;
-                    user.subscribedPackage = req.packageName;
+        // موافقة الأدمن على طلب سحب الأرباح وخصمه فوراً من رصيد الأرباح
+        function approveWithdrawRequest(reqId) {
+            var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
+            if (reqIndex !== -1) {
+                var req = withdrawRequests[reqIndex];
+                var user = usersDB[req.phone];
 
-                    delete pendingRequests[phone];
+                if (user && (user.profit || 0) >= req.amount) {
+                    user.profit -= req.amount; // خصم المبلغ من رصيد الأرباح
+                    req.status = "approved";
+
                     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-                    localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
+                    localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
 
                     renderAdminPanel();
-                    if (currentUserPhone === phone) loadUserData();
-                    alert("تمت الموافقة على طلب الباقة وتفعيلها بنجاح!");
+                    if (currentUserPhone === req.phone) loadUserData();
+                    alert("تمت الموافقة على طلب السحب وخصم " + req.amount + " EGP من أرباح المستخدم بنجاح!");
                 } else {
-                    alert("رصيد المستخدم لم يعد كافياً لتنفيذ الطلب.");
+                    alert("رصيد الأرباح الحالي للمستخدم لم يعد كافياً لوصل هذا المبلغ!");
                 }
             }
         }
 
-        // رفض الأدمن لطلب الباقة
-        function rejectPackageRequest(phone) {
-            if (confirm("هل أنت متأكد من رفض طلب الاشتراك؟")) {
-                delete pendingRequests[phone];
-                localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
-                renderAdminPanel();
-                if (currentUserPhone === phone) loadUserData();
-                alert("تم رفض الطلب.");
+        // رفض الأدمن لطلب سحب الأرباح
+        function rejectWithdrawRequest(reqId) {
+            var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
+            if (reqIndex !== -1) {
+                if (confirm("هل أنت متأكد من رفض طلب السحب؟")) {
+                    withdrawRequests[reqIndex].status = "rejected";
+                    localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
+                    renderAdminPanel();
+                    if (currentUserPhone === withdrawRequests[reqIndex].phone) loadUserData();
+                    alert("تم رفض طلب السحب.");
+                }
             }
         }
 
-        function adminAddBalance(phone) {
-            var val = parseFloat(prompt("أدخل المبلغ المراد شحنه لحساب (" + phone + "):"));
-            if (!isNaN(val) && val > 0) {
-                usersDB[phone].balance = (usersDB[phone].balance || 0) + val;
-                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-                renderAdminPanel();
-                if (currentUserPhone === phone) loadUserData();
-                alert("تم شحن الرصيد بنجاح!");
-            }
-        }
-
-        function adminDeductBalance(phone) {
-            var val = parseFloat(prompt("أدخل المبلغ المراد خصمه من حساب (" + phone + "):"));
-            if (!isNaN(val) && val > 0) {
-                usersDB[phone].balance = Math.max(0, (usersDB[phone].balance || 0) - val);
-                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-                renderAdminPanel();
-                if (currentUserPhone === phone) loadUserData();
-                alert("تم خصم الرصيد بنجاح!");
-            }
-        }
-
-        function adminEditDeposit(phone) {
-            var val = parseFloat(prompt("أدخل قيمة الوديعة الجديدة للحساب:", usersDB[phone].deposit || 0));
-            if (!isNaN(val)) {
-                usersDB[phone].deposit = val;
-                usersDB[phone].subscribed = val > 0;
-                usersDB[phone].subscribedPackage = val > 0 ? "باقة " + val + " EGP" : "غير مشترك";
-                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-                renderAdminPanel();
-                if (currentUserPhone === phone) loadUserData();
-                alert("تم تحديث قيمة الوديعة بنجاح!");
-            }
-        }
-
-        function adminEditProfit(phone) {
-            var val = parseFloat(prompt("أدخل إجمالي الأرباح الجديد للحساب:", usersDB[phone].profit || 0));
-            if (!isNaN(val)) {
-                usersDB[phone].profit = val;
-                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-                renderAdminPanel();
-                if (currentUserPhone === phone) loadUserData();
-                alert("تم تعديل الأرباح بنجاح!");
-            }
-        }
-
-        function requestWithdrawal() { alert("تم إرسال طلب السحب بنجاح للمراجعة."); }
-        function openPackagesModal() { document.getElementById("packagesModal").classList.remove("hidden"); }
-        function closePackagesModal() { document.getElementById("packagesModal").classList.add("hidden"); }
-        function openInfoModal() { document.getElementById("infoModal").classList.remove("hidden"); }
-        function closeInfoModal() { document.getElementById("infoModal").classList.add("hidden"); }
-        function handleLogout() { localStorage.removeItem("tasawuq_logged_user"); location.reload(); }
-        function showRegister() { document.getElementById("loginScreen").classList.add("hidden"); document.getElementById("registerScreen").classList.remove("hidden"); }
-        function showLogin() { document.getElementById("registerScreen").classList.add("hidden"); document.getElementById("loginScreen").classList.remove("hidden"); }
-    </script>
-</body>
-</html>
+        // موافقة الأدمن على طلب البا
