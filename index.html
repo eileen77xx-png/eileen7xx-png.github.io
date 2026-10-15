@@ -9,31 +9,31 @@
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول بخلفية صورة كاملة وواضحة -->
-    <div id="loginScreen" style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://i.ibb.co/3yk55N5/1000082071.jpg'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;">
-        <div class="auth-container" style="background: rgba(10, 15, 26, 0.75) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <!-- 1. شاشة تسجيل الدخول بخلفية صورة كاملة وبطاقة شفافة -->
+    <div id="loginScreen" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://i.ibb.co/3yk55N5/1000082071.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div class="auth-container" style="background: rgba(9, 13, 22, 0.38) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(34, 197, 94, 0.6); box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
             <div class="auth-content">
-                <h2 class="welcome-title">✨ أهلاً بك في منصة تسوق بلس</h2>
-                <p class="welcome-desc">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
+                <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">✨ أهلاً بك في منصة تسوق بلس</h2>
+                <p class="welcome-desc" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
                 
-                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526"></div>
-                <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael"></div>
+                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526" style="background: rgba(9, 13, 22, 0.6);"></div>
+                <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael" style="background: rgba(9, 13, 22, 0.6);"></div>
                 <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
                 <div class="switch-auth">ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span></div>
             </div>
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب بخلفية صورة كاملة وواضحة -->
-    <div id="registerScreen" class="hidden" style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://i.ibb.co/3yk55N5/1000082071.jpg'); background-size: 100% 100%; background-position: center; background-repeat: no-repeat; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;">
-        <div class="auth-container" style="background: rgba(10, 15, 26, 0.75) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+    <!-- 2. شاشة إنشاء حساب بخلفية صورة كاملة وبطاقة شفافة -->
+    <div id="registerScreen" class="hidden" style="background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('https://i.ibb.co/3yk55N5/1000082071.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div class="auth-container" style="background: rgba(9, 13, 22, 0.38) !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(34, 197, 94, 0.6); box-shadow: 0 15px 35px rgba(0,0,0,0.5);">
             <div class="auth-content">
-                <h2 class="welcome-title">🚀 انضم اليوم إلى تسوق بلس</h2>
-                <p class="welcome-desc">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
+                <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8);">🚀 انضم اليوم إلى تسوق بلس</h2>
+                <p class="welcome-desc" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
                 
-                <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
-                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
-                <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
+                <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم" style="background: rgba(9, 13, 22, 0.6);"></div>
+                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل" style="background: rgba(9, 13, 22, 0.6);"></div>
+                <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********" style="background: rgba(9, 13, 22, 0.6);"></div>
                 <button type="button" onclick="executeRegister()" class="btn-submit">تسجيل حساب جديد</button>
                 <div class="switch-auth">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
             </div>
