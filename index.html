@@ -9,13 +9,22 @@
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول -->
+    <!-- 1. شاشة تسجيل الدخول بالتصميم والترتيب الجديد -->
     <div id="loginScreen" class="auth-bg-wrapper">
         <div class="auth-container">
             <div class="auth-content">
+                <!-- 1. الصورة فوق كل شيء -->
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <img src="1000082071.jpg" alt="تسوق بلس" style="width: 100%; max-height: 160px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(34, 197, 94, 0.4);">
+                </div>
+
+                <!-- 2. فوق كلمة أهلاً بك -->
                 <h2 class="welcome-title">✨ أهلاً بك في منصة تسوق بلس</h2>
+
+                <!-- 3. تحت النبذة عن المنصة -->
                 <p class="welcome-desc">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
                 
+                <!-- 4. خانة تسجيل الدخول -->
                 <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael"></div>
                 <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
@@ -24,13 +33,22 @@
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب -->
+    <!-- 2. شاشة إنشاء حساب جديد بالتصميم والترتيب الجديد -->
     <div id="registerScreen" class="auth-bg-wrapper hidden">
         <div class="auth-container">
             <div class="auth-content">
+                <!-- 1. الصورة فوق كل شيء -->
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <img src="1000082071.jpg" alt="تسوق بلس" style="width: 100%; max-height: 160px; object-fit: cover; border-radius: 12px; border: 1px solid rgba(34, 197, 94, 0.4);">
+                </div>
+
+                <!-- 2. فوق عنوان الانضمام -->
                 <h2 class="welcome-title">🚀 انضم اليوم إلى تسوق بلس</h2>
+
+                <!-- 3. تحت النبذة عن المنصة -->
                 <p class="welcome-desc">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
-                
+
+                <!-- 4. خانة إنشاء الحساب -->
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
                 <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
@@ -117,7 +135,7 @@
                 </div>
             </div>
 
-            <!-- شاشة السجلات -->
+            <!-- شاشة السجلات والمعاملات -->
             <div id="tabHistory" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل المعاملات وسحوبات الأرباح الكامل</h3>
