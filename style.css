@@ -32,14 +32,35 @@ body { background-color: var(--bg-dark); color: var(--text-light); min-height: 1
 .user-id-box { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
 .credit-circle { width: 48px; height: 48px; border-radius: 50%; border: 3px solid var(--neon-green); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; color: white; }
 
+/* بطاقة الأرصدة المحدثة */
 .balance-card { background: linear-gradient(135deg, #111a2e 0%, #0a101d 100%); border-radius: 16px; padding: 20px; margin: 0 15px 15px 15px; border: 1px solid rgba(255,255,255,0.08); position: relative; overflow: hidden; }
-.vip-badge-tag { position: absolute; top: 15px; left: 15px; background: #22c55e; color: #000; font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 12px; cursor: pointer; }
-.balance-amount { font-size: 28px; font-weight: bold; color: white; display: flex; align-items: center; gap: 8px; }
 
-.marquee-container { background: rgba(16, 185, 129, 0.08); border-top: 1px solid rgba(34, 197, 94, 0.25); border-bottom: 1px solid rgba(34, 197, 94, 0.25); height: 42px; margin: 0 15px 15px 15px; overflow: hidden; border-radius: 8px; display: flex; align-items: center; }
-.marquee-content { display: flex; white-space: nowrap; animation: marqueeRTL 25s linear infinite; }
-.marquee-item { display: inline-flex; align-items: center; color: var(--neon-green); font-size: 12px; font-weight: 500; padding: 0 20px; gap: 8px; }
-@keyframes marqueeRTL { 0% { transform: translateX(-50%); } 100% { transform: translateX(0%); } }
+/* شارة الباقة المميزة والمطمئنة */
+.vip-badge-tag { 
+    position: absolute; 
+    top: 15px; 
+    left: 15px; 
+    background: linear-gradient(135deg, #22c55e, #10b981); 
+    color: #fff; 
+    font-size: 12px; 
+    font-weight: bold; 
+    padding: 5px 14px; 
+    border-radius: 20px; 
+    cursor: pointer; 
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.balance-amount { font-size: 26px; font-weight: bold; color: white; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+
+/* الشريط المتحرك المتصل بدون فراغات */
+.marquee-container { background: rgba(16, 185, 129, 0.08); border-top: 1px solid rgba(34, 197, 94, 0.25); border-bottom: 1px solid rgba(34, 197, 94, 0.25); height: 42px; margin: 0 15px 15px 15px; overflow: hidden; border-radius: 8px; display: flex; align-items: center; white-space: nowrap; position: relative; }
+.marquee-content { display: inline-flex; animation: marqueeSmooth 20s linear infinite; }
+.marquee-item { display: inline-flex; align-items: center; color: var(--neon-green); font-size: 12px; font-weight: 500; padding: 0 30px; gap: 8px; }
+@keyframes marqueeSmooth { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
 
 .action-btns-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 15px 20px 15px; }
 .btn-deposit { background: linear-gradient(135deg, #22c55e, #16a34a); color: #000; font-weight: bold; padding: 12px; border-radius: 12px; border: none; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
