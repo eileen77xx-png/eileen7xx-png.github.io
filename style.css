@@ -12,33 +12,27 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
 body { background-color: var(--bg-dark); color: var(--text-light); min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 75px; }
 
-/* خلفية الصورة الفخمة لشاشات الدخول والإنشاء تغطي الشاشة بالكامل */
 .auth-bg-wrapper {
-    background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('1000082071.jpg') !important;
-    background-size: cover !important;
-    background-position: center center !important;
-    background-repeat: no-repeat !important;
-    min-height: 100vh !important;
-    width: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 20px !important;
+    background-color: var(--bg-dark);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 .auth-container { 
     max-width: 420px; 
-    background: rgba(13, 20, 35, 0.5) !important; 
-    backdrop-filter: blur(12px); 
-    -webkit-backdrop-filter: blur(12px);
+    background: var(--card-bg); 
     border-radius: 20px; 
     overflow: hidden; 
     border: 1px solid rgba(34, 197, 94, 0.4); 
     width: 100%; 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(34, 197, 94, 0.15); 
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6); 
 }
 .auth-content { padding: 28px 24px; }
-.welcome-title { text-align: center; color: var(--neon-green); font-size: 21px; margin-bottom: 10px; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+.welcome-title { text-align: center; color: var(--neon-green); font-size: 21px; margin-bottom: 10px; font-weight: bold; }
 .welcome-desc { text-align: center; color: #cbd5e1; font-size: 13px; margin-bottom: 22px; line-height: 1.6; background: rgba(0,0,0,0.35); padding: 10px; border-radius: 10px; border-right: 3px solid var(--neon-green); }
 
 .form-group { margin-bottom: 16px; }
