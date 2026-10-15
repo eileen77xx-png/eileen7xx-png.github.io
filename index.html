@@ -37,6 +37,8 @@
     <!-- 3. التطبيق الرئيسي -->
     <div id="appScreen" class="hidden">
         <main class="main-content">
+            
+            <!-- الشاشة الرئيسية -->
             <div id="tabHome" class="tab-content">
                 <div class="profile-header-card">
                     <div class="user-main-info">
@@ -56,7 +58,7 @@
                 </div>
 
                 <div class="balance-card">
-                    <span id="vipBadge" class="vip-badge-tag hidden">غير مشترك</span>
+                    <span id="vipBadge" class="vip-badge-tag hidden" onclick="openPackageOptionsModal()">غير مشترك ⚙️</span>
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">مبلغ الوديعة الثابتة</div>
                     <div class="balance-amount"><span>EGP</span><span id="depositVal">0.00</span></div>
                     <div style="font-size:12px; color:var(--text-muted); margin-top:12px;">إجمالي الأرباح المتاحة للسحب: <span style="color:var(--neon-green); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
@@ -80,27 +82,6 @@
                     <button onclick="openWithdrawModal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب الأرباح</button>
                 </div>
 
-                <div style="margin: 0 15px 20px 15px; background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid rgba(255,255,255,0.08);">
-                    <div style="font-weight: bold; color: var(--neon-green); margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                        <i class="fa-solid fa-clock-rotate-left"></i> سجل معاملات وسحوبات الأرباح
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>التاريخ</th>
-                                    <th>المحفظة</th>
-                                    <th>المبلغ</th>
-                                    <th>حالة الطلب</th>
-                                </tr>
-                            </thead>
-                            <tbody id="userWithdrawHistoryTable">
-                                <tr><td colspan="4" style="color:var(--text-muted);">لا توجد عمليات سحب سابقة</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
                 <div style="padding: 0 15px 5px 15px; font-weight: bold; color: var(--accent);"><i class="fa-solid fa-gem"></i> باقات الاستثمار المتاحة والعوائد</div>
                 <div class="packages-grid-custom">
                     <div class="pkg-box-item"><div><span style="font-size:12px; color:var(--text-muted);">باقة <span class="pkg-price-val">300 EGP</span></span><div style="font-size:11px; color:var(--neon-green); margin-top:4px;">ربح يومي: 15 EGP</div></div><button onclick="requestPackageSubscription(300)" class="btn-pkg-subscribe">طلب اشتراك</button></div>
@@ -112,6 +93,32 @@
                 </div>
             </div>
 
+            <!-- شاشة السجلات والمعاملات الجديدة -->
+            <div id="tabHistory" class="tab-content hidden">
+                <div style="padding:15px;">
+                    <h3 style="color:var(--neon-green); margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل المعاملات وسحوبات الأرباح الكامل</h3>
+                    
+                    <div style="background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid rgba(255,255,255,0.08);">
+                        <div style="overflow-x: auto;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>التاريخ</th>
+                                        <th>رقم المحفظة</th>
+                                        <th>المبلغ المطلوب</th>
+                                        <th>حالة الطلب</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userFullWithdrawHistoryTable">
+                                    <tr><td colspan="4" style="color:var(--text-muted);">لا توجد عمليات سحب سابقة حتى الآن</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- شاشة حسابي -->
             <div id="tabAccount" class="tab-content hidden">
                 <div class="account-details-card">
                     <h3 style="color:var(--neon-green); text-align:center; margin-bottom:15px;"><i class="fa-solid fa-id-card-clip"></i> معلومات الحساب</h3>
@@ -128,7 +135,10 @@
                         </div>
                     </div>
                     <div class="info-row-item"><span class="info-label">رقم الموبايل:</span><span id="accountPhone" class="info-val">01000000000</span></div>
-                    <div class="info-row-item"><span class="info-label">الباقة المشترك فيها:</span><span id="accountPackage" class="info-val" style="color:var(--neon-green);">غير مشترك</span></div>
+                    <div class="info-row-item">
+                        <span class="info-label">الباقة المشترك فيها:</span>
+                        <span id="accountPackage" class="info-val" style="color:var(--neon-green); cursor:pointer;" onclick="openPackageOptionsModal()">غير مشترك ⚙️</span>
+                    </div>
                     <div class="info-row-item"><span class="info-label">مبلغ الوديعة:</span><span id="accountDeposit" class="info-val" style="color:var(--accent);">0.00 EGP</span></div>
                     <div class="info-row-item"><span class="info-label">الرصيد المتاح:</span><span id="accountBalance" class="info-val" style="color:var(--neon-green);">0.00 EGP</span></div>
                 </div>
@@ -138,6 +148,7 @@
                 <button onclick="handleLogout()" class="btn-logout">تسجيل الخروج</button>
             </div>
 
+            <!-- شاشة المهام -->
             <div id="tabTasks" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> المهمات اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
@@ -151,7 +162,18 @@
                 </div>
             </div>
 
+            <!-- لوحة تحكم الأدمن المحدثة -->
             <div id="tabAdmin" class="tab-content hidden">
+                <!-- زر البحث عن المستخدم برقم الموبايل -->
+                <section class="admin-panel">
+                    <h3 style="color: var(--neon-green); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-magnifying-glass"></i> البحث الشامل عن مستخدم</h3>
+                    <div class="admin-search-box">
+                        <input type="text" id="adminSearchInput" placeholder="أدخل رقم موبايل المستخدم">
+                        <button onclick="adminSearchUser()"><i class="fa-solid fa-search"></i> بحث</button>
+                    </div>
+                    <div id="adminSearchResult" class="hidden"></div>
+                </section>
+
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب الأرباح المعلقة</h3>
                     <table>
@@ -206,13 +228,16 @@
         </main>
     </div>
 
+    <!-- الشريط السفلي بعد إضافة أيقونة السجلات -->
     <nav id="bottomNav" class="bottom-nav-bar hidden">
         <button class="nav-btn active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i><span>الرئيسية</span></button>
         <button class="nav-btn" onclick="switchTab('tasks')"><i class="fa-solid fa-crown"></i><span>مهمة</span></button>
+        <button class="nav-btn" onclick="switchTab('history')"><i class="fa-solid fa-receipt"></i><span>السجلات</span></button>
         <button class="nav-btn" onclick="switchTab('account')"><i class="fa-solid fa-user"></i><span>حسابي</span></button>
         <button id="adminNavBtn" class="nav-btn hidden" onclick="switchTab('admin')"><i class="fa-solid fa-user-shield"></i><span>الإدارة</span></button>
     </nav>
 
+    <!-- المودالات -->
     <div id="packagesModal" class="modal-overlay hidden"><div class="modal-box"><h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;">اختر الباقة لتقديم طلب الاشتراك</h3>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
             <button onclick="requestPackageSubscription(300)" class="btn-submit">باقة 300 EGP</button>
@@ -225,6 +250,18 @@
         <button onclick="closePackagesModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
     </div></div>
 
+    <!-- مودال ترقية الباقة / استرجاع الوديعة -->
+    <div id="packageOptionsModal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-arrows-rotate"></i> خيارات الباقة والوديعة</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px; text-align:center;">يمكنك استرجاع قيمة الوديعة الحالية للرصيد المتاح، أو اختيار الترقية لباقة أعلى.</p>
+            <button onclick="refundDepositToBalance()" class="btn-submit" style="background:var(--accent); color:black; margin-bottom:10px;">استرجاع الوديعة إلى الرصيد المتاح</button>
+            <button onclick="closePackageOptionsModal(); openPackagesModal();" class="btn-submit" style="margin-bottom:10px;">ترقية الباقة واختيار باقة أعلى</button>
+            <button onclick="closePackageOptionsModal()" class="btn-submit" style="background:#334155;">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- مودال سحب الأرباح -->
     <div id="withdrawModal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-money-bill-wave"></i> طلب سحب الأرباح</h3>
@@ -279,6 +316,7 @@
                 subscribed: true,
                 subscribedPackage: "300 EGP",
                 completedTasks: {},
+                createdAt: new Date().toISOString().slice(0, 10),
                 avatar: "https://via.placeholder.com/150"
             };
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
@@ -309,7 +347,18 @@
             if (!name || !phone || !pass) { alert("املأ الحقول المطلوبة!"); return; }
             if (usersDB[phone]) { alert("الموبايل مسجل مسبقاً!"); return; }
 
-            usersDB[phone] = { name: name, password: pass, balance: 0, deposit: 0, profit: 0, subscribed: false, subscribedPackage: "غير مشترك", completedTasks: {}, avatar: "https://via.placeholder.com/150" };
+            usersDB[phone] = {
+                name: name,
+                password: pass,
+                balance: 0,
+                deposit: 0,
+                profit: 0,
+                subscribed: false,
+                subscribedPackage: "غير مشترك",
+                completedTasks: {},
+                createdAt: new Date().toISOString().slice(0, 10),
+                avatar: "https://via.placeholder.com/150"
+            };
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             currentUserPhone = phone;
             localStorage.setItem("tasawuq_logged_user", phone);
@@ -340,7 +389,7 @@
             document.getElementById("profitVal").innerText = (data.profit || 0).toFixed(2);
             document.getElementById("accountName").innerText = data.name;
             document.getElementById("accountPhone").innerText = currentUserPhone;
-            document.getElementById("accountPackage").innerText = data.subscribedPackage || "غير مشترك";
+            document.getElementById("accountPackage").innerText = (data.subscribedPackage || "غير مشترك") + " ⚙️";
             document.getElementById("accountDeposit").innerText = (data.deposit || 0).toFixed(2) + " EGP";
             document.getElementById("accountBalance").innerText = (data.balance || 0).toFixed(2) + " EGP";
             
@@ -352,7 +401,7 @@
             }
 
             var vipBadge = document.getElementById("vipBadge");
-            if (data.subscribed) { vipBadge.innerText = data.subscribedPackage; vipBadge.classList.remove("hidden"); }
+            if (data.subscribed) { vipBadge.innerText = data.subscribedPackage + " ⚙️"; vipBadge.classList.remove("hidden"); }
             else { vipBadge.classList.add("hidden"); }
 
             var alertBox = document.getElementById("pendingAlertBox");
@@ -364,29 +413,29 @@
                 alertBox.classList.add("hidden");
             }
 
-            renderUserWithdrawHistory();
+            renderFullUserWithdrawHistory();
             updateTasksButtons();
         }
 
-        function renderUserWithdrawHistory() {
-            var tbody = document.getElementById("userWithdrawHistoryTable");
+        function renderFullUserWithdrawHistory() {
+            var tbody = document.getElementById("userFullWithdrawHistoryTable");
             if (!tbody) return;
             tbody.innerHTML = "";
             var myHistory = withdrawRequests.filter(function(r) { return r.phone === currentUserPhone; });
 
             if (myHistory.length === 0) {
-                tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد عمليات سحب سابقة</td></tr>";
+                tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد عمليات سحب سابقة حتى الآن</td></tr>";
                 return;
             }
 
             myHistory.slice().reverse().forEach(function(item) {
                 var statusHTML = "";
                 if (item.status === "pending") {
-                    statusHTML = "<span class='status-badge status-pending'>قيد المراجعة</span>";
+                    statusHTML = "<span class='status-badge status-pending'>قيد المراجعة ⏳</span>";
                 } else if (item.status === "approved") {
-                    statusHTML = "<span class='status-badge status-success'>تم ارسال المبلغ</span>";
+                    statusHTML = "<span class='status-badge status-success'>تم إرسال المبلغ ✅</span>";
                 } else {
-                    statusHTML = "<span class='status-badge status-rejected'>مرفوض</span>";
+                    statusHTML = "<span class='status-badge status-rejected'>مرفوض ❌</span>";
                 }
 
                 tbody.innerHTML += "<tr>" +
@@ -396,6 +445,89 @@
                     "<td>" + statusHTML + "</td>" +
                 "</tr>";
             });
+        }
+
+        function switchTab(tabName) {
+            var tabs = document.querySelectorAll(".tab-content");
+            var btns = document.querySelectorAll(".nav-btn");
+            for (var i = 0; i < tabs.length; i++) { tabs[i].classList.add("hidden"); }
+            for (var j = 0; j < btns.length; j++) { btns[j].classList.remove("active"); }
+
+            if (tabName === "home") { document.getElementById("tabHome").classList.remove("hidden"); btns[0].classList.add("active"); }
+            else if (tabName === "tasks") { document.getElementById("tabTasks").classList.remove("hidden"); btns[1].classList.add("active"); }
+            else if (tabName === "history") { document.getElementById("tabHistory").classList.remove("hidden"); btns[2].classList.add("active"); renderFullUserWithdrawHistory(); }
+            else if (tabName === "account") { document.getElementById("tabAccount").classList.remove("hidden"); btns[3].classList.add("active"); }
+            else if (tabName === "admin") {
+                document.getElementById("tabAdmin").classList.remove("hidden");
+                if(btns[4]) btns[4].classList.add("active");
+                renderAdminPanel();
+            }
+        }
+
+        function openPackageOptionsModal() {
+            document.getElementById("packageOptionsModal").classList.remove("hidden");
+        }
+
+        function closePackageOptionsModal() {
+            document.getElementById("packageOptionsModal").classList.add("hidden");
+        }
+
+        function refundDepositToBalance() {
+            var user = usersDB[currentUserPhone];
+            if (!user.deposit || user.deposit <= 0) {
+                alert("ليس لديك وديعة قائمة لاسترجاعها!");
+                return;
+            }
+
+            if (confirm("هل أنت متأكد من استرجاع قيمة الوديعة (" + user.deposit + " EGP) وإضافتها إلى الرصيد المتاح؟ سيتم إلغاء تفعيل الباقة الحالية.")) {
+                user.balance = (user.balance || 0) + user.deposit;
+                user.deposit = 0;
+                user.subscribed = false;
+                user.subscribedPackage = "غير مشترك";
+
+                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+                loadUserData();
+                closePackageOptionsModal();
+                alert("تم استرجاع مبلغ الوديعة بنجاح إلى رصيدك المتاح!");
+            }
+        }
+
+        function adminSearchUser() {
+            var phone = document.getElementById("adminSearchInput").value.trim();
+            var resDiv = document.getElementById("adminSearchResult");
+
+            if (!phone || !usersDB[phone]) {
+                resDiv.innerHTML = "<p style='color:var(--danger); margin-top:10px;'>المستخدم غير موجود!</p>";
+                resDiv.classList.remove("hidden");
+                return;
+            }
+
+            var u = usersDB[phone];
+            var uHistory = withdrawRequests.filter(function(r) { return r.phone === phone; });
+            var historyHTML = "";
+
+            if (uHistory.length === 0) {
+                historyHTML = "<tr><td colspan='4'>لا توجد سحوبات سابقة</td></tr>";
+            } else {
+                uHistory.forEach(function(h) {
+                    historyHTML += "<tr><td>" + h.date + "</td><td>" + h.wallet + "</td><td>" + h.amount + " EGP</td><td>" + h.status + "</td></tr>";
+                });
+            }
+
+            resDiv.innerHTML = "<div class='user-detail-card'>" +
+                "<div style='display:flex; align-items:center; gap:12px; margin-bottom:10px;'>" +
+                    "<img src='" + (u.avatar || "https://via.placeholder.com/150") + "' style='width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--neon-green);'>" +
+                    "<div><h4 style='color:var(--neon-green);'>" + u.name + "</h4><p style='font-size:12px; color:var(--text-muted);'>" + phone + "</p></div>" +
+                "</div>" +
+                "<p style='font-size:12px; margin-bottom:5px;'><strong>تاريخ إنشاء الحساب:</strong> " + (u.createdAt || "غير محدد") + "</p>" +
+                "<p style='font-size:12px; margin-bottom:5px;'><strong>الرصيد المتاح:</strong> " + (u.balance||0).toFixed(2) + " EGP</p>" +
+                "<p style='font-size:12px; margin-bottom:5px;'><strong>الوديعة الحالية:</strong> " + (u.deposit||0).toFixed(2) + " EGP</p>" +
+                "<p style='font-size:12px; margin-bottom:10px;'><strong>الباقة:</strong> " + (u.subscribedPackage||"غير مشترك") + "</p>" +
+                "<h5 style='color:var(--accent); margin-bottom:5px;'>سجل سحوبات المستخدم:</h5>" +
+                "<table><thead><tr><th>التاريخ</th><th>المحفظة</th><th>المبلغ</th><th>الحالة</th></tr></thead><tbody>" + historyHTML + "</tbody></table>" +
+            "</div>";
+
+            resDiv.classList.remove("hidden");
         }
 
         function updateTasksButtons() {
@@ -421,18 +553,6 @@
             }
             var leftEl = document.getElementById("tasksLeft");
             if(leftEl) leftEl.innerText = 5 - completedToday;
-        }
-
-        function switchTab(tabName) {
-            var tabs = document.querySelectorAll(".tab-content");
-            for (var i = 0; i < tabs.length; i++) { tabs[i].classList.add("hidden"); }
-            if (tabName === "home") document.getElementById("tabHome").classList.remove("hidden");
-            else if (tabName === "account") document.getElementById("tabAccount").classList.remove("hidden");
-            else if (tabName === "tasks") document.getElementById("tabTasks").classList.remove("hidden");
-            else if (tabName === "admin") {
-                document.getElementById("tabAdmin").classList.remove("hidden");
-                renderAdminPanel();
-            }
         }
 
         function uploadUserAvatar(e) {
@@ -732,28 +852,4 @@
             var val = parseFloat(prompt("أدخل إجمالي الأرباح الجديد للحساب:", usersDB[phone].profit || 0));
             if (!isNaN(val)) {
                 usersDB[phone].profit = val;
-                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-                renderAdminPanel();
-                if (currentUserPhone === phone) loadUserData();
-                alert("تم تعديل الأرباح بنجاح!");
-            }
-        }
-
-        function showRegister() {
-            document.getElementById("loginScreen").classList.add("hidden");
-            document.getElementById("registerScreen").classList.remove("hidden");
-        }
-
-        function showLogin() {
-            document.getElementById("registerScreen").classList.add("hidden");
-            document.getElementById("loginScreen").classList.remove("hidden");
-        }
-
-        function openPackagesModal() { document.getElementById("packagesModal").classList.remove("hidden"); }
-        function closePackagesModal() { document.getElementById("packagesModal").classList.add("hidden"); }
-        function openInfoModal() { document.getElementById("infoModal").classList.remove("hidden"); }
-        function closeInfoModal() { document.getElementById("infoModal").classList.add("hidden"); }
-        function handleLogout() { localStorage.removeItem("tasawuq_logged_user"); location.reload(); }
-    </script>
-</body>
-</html>
+                localStorage.setItem("tasawuq_user
