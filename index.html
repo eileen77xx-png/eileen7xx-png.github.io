@@ -6,73 +6,37 @@
     <title>تسوق بلس</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <style>
-        /* خلفية صورة اللابتوب والأموال المباشرة بحجم كامل وواضح */
-        .custom-auth-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('1000082071.jpg') !important;
-            background-size: cover !important;
-            background-position: center center !important;
-            background-repeat: no-repeat !important;
-            min-height: 100vh !important;
-            width: 100% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            padding: 20px !important;
-        }
-
-        /* البطاقة الزجاجية الشفافة لإبراز الصورة خلفها */
-        .custom-glass-card {
-            max-width: 420px !important;
-            width: 100% !important;
-            background: rgba(10, 16, 28, 0.4) !important;
-            backdrop-filter: blur(10px) !important;
-            -webkit-backdrop-filter: blur(10px) !important;
-            border-radius: 20px !important;
-            border: 1px solid rgba(34, 197, 94, 0.5) !important;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7) !important;
-            padding: 28px 24px !important;
-            overflow: hidden !important;
-        }
-
-        .custom-glass-card input {
-            background: rgba(5, 9, 17, 0.6) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            color: #ffffff !important;
-        }
-
-        .custom-glass-card input:focus {
-            border-color: #22c55e !important;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.4) !important;
-        }
-    </style>
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول الزجاجية الشفافة -->
-    <div id="loginScreen" class="custom-auth-bg">
-        <div class="custom-glass-card">
-            <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.9);">✨ أهلاً بك في منصة تسوق بلس</h2>
-            <p class="welcome-desc" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
-            
-            <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526"></div>
-            <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael"></div>
-            <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
-            <div class="switch-auth">ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span></div>
+    <!-- 1. شاشة تسجيل الدخول -->
+    <div id="loginScreen" class="auth-bg-wrapper">
+        <div class="auth-container">
+            <div class="auth-content">
+                <h2 class="welcome-title">✨ أهلاً بك في منصة تسوق بلس</h2>
+                <p class="welcome-desc">بوابتك الآمنة نحو الاستثمار الإلكتروني الذكي والأرباح المضمونة. ابدأ رحلتك بثقة وحقق عوائدك اليومية بمرونة وأمان تام.</p>
+                
+                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="loginPhone" value="01032315526"></div>
+                <div class="form-group"><label>كلمة السر</label><input type="password" id="loginPassword" value="asmael"></div>
+                <button type="button" onclick="executeLogin()" class="btn-submit">تسجيل الدخول</button>
+                <div class="switch-auth">ليس لديك حساب؟ <span onclick="showRegister()">إنشاء حساب جديد</span></div>
+            </div>
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب الزجاجية الشفافة -->
-    <div id="registerScreen" class="custom-auth-bg hidden">
-        <div class="custom-glass-card">
-            <h2 class="welcome-title" style="text-shadow: 0 2px 4px rgba(0,0,0,0.9);">🚀 انضم اليوم إلى تسوق بلس</h2>
-            <p class="welcome-desc" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
-
-            <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
-            <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
-            <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
-            <button type="button" onclick="executeRegister()" class="btn-submit">تسجيل حساب جديد</button>
-            <div class="switch-auth">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
+    <!-- 2. شاشة إنشاء حساب -->
+    <div id="registerScreen" class="auth-bg-wrapper hidden">
+        <div class="auth-container">
+            <div class="auth-content">
+                <h2 class="welcome-title">🚀 انضم اليوم إلى تسوق بلس</h2>
+                <p class="welcome-desc">أنشئ حسابك الآن واحصل فوراً على مكافأة ترحيبية بقيمة 50 جنيه! انطلق في عالم التسويق الإلكتروني بثقة وأمان.</p>
+                
+                <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
+                <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
+                <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
+                <button type="button" onclick="executeRegister()" class="btn-submit">تسجيل حساب جديد</button>
+                <div class="switch-auth">لديك حساب بالفعل؟ <span onclick="showLogin()">تسجيل الدخول</span></div>
+            </div>
         </div>
     </div>
 
@@ -119,10 +83,6 @@
                         <div class="marquee-item">💼 استثمر بأمان تام، وادِر ودائعك وعوائدك المالية بكل مرونة وشفافية مطلقة | 🚀</div>
                         <div class="marquee-item">🎯 نفذ مهامك اليومية بسهولة واحصل على عوائدك المالية المحدثة بانتظام وثقة | 💰</div>
                         <div class="marquee-item">⭐ نعتز بثقة جميع عملائنا ونتمنى لكم تجربة استثمارية مثمرة وناجحة معنا على مدار الساعة | 🏆</div>
-                        <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس (Tasawuq Plus)</strong> الوجهة الأولى والرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر | 🇪🇬</div>
-                        <div class="marquee-item">💼 استثمر بأمان تام، وادِر ودائعك وعوائدك المالية بكل مرونة وشفافية مطلقة | 🚀</div>
-                        <div class="marquee-item">🎯 نفذ مهامك اليومية بسهولة واحصل على عوائدك المالية المحدثة بانتظام وثقة | 💰</div>
-                        <div class="marquee-item">⭐ نعتز بثقة جميع عملائنا ونتمنى لكم تجربة استثمارية مثمرة وناجحة معنا على مدار الساعة | 🏆</div>
                     </div>
                 </div>
 
@@ -157,7 +117,7 @@
                 </div>
             </div>
 
-            <!-- شاشة السجلات والمعاملات -->
+            <!-- شاشة السجلات -->
             <div id="tabHistory" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل المعاملات وسحوبات الأرباح الكامل</h3>
