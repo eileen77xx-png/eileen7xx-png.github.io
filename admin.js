@@ -48,11 +48,16 @@ function renderAdminPanel() {
     tbody.innerHTML = "";
     for (var p in usersDB) {
         var u = usersDB[p];
+        var refCount = u.referrals ? u.referrals.length : 0;
+        var refBonus = u.refBonusEarned || 0;
+        var pkgName = u.subscribedPackage || "غير مشترك";
+
         tbody.innerHTML += "<tr>" +
             "<td><strong>" + u.name + "</strong><br><span style='color:var(--neon-green);'>" + p + "</span></td>" +
             "<td>" + (u.balance||0).toFixed(2) + " EGP</td>" +
             "<td>" + (u.deposit||0).toFixed(2) + " EGP</td>" +
-            "<td>" + (u.profit||0).toFixed(2) + " EGP</td>" +
+            "<td><span style='color:var(--accent); font-weight:bold;'>" + pkgName + "</span></td>" +
+            "<td>" + (u.profit||0).toFixed(2) + " EGP<br><span style='font-size:10px; color:var(--neon-green);'>إحالات: " + refCount + " (" + refBonus + " ج)</span></td>" +
             "<td>" +
                 "<button onclick=\"adminAddBalance('" + p + "')\" class='btn-action-sm' style='background:var(--neon-green); color:black;'>شحن</button>" +
                 "<button onclick=\"adminDeductBalance('" + p + "')\" class='btn-action-sm' style='background:var(--danger); color:white;'>خصم</button>" +
@@ -85,15 +90,20 @@ function adminSearchUser() {
         });
     }
 
+    var refCount = u.referrals ? u.referrals.length : 0;
+    var refBonus = u.refBonusEarned || 0;
+
     resDiv.innerHTML = "<div class='user-detail-card'>" +
         "<div style='display:flex; align-items:center; gap:12px; margin-bottom:10px;'>" +
             "<img src='" + (u.avatar || "https://via.placeholder.com/150") + "' style='width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--neon-green);'>" +
             "<div><h4 style='color:var(--neon-green);'>" + u.name + "</h4><p style='font-size:12px; color:var(--text-muted);'>" + phone + "</p></div>" +
         "</div>" +
         "<p style='font-size:12px; margin-bottom:5px;'><strong>تاريخ إنشاء الحساب:</strong> " + (u.createdAt || "غير محدد") + "</p>" +
+        "<p style='font-size:12px; margin-bottom:5px;'><strong>الباقة المشترك فيها:</strong> <span style='color:var(--accent);'>" + (u.subscribedPackage || "غير مشترك") + "</span></p>" +
         "<p style='font-size:12px; margin-bottom:5px;'><strong>الرصيد المتاح:</strong> " + (u.balance||0).toFixed(2) + " EGP</p>" +
         "<p style='font-size:12px; margin-bottom:5px;'><strong>الوديعة الحالية:</strong> " + (u.deposit||0).toFixed(2) + " EGP</p>" +
-        "<p style='font-size:12px; margin-bottom:10px;'><strong>الباقة:</strong> " + (u.subscribedPackage||"غير مشترك") + "</p>" +
+        "<p style='font-size:12px; margin-bottom:5px;'><strong>إجمالي الأرباح:</strong> " + (u.profit||0).toFixed(2) + " EGP</p>" +
+        "<p style='font-size:12px; margin-bottom:10px;'><strong>إحصائيات الإحالة:</strong> عدد الأشخاص: " + refCount + " | أرباح الإحالات: " + refBonus + " EGP</p>" +
         "<h5 style='color:var(--accent); margin-bottom:5px;'>سجل سحوبات المستخدم:</h5>" +
         "<table><thead><tr><th>التاريخ</th><th>المحفظة</th><th>المبلغ</th><th>الحالة</th></tr></thead><tbody>" + historyHTML + "</tbody></table>" +
     "</div>";
@@ -211,6 +221,6 @@ function adminEditProfit(phone) {
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
-        alert("تم تعديل الأرباح بنجاحِّ!");
+        alert("تم تعديل الأرباح بنجاح!");
     }
 }
