@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    <!-- 1. شاشة تسجيل الدخول بخلفية الصورة الفخمة -->
+    <!-- 1. شاشة تسجيل الدخول -->
     <div id="loginScreen" class="auth-bg-wrapper">
         <div class="auth-container">
             <div class="auth-content" style="padding-top: 30px;">
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <!-- 2. شاشة إنشاء حساب بخلفية الصورة الفخمة -->
+    <!-- 2. شاشة إنشاء حساب -->
     <div id="registerScreen" class="auth-bg-wrapper hidden">
         <div class="auth-container">
             <div class="auth-content">
@@ -61,7 +61,6 @@
                     <div style="display:flex; flex-direction:column; align-items:center;"><div class="credit-circle">100</div><span style="font-size:10px; color:var(--neon-green); margin-top:4px;">الائتمان</span></div>
                 </div>
 
-                <!-- بطاقة الأرصدة وترتيب الوديعة وتحتها الرصيد المتاح للاشتراك والأرباح -->
                 <div class="balance-card">
                     <span id="vipBadge" class="vip-badge-tag hidden" onclick="openPackageOptionsModal()"><i class="fa-solid fa-crown" style="color: #ffd700;"></i> <span id="vipBadgeText">غير مشترك</span> ⚙️</span>
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">مبلغ الوديعة الثابتة</div>
@@ -76,13 +75,8 @@
                     <div>لديك طلب اشتراك في <strong id="pendingPkgName"></strong> بقيمة <strong id="pendingPkgPrice"></strong> قيد المراجعة بواسطة الإدارة...</div>
                 </div>
 
-                <!-- الشريط المتحرك الطويل الراقي بدون فراغات -->
                 <div class="marquee-container">
                     <div class="marquee-content">
-                        <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس (Tasawuq Plus)</strong> الوجهة الأولى والرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر | 🇪🇬</div>
-                        <div class="marquee-item">💼 استثمر بأمان تام، وادِر ودائعك وعوائدك المالية بكل مرونة وشفافية مطلقة | 🚀</div>
-                        <div class="marquee-item">🎯 نفذ مهامك اليومية بسهولة واحصل على عوائدك المالية المحدثة بانتظام وثقة | 💰</div>
-                        <div class="marquee-item">⭐ نعتز بثقة جميع عملائنا ونتمنى لكم تجربة استثمارية مثمرة وناجحة معنا على مدار الساعة | 🏆</div>
                         <div class="marquee-item">🌟 أهلاً بكم في <strong>منصة تسوق بلس (Tasawuq Plus)</strong> الوجهة الأولى والرائدة للتسويق الإلكتروني والأرباح المضمونة في مصر | 🇪🇬</div>
                         <div class="marquee-item">💼 استثمر بأمان تام، وادِر ودائعك وعوائدك المالية بكل مرونة وشفافية مطلقة | 🚀</div>
                         <div class="marquee-item">🎯 نفذ مهامك اليومية بسهولة واحصل على عوائدك المالية المحدثة بانتظام وثقة | 💰</div>
@@ -95,7 +89,6 @@
                     <button onclick="openWithdrawModal()" class="btn-withdraw"><i class="fa-solid fa-money-bill-transfer"></i> سحب الأرباح</button>
                 </div>
 
-                <!-- قسم الإحالات ودعوة الأصدقاء الجديد -->
                 <div style="margin: 0 15px 20px 15px; background: var(--card-bg); border-radius: 14px; padding: 18px; border: 1px solid rgba(34, 197, 94, 0.3);">
                     <div style="font-weight: bold; color: var(--neon-green); margin-bottom: 8px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
                         <i class="fa-solid fa-share-nodes"></i> نظام الإحالة والمكافآت (100 جنيه لكل صديق يشترك)
@@ -122,7 +115,7 @@
                 </div>
             </div>
 
-            <!-- شاشة السجلات والمعاملات -->
+            <!-- شاشة السجلات -->
             <div id="tabHistory" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل المعاملات وسحوبات الأرباح الكامل</h3>
@@ -288,23 +281,105 @@
         </div>
     </div>
 
+    <!-- نافذة سحب الأرباح المحدثة بالكامل مع الشعارات الرسمية وأزرار المبالغ والجدولة -->
     <div id="withdrawModal" class="modal-overlay hidden">
-        <div class="modal-box">
-            <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-money-bill-wave"></i> طلب سحب الأرباح</h3>
-            <div style="background:#090d16; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid #23304d;">
-                <span style="font-size:12px; color:var(--text-muted);">رصيد الأرباح المتاح للسحب:</span>
-                <div style="font-size:20px; font-weight:bold; color:var(--neon-green);" id="withdrawAvailableProfit">0.00 EGP</div>
+        <div class="modal-box" style="max-width: 480px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3 style="color:var(--neon-green);"><i class="fa-solid fa-money-bill-wave"></i> سحب الأرباح</h3>
+                <i class="fa-solid fa-xmark" onclick="closeWithdrawModal()" style="color:var(--text-muted); cursor:pointer; font-size:18px;"></i>
             </div>
-            <div class="form-group">
-                <label>رقم المحفظة الإلكترونية (Vodafone Cash, Orange, WE, Etisalat, إلخ)</label>
-                <input type="text" id="withdrawWalletNumber" placeholder="أدخل رقم المحفظة">
+
+            <!-- مؤشر حالة أوقات السحب -->
+            <div id="withdrawTimeAlertBox" style="margin-bottom: 15px; padding: 12px; border-radius: 10px; font-size: 13px; text-align: center;"></div>
+
+            <!-- محتوى السحب الذي يظهر فقط في مواعيد السحب -->
+            <div id="withdrawActiveSection">
+                <div style="background:#090d16; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid #23304d;">
+                    <span style="font-size:12px; color:var(--text-muted);">رصيد الأرباح المتاح للسحب:</span>
+                    <div style="font-size:20px; font-weight:bold; color:var(--neon-green);" id="withdrawAvailableProfit">0.00 EGP</div>
+                </div>
+
+                <!-- قسم اختيار شعارات شركات المحمول الرسمية -->
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">اختر شبكة المحفظة الإلكترونية:</label>
+                    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
+                        <div class="wallet-logo-card" onclick="selectWalletType('Vodafone Cash', this)" data-wallet="Vodafone Cash">
+                            <div class="wallet-badge-sq bg-vodafone">
+                                <span class="wallet-logo-text">vodafone</span>
+                            </div>
+                            <span class="wallet-name-label">فودافون</span>
+                        </div>
+                        <div class="wallet-logo-card" onclick="selectWalletType('WE Pay', this)" data-wallet="WE Pay">
+                            <div class="wallet-badge-sq bg-we">
+                                <span class="wallet-logo-text">we</span>
+                            </div>
+                            <span class="wallet-name-label">وي باي</span>
+                        </div>
+                        <div class="wallet-logo-card" onclick="selectWalletType('Etisalat Cash', this)" data-wallet="Etisalat Cash">
+                            <div class="wallet-badge-sq bg-etisalat">
+                                <span class="wallet-logo-text">e&</span>
+                            </div>
+                            <span class="wallet-name-label">اتصالات</span>
+                        </div>
+                        <div class="wallet-logo-card" onclick="selectWalletType('Orange Cash', this)" data-wallet="Orange Cash">
+                            <div class="wallet-badge-sq bg-orange">
+                                <span class="wallet-logo-text">orange</span>
+                            </div>
+                            <span class="wallet-name-label">أورانج</span>
+                        </div>
+                        <div class="wallet-logo-card" onclick="selectWalletType('InstaPay', this)" data-wallet="InstaPay">
+                            <div class="wallet-badge-sq bg-instapay">
+                                <span class="wallet-logo-text">IP</span>
+                            </div>
+                            <span class="wallet-name-label">إنستا باي</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>رقم المحفظة الإلكترونية المختارة</label>
+                    <input type="text" id="withdrawWalletNumber" placeholder="مثال: 01012345678 أو العنوان اللحظي">
+                </div>
+
+                <!-- أزرار المبالغ المحددة السريعة (الحد الأدنى 250) -->
+                <div class="form-group">
+                    <label>اختر مبلغ السحب (الحد الأدنى 250 EGP)</label>
+                    <div class="amounts-grid-btns">
+                        <button type="button" onclick="setWithdrawAmount(250)" class="amt-btn">250</button>
+                        <button type="button" onclick="setWithdrawAmount(500)" class="amt-btn">500</button>
+                        <button type="button" onclick="setWithdrawAmount(800)" class="amt-btn">800</button>
+                        <button type="button" onclick="setWithdrawAmount(1500)" class="amt-btn">1500</button>
+                        <button type="button" onclick="setWithdrawAmount(2000)" class="amt-btn">2000</button>
+                        <button type="button" onclick="setWithdrawAmount(2500)" class="amt-btn">2500</button>
+                        <button type="button" onclick="setWithdrawAmount(3000)" class="amt-btn">3000</button>
+                        <button type="button" onclick="setWithdrawAmount(6000)" class="amt-btn">6000</button>
+                        <button type="button" onclick="setWithdrawAmount(8000)" class="amt-btn">8000</button>
+                        <button type="button" onclick="setWithdrawAmount(12000)" class="amt-btn">12000</button>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>أو أدخل المبلغ يدوياً (محدد بالمبالغ أعلاه أو بحد أدنى 250)</label>
+                    <input type="number" id="withdrawAmountInput" placeholder="ادخل المبلغ المراد سحبه">
+                </div>
+
+                <button onclick="submitWithdrawRequest()" class="btn-submit">تقديم طلب السحب</button>
             </div>
-            <div class="form-group">
-                <label>المبلغ المراد سحبه (EGP)</label>
-                <input type="number" id="withdrawAmountInput" placeholder="أدخل المبلغ">
+
+            <!-- قسم التنبيه خارج أوقات وساعات السحب -->
+            <div id="withdrawLockedSection" class="hidden" style="text-align:center; padding: 20px 10px;">
+                <div style="font-size: 42px; color: var(--accent); margin-bottom: 12px;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <h4 style="color: var(--accent); margin-bottom: 10px; font-size: 16px;">أنت الآن في أيام العمل والتسويق</h4>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
+                    عزيزي العميل، مواعيد سحب الأرباح المخصصة للمنصة هي: <br>
+                    <strong style="color: var(--neon-green);">الأحد والأربعاء من الساعة 10:00 صباحاً حتى 12:00 منتصف الليل.</strong>
+                </p>
+                <p style="font-size: 12px; color: #cbd5e1; background: #090d16; padding: 10px; border-radius: 8px; border: 1px solid #23304d;">
+                    يرجى العودة في الموعد المخصص للسحب لتقديم طلبك بكل مرونة.
+                </p>
             </div>
-            <button onclick="submitWithdrawRequest()" class="btn-submit">تقديم طلب السحب</button>
-            <button onclick="closeWithdrawModal()" class="btn-submit" style="background:#334155; margin-top:10px;">إغلاق</button>
+
+            <button onclick="closeWithdrawModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
         </div>
     </div>
 
@@ -322,6 +397,7 @@
         var usersDB = {};
         var pendingRequests = {};
         var withdrawRequests = [];
+        var selectedWalletType = "";
 
         try {
             usersDB = JSON.parse(localStorage.getItem("tasawuq_users")) || {};
@@ -675,9 +751,51 @@
             alert("تم تنفيذ المهمة بنجاح وأُضيف ربح المهمة (" + earn.toFixed(2) + " EGP)!");
         }
 
+        // فحص وقت وساعات السحب (الأحد والأربعاء من 10ص إلى 12ص)
+        function checkWithdrawSchedule() {
+            var now = new Date();
+            var day = now.getDay(); // 0: الأحد, 3: الأربعاء
+            var hour = now.getHours();
+
+            // أيام السحب: الأحد (0) والأربعاء (3) من الساعة 10 صباحاً حتى منتصف الليل (ساعة 24)
+            var isWithdrawDay = (day === 0 || day === 3);
+            var isWithdrawHour = (hour >= 10 && hour < 24);
+
+            var alertBox = document.getElementById("withdrawTimeAlertBox");
+            var activeSection = document.getElementById("withdrawActiveSection");
+            var lockedSection = document.getElementById("withdrawLockedSection");
+
+            if (isWithdrawDay && isWithdrawHour) {
+                alertBox.style.background = "rgba(34, 197, 94, 0.15)";
+                alertBox.style.border = "1px solid var(--neon-green)";
+                alertBox.style.color = "var(--neon-green)";
+                alertBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> <strong>باب السحب مفتوح الآن ✅</strong> (مواعيد رسمية نشطة)";
+                activeSection.classList.remove("hidden");
+                lockedSection.classList.add("hidden");
+                return true;
+            } else {
+                alertBox.style.background = "rgba(239, 68, 68, 0.15)";
+                alertBox.style.border = "1px solid var(--danger)";
+                alertBox.style.color = "var(--danger)";
+                alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> <strong>باب السحب مغلق حالياً ⏳</strong>";
+                activeSection.classList.add("hidden");
+                lockedSection.classList.remove("hidden");
+                return false;
+            }
+        }
+
         function openWithdrawModal() {
             var user = usersDB[currentUserPhone];
             document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
+            selectedWalletType = "";
+            document.getElementById("withdrawWalletNumber").value = "";
+            document.getElementById("withdrawAmountInput").value = "";
+            
+            // إزالة التحديد عن كل اللوجوهات
+            var cards = document.querySelectorAll(".wallet-logo-card");
+            for(var i=0; i<cards.length; i++) cards[i].classList.remove("active");
+
+            checkWithdrawSchedule();
             document.getElementById("withdrawModal").classList.remove("hidden");
         }
 
@@ -685,62 +803,5 @@
             document.getElementById("withdrawModal").classList.add("hidden");
         }
 
-        function submitWithdrawRequest() {
-            var user = usersDB[currentUserPhone];
-            var wallet = document.getElementById("withdrawWalletNumber").value.trim();
-            var amount = parseFloat(document.getElementById("withdrawAmountInput").value);
-
-            if (!wallet) {
-                alert("يرجى إدخال رقم المحفظة الإلكترونية الخاصة بك!");
-                return;
-            }
-
-            if (isNaN(amount) || amount <= 0) {
-                alert("يرجى إدخال مبلغ سحب صحيح!");
-                return;
-            }
-
-            if (amount > (user.profit || 0)) {
-                alert("تنبيه: مبلغ السحب أكثر من رصيد الأرباح المتاح لديك (" + (user.profit || 0).toFixed(2) + " EGP)!");
-                return;
-            }
-
-            var todayStr = new Date().toISOString().slice(0, 10);
-            var newReq = {
-                id: Date.now(),
-                phone: currentUserPhone,
-                name: user.name,
-                wallet: wallet,
-                amount: amount,
-                date: todayStr,
-                status: "pending"
-            };
-
-            withdrawRequests.push(newReq);
-            localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
-            
-            document.getElementById("withdrawWalletNumber").value = "";
-            document.getElementById("withdrawAmountInput").value = "";
-            closeWithdrawModal();
-            loadUserData();
-            alert("تم تقديم طلب سحب الأرباح بنجاح، وستتم معالجته بواسطة الأدمن قريباً!");
-        }
-
-        function showRegister() {
-            document.getElementById("loginScreen").classList.add("hidden");
-            document.getElementById("registerScreen").classList.remove("hidden");
-        }
-
-        function showLogin() {
-            document.getElementById("registerScreen").classList.add("hidden");
-            document.getElementById("loginScreen").classList.remove("hidden");
-        }
-
-        function openPackagesModal() { document.getElementById("packagesModal").classList.remove("hidden"); }
-        function closePackagesModal() { document.getElementById("packagesModal").classList.add("hidden"); }
-        function openInfoModal() { document.getElementById("infoModal").classList.remove("hidden"); }
-        function closeInfoModal() { document.getElementById("infoModal").classList.add("hidden"); }
-        function handleLogout() { localStorage.removeItem("tasawuq_logged_user"); location.reload(); }
-    </script>
-</body>
-</html>
+        function selectWalletType(walletName, el) {
+            selectedWalletType = walletNa
