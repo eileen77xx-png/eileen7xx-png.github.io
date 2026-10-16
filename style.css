@@ -12,7 +12,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
 body { background-color: var(--bg-dark); color: var(--text-light); min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 75px; }
 
-/* خلفية فخمة لشاشات الدخول والإنشاء باستخدام الصورة المرفقة */
 .auth-bg-wrapper {
     background: linear-gradient(rgba(9, 13, 22, 0.85), rgba(9, 13, 22, 0.85)), url('1000082071.jpg');
     background-size: cover;
