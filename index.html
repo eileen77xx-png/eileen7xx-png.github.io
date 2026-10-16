@@ -61,13 +61,13 @@
                     <div style="display:flex; flex-direction:column; align-items:center;"><div class="credit-circle">100</div><span style="font-size:10px; color:var(--neon-green); margin-top:4px;">الائتمان</span></div>
                 </div>
 
-                <!-- بطاقة الأرصدة وترتيب الوديعة وتحتها الرصيد المتاح والأرباح -->
+                <!-- بطاقة الأرصدة وترتيب الوديعة وتحتها الرصيد المتاح للاشتراك والأرباح -->
                 <div class="balance-card">
                     <span id="vipBadge" class="vip-badge-tag hidden" onclick="openPackageOptionsModal()"><i class="fa-solid fa-crown" style="color: #ffd700;"></i> <span id="vipBadgeText">غير مشترك</span> ⚙️</span>
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">مبلغ الوديعة الثابتة</div>
                     <div class="balance-amount"><span>EGP</span><span id="depositVal">0.00</span></div>
                     
-                    <div style="font-size:12px; color:var(--text-muted); margin-top:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">الرصيد المتاح للاشتراك أو السحب: <span style="color:var(--neon-green); font-weight:bold; font-size:15px;">EGP <span id="balanceVal">0.00</span></span></div>
+                    <div style="font-size:12px; color:var(--text-muted); margin-top:10px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px;">الرصيد المتاح للاشتراك: <span style="color:var(--neon-green); font-weight:bold; font-size:15px;">EGP <span id="balanceVal">0.00</span></span></div>
                     <div style="font-size:12px; color:var(--text-muted); margin-top:8px;">إجمالي الأرباح المتاحة (شاملة مكافآت الإحالات): <span style="color:var(--accent); font-weight:bold;">EGP <span id="profitVal">0.00</span></span></div>
                 </div>
 
@@ -168,7 +168,7 @@
                         <span id="accountPackage" class="info-val" style="color:var(--neon-green); cursor:pointer;" onclick="openPackageOptionsModal()">غير مشترك ⚙️</span>
                     </div>
                     <div class="info-row-item"><span class="info-label">مبلغ الوديعة:</span><span id="accountDeposit" class="info-val" style="color:var(--accent);">0.00 EGP</span></div>
-                    <div class="info-row-item"><span class="info-label">الرصيد المتاح:</span><span id="accountBalance" class="info-val" style="color:var(--neon-green);">0.00 EGP</span></div>
+                    <div class="info-row-item"><span class="info-label">الرصيد المتاح للاشتراك:</span><span id="accountBalance" class="info-val" style="color:var(--neon-green);">0.00 EGP</span></div>
                 </div>
                 <div class="menu-list-card">
                     <div class="menu-item" onclick="openInfoModal()"><div style="display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-award"></i><span>معلومات المنصة والتراخيص</span></div><i class="fa-solid fa-chevron-left"></i></div>
