@@ -63,6 +63,7 @@ function renderAdminPanel() {
                 "<button onclick=\"adminDeductBalance('" + p + "')\" class='btn-action-sm' style='background:var(--danger); color:white;'>خصم</button>" +
                 "<button onclick=\"adminEditDeposit('" + p + "')\" class='btn-action-sm' style='background:var(--accent); color:black;'>الوديعة</button>" +
                 "<button onclick=\"adminEditProfit('" + p + "')\" class='btn-action-sm' style='background:#3b82f6; color:white;'>الأرباح</button>" +
+                "<button onclick=\"adminEditRefBonus('" + p + "')\" class='btn-action-sm' style='background:#8b5cf6; color:white;'>الإحالات</button>" +
             "</td>" +
         "</tr>";
     }
@@ -156,6 +157,17 @@ function approvePackageRequest(phone) {
             user.subscribed = true;
             user.subscribedPackage = req.packageName;
 
+            if (user.referrerPhone && usersDB[user.referrerPhone]) {
+                var refUser = usersDB[user.referrerPhone];
+                if (!refUser.referrals) refUser.referrals = [];
+                if (refUser.referrals.indexOf(phone) === -1) {
+                    refUser.referrals.push(phone);
+                    refUser.profit = (refUser.profit || 0) + 100;
+                    refUser.refBonusEarned = (refUser.refBonusEarned || 0) + 100;
+                    user.referrerPhone = null;
+                }
+            }
+
             delete pendingRequests[phone];
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
@@ -222,5 +234,20 @@ function adminEditProfit(phone) {
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
         alert("تم تعديل الأرباح بنجاح!");
+    }
+}
+
+function adminEditRefBonus(phone) {
+    var currentBonus = usersDB[phone].refBonusEarned || 0;
+    var newBonus = parseFloat(prompt("أدخل قيمة مكافآت الإحالات الجديدة للحساب (EGP):", currentBonus));
+    if (!isNaN(newBonus)) {
+        var diff = newBonus - currentBonus;
+        usersDB[phone].refBonusEarned = newBonus;
+        usersDB[phone].profit = Math.max(0, (usersDB[phone].profit || 0) + diff);
+        
+        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        renderAdminPanel();
+        if (currentUserPhone === phone) loadUserData();
+        alert("تم تعديل رصيد أرباح الإحالات بنجاح!");
     }
 }
