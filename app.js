@@ -79,7 +79,7 @@ window.onload = async function() {
         localStorage.setItem("tasawuq_referrer", refPhone);
     }
 
-    // محاولة جلب بيانات المستخدم الحالي من Supabase لتحديث التزامن
+    // جلب بيانات المستخدم الحالي من Supabase لتحديث التزامن
     if (currentUserPhone) {
         try {
             const { data, error } = await supabase
