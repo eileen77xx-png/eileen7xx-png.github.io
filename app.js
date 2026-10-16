@@ -87,8 +87,8 @@ window.onload = async function() {
                 .select('*')
                 .eq('phone', currentUserPhone)
                 .single();
-            if (data && !error) {
-                usersDB[currentUserPhone] = data.user_data || data;
+            if (data && data.user_data) {
+                usersDB[currentUserPhone] = data.user_data;
                 localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
             }
         } catch (err) {
@@ -101,18 +101,24 @@ window.onload = async function() {
     }
 };
 
-// دالة مساعدة لمزامنة المستخدم في قاعدة البيانات
+// دالة مساعدة لمزامنة المستخدم في قاعدة البيانات مع التحقق الإجباري
 async function syncUserToSupabase(phone, userData) {
     try {
-        await supabase
+        const { error } = await supabase
             .from('users')
             .upsert({
                 phone: phone,
                 user_data: userData,
                 updated_at: new Date().toISOString()
             }, { onConflict: 'phone' });
+            
+        if (error) {
+            console.error("خطأ Supabase أثناء المزامنة:", error.message);
+        } else {
+            console.log("تم مزامنة المستخدم بنجاح مع Supabase:", phone);
+        }
     } catch(err) {
-        console.error("خطأ أثناء مزامنة البيانات السحابية:", err);
+        console.error("خطأ شبكة أثناء مزامنة البيانات السحابية:", err);
     }
 }
 
@@ -176,7 +182,7 @@ async function executeRegister() {
     usersDB[phone] = newUser;
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
     
-    // المزامنة مع قاعدة بيانات Supabase السحابية
+    // المزامنة الإجبارية الفورية مع قاعدة بيانات Supabase السحابية
     await syncUserToSupabase(phone, newUser);
 
     currentUserPhone = phone;
