@@ -1,3 +1,18 @@
+// ==========================================
+// 1. ربط منصة تسوق بلس بقاعدة بيانات Supabase
+// ==========================================
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabaseUrl = 'https://puhtvfikoegfemjkwulg.supabase.co'
+const supabaseKey = 'Sb_publishable_DMfZzbWWHF0D6xorB5Saug_wfLYn7fD'
+
+export const supabase = createClient(supabaseUrl, supabaseKey)
+
+console.log("تم ربط منصة تسوق بلس بنجاح مع Supabase!");
+
+// ==========================================
+// 2. حالة التطبيق والمتغيرات الأساسية
+// ==========================================
 var currentUserPhone = localStorage.getItem("tasawuq_logged_user") || null;
 var usersDB = {};
 var pendingRequests = {};
@@ -32,11 +47,53 @@ if (!usersDB["01032315526"]) {
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
 }
 
-window.onload = function() {
+// جعل الدوال متاحة عالمياً لنظام Modifying HTML Event Handlers
+window.executeLogin = executeLogin;
+window.executeRegister = executeRegister;
+window.copyReferralLink = copyReferralLink;
+window.switchTab = switchTab;
+window.openPackageOptionsModal = openPackageOptionsModal;
+window.closePackageOptionsModal = closePackageOptionsModal;
+window.refundDepositToBalance = refundDepositToBalance;
+window.subscribeDirectPackage = subscribeDirectPackage;
+window.uploadUserAvatar = uploadUserAvatar;
+window.editUserName = editUserName;
+window.doTask = doTask;
+window.openWithdrawModal = openWithdrawModal;
+window.closeWithdrawModal = closeWithdrawModal;
+window.selectWalletType = selectWalletType;
+window.setWithdrawAmount = setWithdrawAmount;
+window.submitWithdrawRequest = submitWithdrawRequest;
+window.showRegister = showRegister;
+window.showLogin = showLogin;
+window.openPackagesModal = openPackagesModal;
+window.closePackagesModal = closePackagesModal;
+window.openInfoModal = openInfoModal;
+window.closeInfoModal = closeInfoModal;
+window.handleLogout = handleLogout;
+
+window.onload = async function() {
     var urlParams = new URLSearchParams(window.location.search);
     var refPhone = urlParams.get("ref");
     if (refPhone && usersDB[refPhone]) {
         localStorage.setItem("tasawuq_referrer", refPhone);
+    }
+
+    // محاولة جلب بيانات المستخدم الحالي من Supabase لتحديث التزامن
+    if (currentUserPhone) {
+        try {
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('phone', currentUserPhone)
+                .single();
+            if (data && !error) {
+                usersDB[currentUserPhone] = data.user_data || data;
+                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+            }
+        } catch (err) {
+            console.log("استمرار العمل عبر البيانات المحلية:", err);
+        }
     }
 
     if (currentUserPhone && usersDB[currentUserPhone]) {
@@ -44,9 +101,39 @@ window.onload = function() {
     }
 };
 
-function executeLogin() {
+// دالة مساعدة لمزامنة المستخدم في قاعدة البيانات
+async function syncUserToSupabase(phone, userData) {
+    try {
+        await supabase
+            .from('users')
+            .upsert({
+                phone: phone,
+                user_data: userData,
+                updated_at: new Date().toISOString()
+            }, { onConflict: 'phone' });
+    } catch(err) {
+        console.error("خطأ أثناء مزامنة البيانات السحابية:", err);
+    }
+}
+
+async function executeLogin() {
     var phone = document.getElementById("loginPhone").value.trim();
     var pass = document.getElementById("loginPassword").value.trim();
+
+    // التحقق من قاعدة بيانات Supabase أولاً
+    try {
+        const { data, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('phone', phone)
+            .single();
+
+        if (data && data.user_data) {
+            usersDB[phone] = data.user_data;
+            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        }
+    } catch(e) {}
+
     if (!usersDB[phone] || usersDB[phone].password !== pass) {
         alert("رقم الموبايل أو كلمة السر غير صحيحة!");
         return;
@@ -56,7 +143,7 @@ function executeLogin() {
     showMainApp();
 }
 
-function executeRegister() {
+async function executeRegister() {
     var name = document.getElementById("regName").value.trim();
     var phone = document.getElementById("regPhone").value.trim();
     var pass = document.getElementById("regPassword").value.trim();
@@ -70,7 +157,7 @@ function executeRegister() {
         localStorage.removeItem("tasawuq_referrer");
     }
 
-    usersDB[phone] = {
+    var newUser = {
         name: name,
         password: pass,
         balance: 50,
@@ -86,7 +173,12 @@ function executeRegister() {
         avatar: "https://via.placeholder.com/150"
     };
 
+    usersDB[phone] = newUser;
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    
+    // المزامنة مع قاعدة بيانات Supabase السحابية
+    await syncUserToSupabase(phone, newUser);
+
     currentUserPhone = phone;
     localStorage.setItem("tasawuq_logged_user", phone);
     alert("مرحباً بك! تم إنشاء حسابك بنجاح وحصلت على مكافأة ترحيبية 50 جنيه في رصيدك المتاح 🎉");
@@ -101,7 +193,7 @@ function showMainApp() {
     loadUserData();
     if (currentUserPhone === "01032315526") {
         document.getElementById("adminNavBtn").classList.remove("hidden");
-        renderAdminPanel();
+        if (typeof renderAdminPanel === "function") renderAdminPanel();
     } else {
         document.getElementById("adminNavBtn").classList.add("hidden");
     }
@@ -207,7 +299,7 @@ function switchTab(tabName) {
     else if (tabName === "admin") {
         document.getElementById("tabAdmin").classList.remove("hidden");
         if(btns[4]) btns[4].classList.add("active");
-        renderAdminPanel();
+        if (typeof renderAdminPanel === "function") renderAdminPanel();
     }
 }
 
@@ -219,7 +311,7 @@ function closePackageOptionsModal() {
     document.getElementById("packageOptionsModal").classList.add("hidden");
 }
 
-function refundDepositToBalance() {
+async function refundDepositToBalance() {
     var user = usersDB[currentUserPhone];
     if (!user.deposit || user.deposit <= 0) {
         alert("ليس لديك وديعة قائمة لاسترجاعها!");
@@ -233,13 +325,14 @@ function refundDepositToBalance() {
         user.subscribedPackage = "غير مشترك";
 
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        await syncUserToSupabase(currentUserPhone, user);
         loadUserData();
         closePackageOptionsModal();
         alert("تم استرجاع مبلغ الوديعة بنجاح إلى رصيدك المتاح!");
     }
 }
 
-function subscribeDirectPackage(price) {
+async function subscribeDirectPackage(price) {
     var user = usersDB[currentUserPhone];
     
     if ((user.balance || 0) < price) {
@@ -268,10 +361,12 @@ function subscribeDirectPackage(price) {
             refUser.profit = (refUser.profit || 0) + 100;
             refUser.refBonusEarned = (refUser.refBonusEarned || 0) + 100;
             user.referrerPhone = null;
+            await syncUserToSupabase(user.referrerPhone, refUser);
         }
     }
 
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    await syncUserToSupabase(currentUserPhone, user);
     loadUserData();
     closePackagesModal();
     alert("مبروك! تم الاشتراك في الباقة بنجاح وتم تفعيلها فوريًا من رصيدك المتاح 🚀");
@@ -306,27 +401,29 @@ function uploadUserAvatar(e) {
     var file = e.target.files[0];
     if (file) {
         var reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = async function(evt) {
             usersDB[currentUserPhone].avatar = evt.target.result;
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+            await syncUserToSupabase(currentUserPhone, usersDB[currentUserPhone]);
             loadUserData();
         };
         reader.readAsDataURL(file);
     }
 }
 
-function editUserName() {
+async function editUserName() {
     var newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
     if (newName && newName.trim() !== "") {
         usersDB[currentUserPhone].name = newName.trim();
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        await syncUserToSupabase(currentUserPhone, usersDB[currentUserPhone]);
         loadUserData();
-        if(currentUserPhone === "01032315526") renderAdminPanel();
+        if(currentUserPhone === "01032315526" && typeof renderAdminPanel === "function") renderAdminPanel();
         alert("تم تحديث اسم المستخدم بنجاح!");
     }
 }
 
-function doTask(taskId) {
+async function doTask(taskId) {
     var user = usersDB[currentUserPhone];
     if (!user.subscribed) { alert("يجب الاشتراك في باقة أولاً لتنفيذ المهام!"); return; }
     
@@ -352,6 +449,7 @@ function doTask(taskId) {
     user.profit += earn;
     user.completedTasks[today].push(taskId);
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    await syncUserToSupabase(currentUserPhone, user);
     loadUserData();
     alert("تم تنفيذ المهمة بنجاح وأُضيف ربح المهمة (" + earn.toFixed(2) + " EGP)!");
 }
@@ -369,20 +467,24 @@ function checkWithdrawSchedule() {
     var lockedSection = document.getElementById("withdrawLockedSection");
 
     if (isWithdrawDay && isWithdrawHour) {
-        alertBox.style.background = "rgba(34, 197, 94, 0.15)";
-        alertBox.style.border = "1px solid var(--neon-green)";
-        alertBox.style.color = "var(--neon-green)";
-        alertBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> <strong>باب السحب مفتوح الآن ✅</strong>";
-        activeSection.classList.remove("hidden");
-        lockedSection.classList.add("hidden");
+        if(alertBox) {
+            alertBox.style.background = "rgba(34, 197, 94, 0.15)";
+            alertBox.style.border = "1px solid var(--neon-green)";
+            alertBox.style.color = "var(--neon-green)";
+            alertBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> <strong>باب السحب مفتوح الآن ✅</strong>";
+        }
+        if(activeSection) activeSection.classList.remove("hidden");
+        if(lockedSection) lockedSection.classList.add("hidden");
         return true;
     } else {
-        alertBox.style.background = "rgba(239, 68, 68, 0.15)";
-        alertBox.style.border = "1px solid var(--danger)";
-        alertBox.style.color = "var(--danger)";
-        alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> <strong>باب السحب مغلق حالياً ⏳</strong>";
-        activeSection.classList.add("hidden");
-        lockedSection.classList.remove("hidden");
+        if(alertBox) {
+            alertBox.style.background = "rgba(239, 68, 68, 0.15)";
+            alertBox.style.border = "1px solid var(--danger)";
+            alertBox.style.color = "var(--danger)";
+            alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> <strong>باب السحب مغلق حالياً ⏳</strong>";
+        }
+        if(activeSection) activeSection.classList.add("hidden");
+        if(lockedSection) lockedSection.classList.remove("hidden");
         return false;
     }
 }
@@ -419,7 +521,7 @@ function setWithdrawAmount(amt) {
     document.getElementById("withdrawAmountInput").value = amt;
 }
 
-function submitWithdrawRequest() {
+async function submitWithdrawRequest() {
     if (!checkWithdrawSchedule()) {
         alert("عذراً، أوقات السحب غير متاح حالياً. يرجى الالتزام بمواعيد الأحد والأربعاء!");
         return;
@@ -464,6 +566,21 @@ function submitWithdrawRequest() {
 
     withdrawRequests.push(newReq);
     localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
+
+    // إرسال الطلب سحابياً إلى Supabase
+    try {
+        await supabase
+            .from('withdraw_requests')
+            .insert([{
+                phone: currentUserPhone,
+                amount: amount,
+                wallet: fullWalletDesc,
+                status: 'pending',
+                created_at: new Date().toISOString()
+            }]);
+    } catch(err) {
+        console.error("خطأ أثناء حفظ طلب السحب في السحابة:", err);
+    }
     
     document.getElementById("withdrawWalletNumber").value = "";
     document.getElementById("withdrawAmountInput").value = "";
