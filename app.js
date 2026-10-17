@@ -102,7 +102,10 @@ function executeLogin() {
     var phoneEl = document.getElementById("loginPhone");
     var passEl = document.getElementById("loginPassword");
     
-    if (!phoneEl || !passEl) return;
+    if (!phoneEl || !passEl) {
+        alert("خطأ في قراءة حقول تسجيل الدخول!");
+        return;
+    }
     
     var phone = phoneEl.value.trim();
     var pass = passEl.value.trim();
@@ -169,16 +172,24 @@ function executeRegister() {
 }
 
 function showMainApp() {
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("registerScreen").classList.add("hidden");
-    document.getElementById("appScreen").classList.remove("hidden");
-    document.getElementById("bottomNav").classList.remove("hidden");
+    var loginScreen = document.getElementById("loginScreen");
+    var registerScreen = document.getElementById("registerScreen");
+    var appScreen = document.getElementById("appScreen");
+    var bottomNav = document.getElementById("bottomNav");
+
+    if (loginScreen) loginScreen.classList.add("hidden");
+    if (registerScreen) registerScreen.classList.add("hidden");
+    if (appScreen) appScreen.classList.remove("hidden");
+    if (bottomNav) bottomNav.classList.remove("hidden");
+
     loadUserData();
+    
+    var adminNavBtn = document.getElementById("adminNavBtn");
     if (currentUserPhone === "01032315526") {
-        document.getElementById("adminNavBtn").classList.remove("hidden");
+        if (adminNavBtn) adminNavBtn.classList.remove("hidden");
         if (typeof renderAdminPanel === "function") renderAdminPanel();
     } else {
-        document.getElementById("adminNavBtn").classList.add("hidden");
+        if (adminNavBtn) adminNavBtn.classList.add("hidden");
     }
 }
 
@@ -186,45 +197,73 @@ function loadUserData() {
     var data = usersDB[currentUserPhone];
     if (!data) return;
 
-    document.getElementById("displayNameHeader").innerText = data.name;
-    document.getElementById("displayPhone").innerText = currentUserPhone;
-    document.getElementById("depositVal").innerText = (data.deposit || 0).toFixed(2);
-    document.getElementById("balanceVal").innerText = (data.balance || 0).toFixed(2);
-    document.getElementById("profitVal").innerText = (data.profit || 0).toFixed(2);
-    document.getElementById("accountName").innerText = data.name;
-    document.getElementById("accountPhone").innerText = currentUserPhone;
-    document.getElementById("accountPackage").innerText = (data.subscribedPackage || "غير مشترك") + " ⚙️";
-    document.getElementById("accountDeposit").innerText = (data.deposit || 0).toFixed(2) + " EGP";
-    document.getElementById("accountBalance").innerText = (data.balance || 0).toFixed(2) + " EGP";
+    var displayNameHeader = document.getElementById("displayNameHeader");
+    var displayPhone = document.getElementById("displayPhone");
+    if (displayNameHeader) displayNameHeader.innerText = data.name;
+    if (displayPhone) displayPhone.innerText = currentUserPhone;
+
+    var depositVal = document.getElementById("depositVal");
+    var balanceVal = document.getElementById("balanceVal");
+    var profitVal = document.getElementById("profitVal");
+    if (depositVal) depositVal.innerText = (data.deposit || 0).toFixed(2);
+    if (balanceVal) balanceVal.innerText = (data.balance || 0).toFixed(2);
+    if (profitVal) profitVal.innerText = (data.profit || 0).toFixed(2);
+
+    var accountName = document.getElementById("accountName");
+    var accountPhone = document.getElementById("accountPhone");
+    var accountPackage = document.getElementById("accountPackage");
+    var accountDeposit = document.getElementById("accountDeposit");
+    var accountBalance = document.getElementById("accountBalance");
+    if (accountName) accountName.innerText = data.name;
+    if (accountPhone) accountPhone.innerText = currentUserPhone;
+    if (accountPackage) accountPackage.innerText = (data.subscribedPackage || "غير مشترك") + " ⚙️";
+    if (accountDeposit) accountDeposit.innerText = (data.deposit || 0).toFixed(2) + " EGP";
+    if (accountBalance) accountBalance.innerText = (data.balance || 0).toFixed(2) + " EGP";
     
-    var refLink = window.location.origin + window.location.pathname + "?ref=" + currentUserPhone;
-    document.getElementById("referralLinkInput").value = refLink;
-    document.getElementById("refCountDisplay").innerText = data.referrals ? data.referrals.length : 0;
-    document.getElementById("refBonusDisplay").innerText = (data.refBonusEarned || 0).toFixed(2) + " EGP";
+    var referralLinkInput = document.getElementById("referralLinkInput");
+    if (referralLinkInput) {
+        referralLinkInput.value = window.location.origin + window.location.pathname + "?ref=" + currentUserPhone;
+    }
+    
+    var refCountDisplay = document.getElementById("refCountDisplay");
+    var refBonusDisplay = document.getElementById("refBonusDisplay");
+    if (refCountDisplay) refCountDisplay.innerText = data.referrals ? data.referrals.length : 0;
+    if (refBonusDisplay) refBonusDisplay.innerText = (data.refBonusEarned || 0).toFixed(2) + " EGP";
 
     if(data.avatar) {
-        document.getElementById("userAvatarImg").src = data.avatar;
-        document.getElementById("headerAvatarImg").src = data.avatar;
-        document.getElementById("headerAvatarImg").classList.remove("hidden");
-        document.getElementById("headerAvatarIcon").classList.add("hidden");
+        var userAvatarImg = document.getElementById("userAvatarImg");
+        var headerAvatarImg = document.getElementById("headerAvatarImg");
+        var headerAvatarIcon = document.getElementById("headerAvatarIcon");
+        if (userAvatarImg) userAvatarImg.src = data.avatar;
+        if (headerAvatarImg) {
+            headerAvatarImg.src = data.avatar;
+            headerAvatarImg.classList.remove("hidden");
+        }
+        if (headerAvatarIcon) headerAvatarIcon.classList.add("hidden");
     }
 
     var vipBadge = document.getElementById("vipBadge");
     var vipText = document.getElementById("vipBadgeText");
-    if (data.subscribed) { 
-        vipText.innerText = data.subscribedPackage; 
-        vipBadge.classList.remove("hidden"); 
-    } else { 
-        vipBadge.classList.add("hidden"); 
+    if (vipBadge && vipText) {
+        if (data.subscribed) { 
+            vipText.innerText = data.subscribedPackage; 
+            vipBadge.classList.remove("hidden"); 
+        } else { 
+            vipBadge.classList.add("hidden"); 
+        }
     }
 
     var alertBox = document.getElementById("pendingAlertBox");
-    if (pendingRequests[currentUserPhone]) {
-        document.getElementById("pendingPkgName").innerText = pendingRequests[currentUserPhone].packageName;
-        document.getElementById("pendingPkgPrice").innerText = pendingRequests[currentUserPhone].price + " EGP";
-        alertBox.classList.remove("hidden");
-    } else {
-        alertBox.classList.add("hidden");
+    if (alertBox) {
+        if (pendingRequests[currentUserPhone]) {
+            var pendingPkgName = document.getElementById("pendingPkgName");
+            var pendingPkgPrice = document.getElementById("pendingPkgPrice");
+            if (pendingPkgName) pendingPkgName.innerText = pendingRequests[currentUserPhone].packageName;
+            if (pendingPkgPrice) pendingPkgPrice.innerText = pendingRequests[currentUserPhone].price + " EGP";
+            alertBox.classList.remove("hidden");
+        } else {
+            alertBox.classList.add("hidden");
+        }
     }
 
     renderFullUserWithdrawHistory();
@@ -233,6 +272,7 @@ function loadUserData() {
 
 function copyReferralLink() {
     var copyText = document.getElementById("referralLinkInput");
+    if(!copyText) return;
     copyText.select();
     copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
@@ -287,11 +327,13 @@ function switchTab(tabName) {
 }
 
 function openPackageOptionsModal() {
-    document.getElementById("packageOptionsModal").classList.remove("hidden");
+    var modal = document.getElementById("packageOptionsModal");
+    if(modal) modal.classList.remove("hidden");
 }
 
 function closePackageOptionsModal() {
-    document.getElementById("packageOptionsModal").classList.add("hidden");
+    var modal = document.getElementById("packageOptionsModal");
+    if(modal) modal.classList.add("hidden");
 }
 
 function refundDepositToBalance() {
@@ -474,20 +516,26 @@ function checkWithdrawSchedule() {
 
 function openWithdrawModal() {
     var user = usersDB[currentUserPhone];
-    document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
+    var profitEl = document.getElementById("withdrawAvailableProfit");
+    if(profitEl) profitEl.innerText = (user.profit || 0).toFixed(2) + " EGP";
     selectedWalletType = "";
-    document.getElementById("withdrawWalletNumber").value = "";
-    document.getElementById("withdrawAmountInput").value = "";
+    
+    var walletInput = document.getElementById("withdrawWalletNumber");
+    var amountInput = document.getElementById("withdrawAmountInput");
+    if(walletInput) walletInput.value = "";
+    if(amountInput) amountInput.value = "";
     
     var cards = document.querySelectorAll(".wallet-logo-card");
     for(var i=0; i<cards.length; i++) cards[i].classList.remove("active");
 
     checkWithdrawSchedule();
-    document.getElementById("withdrawModal").classList.remove("hidden");
+    var modal = document.getElementById("withdrawModal");
+    if(modal) modal.classList.remove("hidden");
 }
 
 function closeWithdrawModal() {
-    document.getElementById("withdrawModal").classList.add("hidden");
+    var modal = document.getElementById("withdrawModal");
+    if(modal) modal.classList.add("hidden");
 }
 
 function selectWalletType(walletName, el) {
@@ -497,11 +545,13 @@ function selectWalletType(walletName, el) {
         cards[i].classList.remove("active");
     }
     el.classList.add("active");
-    document.getElementById("withdrawWalletNumber").placeholder = "ادخل رقم محفظة " + walletName;
+    var walletNum = document.getElementById("withdrawWalletNumber");
+    if(walletNum) walletNum.placeholder = "ادخل رقم محفظة " + walletName;
 }
 
 function setWithdrawAmount(amt) {
-    document.getElementById("withdrawAmountInput").value = amt;
+    var amtInput = document.getElementById("withdrawAmountInput");
+    if(amtInput) amtInput.value = amt;
 }
 
 function submitWithdrawRequest() {
@@ -511,8 +561,13 @@ function submitWithdrawRequest() {
     }
 
     var user = usersDB[currentUserPhone];
-    var walletNum = document.getElementById("withdrawWalletNumber").value.trim();
-    var amount = parseFloat(document.getElementById("withdrawAmountInput").value);
+    var walletNumEl = document.getElementById("withdrawWalletNumber");
+    var amountInputEl = document.getElementById("withdrawAmountInput");
+    
+    if(!walletNumEl || !amountInputEl) return;
+
+    var walletNum = walletNumEl.value.trim();
+    var amount = parseFloat(amountInputEl.value);
 
     if (!selectedWalletType) {
         alert("يرجى اختيار شبكة المحفظة الإلكترونية!");
@@ -562,34 +617,53 @@ function submitWithdrawRequest() {
         } catch(err) {}
     }
     
-    document.getElementById("withdrawWalletNumber").value = "";
-    document.getElementById("withdrawAmountInput").value = "";
+    walletNumEl.value = "";
+    amountInputEl.value = "";
     closeWithdrawModal();
     loadUserData();
     alert("تم تقديم طلب سحب الأرباح بنجاح!");
 }
 
 function showRegister() {
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("registerScreen").classList.remove("hidden");
+    var loginScreen = document.getElementById("loginScreen");
+    var regScreen = document.getElementById("registerScreen");
+    if(loginScreen) loginScreen.classList.add("hidden");
+    if(regScreen) regScreen.classList.remove("hidden");
 }
 
 function showLogin() {
-    document.getElementById("registerScreen").classList.add("hidden");
-    document.getElementById("loginScreen").classList.remove("hidden");
+    var loginScreen = document.getElementById("loginScreen");
+    var regScreen = document.getElementById("registerScreen");
+    if(regScreen) regScreen.classList.add("hidden");
+    if(loginScreen) loginScreen.classList.remove("hidden");
 }
 
-function openPackagesModal() { document.getElementById("packagesModal").classList.remove("hidden"); }
-function closePackagesModal() { document.getElementById("packagesModal").classList.add("hidden"); }
-function openInfoModal() { document.getElementById("infoModal").classList.remove("hidden"); }
-function closeInfoModal() { document.getElementById("infoModal").classList.add("hidden"); }
-function handleLogout() { localStorage.removeItem("tasawuq_logged_user"); location.reload(); }
+function openPackagesModal() { 
+    var modal = document.getElementById("packagesModal");
+    if(modal) modal.classList.remove("hidden"); 
+}
+function closePackagesModal() { 
+    var modal = document.getElementById("packagesModal");
+    if(modal) modal.classList.add("hidden"); 
+}
+function openInfoModal() { 
+    var modal = document.getElementById("infoModal");
+    if(modal) modal.classList.remove("hidden"); 
+}
+function closeInfoModal() { 
+    var modal = document.getElementById("infoModal");
+    if(modal) modal.classList.add("hidden"); 
+}
+function handleLogout() { 
+    localStorage.removeItem("tasawuq_logged_user"); 
+    location.reload(); 
+}
 
 // ==========================================
 // 3. ربط أزرار النماذج المباشر لمنع أي عدم استجابة
 // ==========================================
 document.addEventListener("DOMContentLoaded", function() {
-    var loginBtns = document.querySelectorAll("#loginScreen button");
+    var loginBtns = document.querySelectorAll("#loginScreen button, button[onclick*='Login']");
     loginBtns.forEach(function(btn) {
         btn.addEventListener("click", function(e) {
             e.preventDefault();
@@ -597,7 +671,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    var regBtns = document.querySelectorAll("#registerScreen button");
+    var regBtns = document.querySelectorAll("#registerScreen button, button[onclick*='Register']");
     regBtns.forEach(function(btn) {
         btn.addEventListener("click", function(e) {
             e.preventDefault();
