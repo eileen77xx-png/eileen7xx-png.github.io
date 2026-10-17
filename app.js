@@ -8,16 +8,14 @@ const supabaseKey = 'Sb_publishable_DMfZzbWWHF0D6xorB5Saug_wfLYn7fD'
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
-// 🧪 كود التست التلقائي لاختبار الاتصال بقاعدة بيانات Supabase فوراً
+// 🧪 كود الفحص التلقائي لاختبار الاتصال فور فتح الموقع
 (async function testSupabaseConnection() {
     try {
         const { data, error } = await supabase.from('users').select('*').limit(1);
         if (error) {
             console.error("❌ هناك مشكلة في جدول users:", error.message);
-            alert("❌ تعذر الاتصال بجداول Supabase: " + error.message);
         } else {
             console.log("✅ تم الاتصال بنجاح بـ Supabase وجدول users جاهز!");
-            alert("✅ تم الاتصال بنجاح بقاعدة بيانات Supabase وجدول users جاهز وسليم!");
         }
     } catch (err) {
         console.error("❌ خطأ غير متوقع في الشبكة أو الاتصال:", err);
@@ -100,7 +98,7 @@ window.onload = async function() {
                 .from('users')
                 .select('*')
                 .eq('phone', currentUserPhone)
-                .single();
+                .maybeSingle();
             if (data && data.user_data) {
                 usersDB[currentUserPhone] = data.user_data;
                 localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
@@ -136,39 +134,66 @@ async function syncUserToSupabase(phone, userData) {
     }
 }
 
+// دالة تسجيل الدخول المُعدلة والمرنة
 async function executeLogin() {
     var phone = document.getElementById("loginPhone").value.trim();
     var pass = document.getElementById("loginPassword").value.trim();
 
-    // التحقق من قاعدة بيانات Supabase أولاً
+    if (!phone || !pass) {
+        alert("يرجى إدخال رقم الموبايل وكلمة السر!");
+        return;
+    }
+
+    // محاولة جلب بيانات الحساب من Supabase أولاً
     try {
         const { data, error } = await supabase
             .from('users')
             .select('*')
             .eq('phone', phone)
-            .single();
+            .maybeSingle();
 
         if (data && data.user_data) {
             usersDB[phone] = data.user_data;
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         }
-    } catch(e) {}
+    } catch(e) {
+        console.log("الاعتماد على البيانات المحلية مؤقتاً");
+    }
 
-    if (!usersDB[phone] || usersDB[phone].password !== pass) {
-        alert("رقم الموبايل أو كلمة السر غير صحيحة!");
+    if (!usersDB[phone]) {
+        alert("رقم الموبايل غير مسجل!");
         return;
     }
+
+    if (usersDB[phone].password !== pass) {
+        alert("كلمة السر غير صحيحة!");
+        return;
+    }
+
     currentUserPhone = phone;
     localStorage.setItem("tasawuq_logged_user", phone);
     showMainApp();
 }
 
+// دالة إنشاء حساب جديد
 async function executeRegister() {
     var name = document.getElementById("regName").value.trim();
     var phone = document.getElementById("regPhone").value.trim();
     var pass = document.getElementById("regPassword").value.trim();
     if (!name || !phone || !pass) { alert("املأ الحقول المطلوبة!"); return; }
-    if (usersDB[phone]) { alert("الموبايل مسجل مسبقاً!"); return; }
+    
+    // التحقق من قاعدة البيانات السحابية لمنع التكرار
+    try {
+        const { data } = await supabase
+            .from('users')
+            .select('phone')
+            .eq('phone', phone)
+            .maybeSingle();
+        if (data || usersDB[phone]) {
+            alert("رقم الموبايل مسجل مسبقاً!");
+            return;
+        }
+    } catch(e) {}
 
     var referrerPhone = localStorage.getItem("tasawuq_referrer");
     var assignedReferrer = null;
