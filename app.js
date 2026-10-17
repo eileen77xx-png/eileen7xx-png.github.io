@@ -6,21 +6,13 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabaseUrl = 'https://puhtvfikoegfemjkwulg.supabase.co'
 const supabaseKey = 'Sb_publishable_DMfZzbWWHF0D6xorB5Saug_wfLYn7fD'
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
-
-// 🧪 كود الفحص التلقائي لاختبار الاتصال فور فتح الموقع
-(async function testSupabaseConnection() {
-    try {
-        const { data, error } = await supabase.from('users').select('*').limit(1);
-        if (error) {
-            console.error("❌ هناك مشكلة في جدول users:", error.message);
-        } else {
-            console.log("✅ تم الاتصال بنجاح بـ Supabase وجدول users جاهز!");
-        }
-    } catch (err) {
-        console.error("❌ خطأ غير متوقع في الشبكة أو الاتصال:", err);
-    }
-})();
+export var supabase = null;
+try {
+    supabase = createClient(supabaseUrl, supabaseKey);
+    console.log("تم تهيئة اتصال Supabase بنجاح");
+} catch(e) {
+    console.error("فشل تهيئة Supabase:", e);
+}
 
 // ==========================================
 // 2. حالة التطبيق والمتغيرات الأساسية
@@ -91,8 +83,8 @@ window.onload = async function() {
         localStorage.setItem("tasawuq_referrer", refPhone);
     }
 
-    // جلب بيانات المستخدم الحالي من Supabase لتحديث التزامن
-    if (currentUserPhone) {
+    // جلب بيانات المستخدم الحالي من Supabase بشكل آمن
+    if (currentUserPhone && supabase) {
         try {
             const { data, error } = await supabase
                 .from('users')
@@ -113,28 +105,22 @@ window.onload = async function() {
     }
 };
 
-// دالة مساعدة لمزامنة المستخدم في قاعدة البيانات مع التحقق الإجباري
+// دالة مساعدة آمنة لمزامنة المستخدم
 async function syncUserToSupabase(phone, userData) {
+    if (!supabase) return;
     try {
-        const { error } = await supabase
+        await supabase
             .from('users')
             .upsert({
                 phone: phone,
                 user_data: userData,
                 updated_at: new Date().toISOString()
             }, { onConflict: 'phone' });
-            
-        if (error) {
-            console.error("خطأ Supabase أثناء المزامنة:", error.message);
-        } else {
-            console.log("تم مزامنة المستخدم بنجاح مع Supabase:", phone);
-        }
     } catch(err) {
-        console.error("خطأ شبكة أثناء مزامنة البيانات السحابية:", err);
+        console.error("خطأ أثناء مزامنة البيانات السحابية:", err);
     }
 }
 
-// دالة تسجيل الدخول المُعدلة والمرنة
 async function executeLogin() {
     var phone = document.getElementById("loginPhone").value.trim();
     var pass = document.getElementById("loginPassword").value.trim();
@@ -144,20 +130,19 @@ async function executeLogin() {
         return;
     }
 
-    // محاولة جلب بيانات الحساب من Supabase أولاً
-    try {
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('phone', phone)
-            .maybeSingle();
+    if (supabase) {
+        try {
+            const { data } = await supabase
+                .from('users')
+                .select('*')
+                .eq('phone', phone)
+                .maybeSingle();
 
-        if (data && data.user_data) {
-            usersDB[phone] = data.user_data;
-            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-        }
-    } catch(e) {
-        console.log("الاعتماد على البيانات المحلية مؤقتاً");
+            if (data && data.user_data) {
+                usersDB[phone] = data.user_data;
+                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+            }
+        } catch(e) {}
     }
 
     if (!usersDB[phone]) {
@@ -175,25 +160,16 @@ async function executeLogin() {
     showMainApp();
 }
 
-// دالة إنشاء حساب جديد
 async function executeRegister() {
     var name = document.getElementById("regName").value.trim();
     var phone = document.getElementById("regPhone").value.trim();
     var pass = document.getElementById("regPassword").value.trim();
     if (!name || !phone || !pass) { alert("املأ الحقول المطلوبة!"); return; }
     
-    // التحقق من قاعدة البيانات السحابية لمنع التكرار
-    try {
-        const { data } = await supabase
-            .from('users')
-            .select('phone')
-            .eq('phone', phone)
-            .maybeSingle();
-        if (data || usersDB[phone]) {
-            alert("رقم الموبايل مسجل مسبقاً!");
-            return;
-        }
-    } catch(e) {}
+    if (usersDB[phone]) { 
+        alert("رقم الموبايل مسجل مسبقاً!"); 
+        return; 
+    }
 
     var referrerPhone = localStorage.getItem("tasawuq_referrer");
     var assignedReferrer = null;
@@ -221,7 +197,6 @@ async function executeRegister() {
     usersDB[phone] = newUser;
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
     
-    // المزامنة الإجبارية الفورية مع قاعدة بيانات Supabase السحابية
     await syncUserToSupabase(phone, newUser);
 
     currentUserPhone = phone;
@@ -612,19 +587,20 @@ async function submitWithdrawRequest() {
     withdrawRequests.push(newReq);
     localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
 
-    // إرسال الطلب سحابياً إلى Supabase
-    try {
-        await supabase
-            .from('withdraw_requests')
-            .insert([{
-                phone: currentUserPhone,
-                amount: amount,
-                wallet: fullWalletDesc,
-                status: 'pending',
-                created_at: new Date().toISOString()
-            }]);
-    } catch(err) {
-        console.error("خطأ أثناء حفظ طلب السحب في السحابة:", err);
+    if (supabase) {
+        try {
+            await supabase
+                .from('withdraw_requests')
+                .insert([{
+                    phone: currentUserPhone,
+                    amount: amount,
+                    wallet: fullWalletDesc,
+                    status: 'pending',
+                    created_at: new Date().toISOString()
+                }]);
+        } catch(err) {
+            console.error("خطأ أثناء حفظ طلب السحب في السحابة:", err);
+        }
     }
     
     document.getElementById("withdrawWalletNumber").value = "";
