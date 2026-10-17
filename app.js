@@ -8,7 +8,21 @@ const supabaseKey = 'Sb_publishable_DMfZzbWWHF0D6xorB5Saug_wfLYn7fD'
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
-console.log("تم ربط منصة تسوق بلس بنجاح مع Supabase!");
+// 🧪 كود التست التلقائي لاختبار الاتصال بقاعدة بيانات Supabase فوراً
+(async function testSupabaseConnection() {
+    try {
+        const { data, error } = await supabase.from('users').select('*').limit(1);
+        if (error) {
+            console.error("❌ هناك مشكلة في جدول users:", error.message);
+            alert("❌ تعذر الاتصال بجداول Supabase: " + error.message);
+        } else {
+            console.log("✅ تم الاتصال بنجاح بـ Supabase وجدول users جاهز!");
+            alert("✅ تم الاتصال بنجاح بقاعدة بيانات Supabase وجدول users جاهز وسليم!");
+        }
+    } catch (err) {
+        console.error("❌ خطأ غير متوقع في الشبكة أو الاتصال:", err);
+    }
+})();
 
 // ==========================================
 // 2. حالة التطبيق والمتغيرات الأساسية
@@ -47,7 +61,7 @@ if (!usersDB["01032315526"]) {
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
 }
 
-// جعل الدوال متاحة عالمياً لنظام Modifying HTML Event Handlers
+// جعل الدوال متاحة عالمياً لنظام HTML Event Handlers
 window.executeLogin = executeLogin;
 window.executeRegister = executeRegister;
 window.copyReferralLink = copyReferralLink;
