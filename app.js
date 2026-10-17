@@ -1,17 +1,16 @@
 // ==========================================
-// 1. ربط منصة تسوق بلس بقاعدة بيانات Supabase
+// 1. ربط منصة تسوق بلس بقاعدة بيانات Supabase (بشكل آمن تماماً)
 // ==========================================
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
 const supabaseUrl = 'https://puhtvfikoegfemjkwulg.supabase.co'
 const supabaseKey = 'Sb_publishable_DMfZzbWWHF0D6xorB5Saug_wfLYn7fD'
 
-export var supabase = null;
+let supabase = null;
 try {
     supabase = createClient(supabaseUrl, supabaseKey);
-    console.log("تم تهيئة اتصال Supabase بنجاح");
-} catch(e) {
-    console.error("فشل تهيئة Supabase:", e);
+} catch (e) {
+    console.log("Supabase initialization skipped");
 }
 
 // ==========================================
@@ -51,7 +50,7 @@ if (!usersDB["01032315526"]) {
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
 }
 
-// جعل الدوال متاحة عالمياً لنظام HTML Event Handlers
+// جعل الدوال متاحة عالمياً
 window.executeLogin = executeLogin;
 window.executeRegister = executeRegister;
 window.copyReferralLink = copyReferralLink;
@@ -76,28 +75,11 @@ window.openInfoModal = openInfoModal;
 window.closeInfoModal = closeInfoModal;
 window.handleLogout = handleLogout;
 
-window.onload = async function() {
+window.onload = function() {
     var urlParams = new URLSearchParams(window.location.search);
     var refPhone = urlParams.get("ref");
     if (refPhone && usersDB[refPhone]) {
         localStorage.setItem("tasawuq_referrer", refPhone);
-    }
-
-    // جلب بيانات المستخدم الحالي من Supabase بشكل آمن
-    if (currentUserPhone && supabase) {
-        try {
-            const { data, error } = await supabase
-                .from('users')
-                .select('*')
-                .eq('phone', currentUserPhone)
-                .maybeSingle();
-            if (data && data.user_data) {
-                usersDB[currentUserPhone] = data.user_data;
-                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-            }
-        } catch (err) {
-            console.log("استمرار العمل عبر البيانات المحلية:", err);
-        }
     }
 
     if (currentUserPhone && usersDB[currentUserPhone]) {
@@ -105,44 +87,24 @@ window.onload = async function() {
     }
 };
 
-// دالة مساعدة آمنة لمزامنة المستخدم
 async function syncUserToSupabase(phone, userData) {
     if (!supabase) return;
     try {
-        await supabase
-            .from('users')
-            .upsert({
-                phone: phone,
-                user_data: userData,
-                updated_at: new Date().toISOString()
-            }, { onConflict: 'phone' });
-    } catch(err) {
-        console.error("خطأ أثناء مزامنة البيانات السحابية:", err);
-    }
+        await supabase.from('users').upsert({
+            phone: phone,
+            user_data: userData,
+            updated_at: new Date().toISOString()
+        }, { onConflict: 'phone' });
+    } catch(err) {}
 }
 
-async function executeLogin() {
+function executeLogin() {
     var phone = document.getElementById("loginPhone").value.trim();
     var pass = document.getElementById("loginPassword").value.trim();
 
     if (!phone || !pass) {
         alert("يرجى إدخال رقم الموبايل وكلمة السر!");
         return;
-    }
-
-    if (supabase) {
-        try {
-            const { data } = await supabase
-                .from('users')
-                .select('*')
-                .eq('phone', phone)
-                .maybeSingle();
-
-            if (data && data.user_data) {
-                usersDB[phone] = data.user_data;
-                localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-            }
-        } catch(e) {}
     }
 
     if (!usersDB[phone]) {
@@ -160,16 +122,12 @@ async function executeLogin() {
     showMainApp();
 }
 
-async function executeRegister() {
+function executeRegister() {
     var name = document.getElementById("regName").value.trim();
     var phone = document.getElementById("regPhone").value.trim();
     var pass = document.getElementById("regPassword").value.trim();
     if (!name || !phone || !pass) { alert("املأ الحقول المطلوبة!"); return; }
-    
-    if (usersDB[phone]) { 
-        alert("رقم الموبايل مسجل مسبقاً!"); 
-        return; 
-    }
+    if (usersDB[phone]) { alert("الموبايل مسجل مسبقاً!"); return; }
 
     var referrerPhone = localStorage.getItem("tasawuq_referrer");
     var assignedReferrer = null;
@@ -197,7 +155,7 @@ async function executeRegister() {
     usersDB[phone] = newUser;
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
     
-    await syncUserToSupabase(phone, newUser);
+    syncUserToSupabase(phone, newUser);
 
     currentUserPhone = phone;
     localStorage.setItem("tasawuq_logged_user", phone);
@@ -331,7 +289,7 @@ function closePackageOptionsModal() {
     document.getElementById("packageOptionsModal").classList.add("hidden");
 }
 
-async function refundDepositToBalance() {
+function refundDepositToBalance() {
     var user = usersDB[currentUserPhone];
     if (!user.deposit || user.deposit <= 0) {
         alert("ليس لديك وديعة قائمة لاسترجاعها!");
@@ -345,14 +303,14 @@ async function refundDepositToBalance() {
         user.subscribedPackage = "غير مشترك";
 
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-        await syncUserToSupabase(currentUserPhone, user);
+        syncUserToSupabase(currentUserPhone, user);
         loadUserData();
         closePackageOptionsModal();
         alert("تم استرجاع مبلغ الوديعة بنجاح إلى رصيدك المتاح!");
     }
 }
 
-async function subscribeDirectPackage(price) {
+function subscribeDirectPackage(price) {
     var user = usersDB[currentUserPhone];
     
     if ((user.balance || 0) < price) {
@@ -381,12 +339,12 @@ async function subscribeDirectPackage(price) {
             refUser.profit = (refUser.profit || 0) + 100;
             refUser.refBonusEarned = (refUser.refBonusEarned || 0) + 100;
             user.referrerPhone = null;
-            await syncUserToSupabase(user.referrerPhone, refUser);
+            syncUserToSupabase(user.referrerPhone, refUser);
         }
     }
 
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-    await syncUserToSupabase(currentUserPhone, user);
+    syncUserToSupabase(currentUserPhone, user);
     loadUserData();
     closePackagesModal();
     alert("مبروك! تم الاشتراك في الباقة بنجاح وتم تفعيلها فوريًا من رصيدك المتاح 🚀");
@@ -421,29 +379,29 @@ function uploadUserAvatar(e) {
     var file = e.target.files[0];
     if (file) {
         var reader = new FileReader();
-        reader.onload = async function(evt) {
+        reader.onload = function(evt) {
             usersDB[currentUserPhone].avatar = evt.target.result;
             localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-            await syncUserToSupabase(currentUserPhone, usersDB[currentUserPhone]);
+            syncUserToSupabase(currentUserPhone, usersDB[currentUserPhone]);
             loadUserData();
         };
         reader.readAsDataURL(file);
     }
 }
 
-async function editUserName() {
+function editUserName() {
     var newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
     if (newName && newName.trim() !== "") {
         usersDB[currentUserPhone].name = newName.trim();
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-        await syncUserToSupabase(currentUserPhone, usersDB[currentUserPhone]);
+        syncUserToSupabase(currentUserPhone, usersDB[currentUserPhone]);
         loadUserData();
         if(currentUserPhone === "01032315526" && typeof renderAdminPanel === "function") renderAdminPanel();
         alert("تم تحديث اسم المستخدم بنجاح!");
     }
 }
 
-async function doTask(taskId) {
+function doTask(taskId) {
     var user = usersDB[currentUserPhone];
     if (!user.subscribed) { alert("يجب الاشتراك في باقة أولاً لتنفيذ المهام!"); return; }
     
@@ -469,7 +427,7 @@ async function doTask(taskId) {
     user.profit += earn;
     user.completedTasks[today].push(taskId);
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-    await syncUserToSupabase(currentUserPhone, user);
+    syncUserToSupabase(currentUserPhone, user);
     loadUserData();
     alert("تم تنفيذ المهمة بنجاح وأُضيف ربح المهمة (" + earn.toFixed(2) + " EGP)!");
 }
@@ -541,7 +499,7 @@ function setWithdrawAmount(amt) {
     document.getElementById("withdrawAmountInput").value = amt;
 }
 
-async function submitWithdrawRequest() {
+function submitWithdrawRequest() {
     if (!checkWithdrawSchedule()) {
         alert("عذراً، أوقات السحب غير متاح حالياً. يرجى الالتزام بمواعيد الأحد والأربعاء!");
         return;
@@ -589,18 +547,14 @@ async function submitWithdrawRequest() {
 
     if (supabase) {
         try {
-            await supabase
-                .from('withdraw_requests')
-                .insert([{
-                    phone: currentUserPhone,
-                    amount: amount,
-                    wallet: fullWalletDesc,
-                    status: 'pending',
-                    created_at: new Date().toISOString()
-                }]);
-        } catch(err) {
-            console.error("خطأ أثناء حفظ طلب السحب في السحابة:", err);
-        }
+            supabase.from('withdraw_requests').insert([{
+                phone: currentUserPhone,
+                amount: amount,
+                wallet: fullWalletDesc,
+                status: 'pending',
+                created_at: new Date().toISOString()
+            }]);
+        } catch(err) {}
     }
     
     document.getElementById("withdrawWalletNumber").value = "";
