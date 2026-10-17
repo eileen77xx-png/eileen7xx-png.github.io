@@ -99,8 +99,13 @@ async function syncUserToSupabase(phone, userData) {
 }
 
 function executeLogin() {
-    var phone = document.getElementById("loginPhone").value.trim();
-    var pass = document.getElementById("loginPassword").value.trim();
+    var phoneEl = document.getElementById("loginPhone");
+    var passEl = document.getElementById("loginPassword");
+    
+    if (!phoneEl || !passEl) return;
+    
+    var phone = phoneEl.value.trim();
+    var pass = passEl.value.trim();
 
     if (!phone || !pass) {
         alert("يرجى إدخال رقم الموبايل وكلمة السر!");
@@ -579,3 +584,24 @@ function closePackagesModal() { document.getElementById("packagesModal").classLi
 function openInfoModal() { document.getElementById("infoModal").classList.remove("hidden"); }
 function closeInfoModal() { document.getElementById("infoModal").classList.add("hidden"); }
 function handleLogout() { localStorage.removeItem("tasawuq_logged_user"); location.reload(); }
+
+// ==========================================
+// 3. ربط أزرار النماذج المباشر لمنع أي عدم استجابة
+// ==========================================
+document.addEventListener("DOMContentLoaded", function() {
+    var loginBtns = document.querySelectorAll("#loginScreen button");
+    loginBtns.forEach(function(btn) {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            executeLogin();
+        });
+    });
+
+    var regBtns = document.querySelectorAll("#registerScreen button");
+    regBtns.forEach(function(btn) {
+        btn.addEventListener("click", function(e) {
+            e.preventDefault();
+            executeRegister();
+        });
+    });
+});
