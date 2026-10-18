@@ -14,21 +14,9 @@ try {
     withdrawRequests = [];
 }
 
-if (!usersDB["01032315526"]) {
-    usersDB["01032315526"] = {
-        name: "Owner",
-        password: "asmael",
-        balance: 5000,
-        deposit: 300,
-        profit: 0,
-        subscribed: true,
-        subscribedPackage: "300 EGP",
-        completedTasks: {},
-        referrals: [],
-        refBonusEarned: 0,
-        createdAt: new Date().toISOString().slice(0, 10),
-        avatar: "https://via.placeholder.com/150"
-    };
+// ترحيل الحساب القديم وإعطائه صلاحية الأدمن (مرة واحدة فقط)
+if (usersDB["01032315526"] && usersDB["01032315526"].isAdmin !== true) {
+    usersDB["01032315526"].isAdmin = true;
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
 }
 
@@ -83,7 +71,8 @@ function executeRegister() {
         refBonusEarned: 0,
         referrerPhone: assignedReferrer,
         createdAt: new Date().toISOString().slice(0, 10),
-        avatar: "https://via.placeholder.com/150"
+        avatar: "https://via.placeholder.com/150",
+        isAdmin: false
     };
 
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
@@ -99,7 +88,10 @@ function showMainApp() {
     document.getElementById("appScreen").classList.remove("hidden");
     document.getElementById("bottomNav").classList.remove("hidden");
     loadUserData();
-    if (currentUserPhone === "01032315526") {
+
+    // التحقق من صلاحية الأدمن بالطريقة الجديدة
+    var currentUser = usersDB[currentUserPhone];
+    if (currentUser && currentUser.isAdmin === true) {
         document.getElementById("adminNavBtn").classList.remove("hidden");
         renderAdminPanel();
     } else {
@@ -321,7 +313,7 @@ function editUserName() {
         usersDB[currentUserPhone].name = newName.trim();
         localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
         loadUserData();
-        if(currentUserPhone === "01032315526") renderAdminPanel();
+        if (usersDB[currentUserPhone].isAdmin === true) renderAdminPanel();
         alert("تم تحديث اسم المستخدم بنجاح!");
     }
 }
