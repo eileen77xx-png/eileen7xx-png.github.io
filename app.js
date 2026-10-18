@@ -1,3 +1,29 @@
+// ====================== نظام التنبيهات المخصصة بديل alert المتصفح ======================
+function showAlert(message) {
+    var msgEl = document.getElementById("customAlertMessage");
+    var modalEl = document.getElementById("customAlertModal");
+    if (msgEl && modalEl) {
+        msgEl.innerText = message;
+        modalEl.classList.remove("hidden");
+    } else {
+        // حافة أمان في حال عدم وجود المودال
+        console.log(message);
+    }
+}
+
+function closeCustomAlert() {
+    var modalEl = document.getElementById("customAlertModal");
+    if (modalEl) {
+        modalEl.classList.add("hidden");
+    }
+}
+
+// إعادة توجيه alert الافتراضية لتستخدم نافذة تسوق بلس المخصصة
+window.alert = function(msg) {
+    showAlert(msg);
+};
+
+// ====================== البيانات والمهمات العامة ======================
 var currentUserPhone = localStorage.getItem("tasawuq_logged_user") || null;
 var usersDB = {};
 var pendingRequests = {};
