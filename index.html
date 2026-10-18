@@ -36,7 +36,7 @@
         <div class="auth-container">
             <div class="auth-content">
                 <h2 class="welcome-title">أهلاً بك في منصة تسوق بلس</h2>
-                <p class="welcome-desc">أنشئ حسابك التسويقي الجديد الآن واحصل على مكافأة ترحيبية 50 جنيه!</p>
+                <p class="welcome-desc">أنشئ حسابك التسويقي الجديد الآن واحصل على مكافأة ترحيبية 50 جنيه في إجمالي العمولات والمكافآت!</p>
                 <div class="form-group"><label>اسم المستخدم</label><input type="text" id="regName" placeholder="اسمك الكريم"></div>
                 <div class="form-group"><label>رقم الموبايل</label><input type="text" id="regPhone" placeholder="ادخل رقم الموبايل"></div>
                 <div class="form-group"><label>كلمة السر</label><input type="password" id="regPassword" placeholder="********"></div>
@@ -392,6 +392,26 @@
         </div>
     </div>
 
+    <!-- نافذة الإدخال المخصصة بديلة prompt المتصفح -->
+    <div id="customPromptModal" class="modal-overlay hidden" style="z-index: 99999;">
+        <div class="modal-box" style="max-width: 380px; text-align: center; border: 1px solid var(--neon-green);">
+            <div style="font-size: 32px; color: var(--neon-green); margin-bottom: 10px;">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <h3 style="color: var(--neon-green); margin-bottom: 12px; font-size: 16px;">تسوق بلس</h3>
+            <p id="customPromptTitle" style="font-size: 13px; color: #e2e8f0; margin-bottom: 15px;"></p>
+            
+            <div class="form-group" style="margin-bottom: 20px;">
+                <input type="number" id="customPromptInput" style="width: 100%; text-align: center; font-size: 15px;" placeholder="أدخل القيمة هنا">
+            </div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button id="customPromptConfirmBtn" class="btn-submit" style="flex: 1; padding: 10px;">حفظ التعديل</button>
+                <button onclick="closeCustomPrompt()" class="btn-submit" style="flex: 1; padding: 10px; background: #334155;">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
     <!-- دوال توليد المنتجات المتحركة والمتجددة يومياً تلقائياً -->
     <script>
         function loadDailyDynamicTasks() {
@@ -460,7 +480,6 @@
     </script>
 
     <script src="admin.js"></script>
-    <!-- تم إضافة v=2.0 لتخطي الـ Cache وإجبار المتصفح على قراءة الكود المحدث -->
     <script src="app.js?v=2.0"></script>
 </body>
 </html>
