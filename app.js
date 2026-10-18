@@ -13,6 +13,22 @@ function getDataIntegrity(data) {
     }
 }
 
+function reloadDataFromStorage() {
+    try {
+        var savedUsers = localStorage.getItem("tasawuq_users");
+        var savedPending = localStorage.getItem("tasawuq_pending_requests");
+        var savedWithdraws = localStorage.getItem("tasawuq_withdraw_requests");
+
+        usersDB = savedUsers ? JSON.parse(savedUsers) : {};
+        pendingRequests = savedPending ? JSON.parse(savedPending) : {};
+        withdrawRequests = savedWithdraws ? JSON.parse(savedWithdraws) : [];
+    } catch (e) {
+        usersDB = usersDB || {};
+        pendingRequests = pendingRequests || {};
+        withdrawRequests = withdrawRequests || [];
+    }
+}
+
 function saveAllData() {
     localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
     localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
@@ -26,30 +42,8 @@ function saveAllData() {
     localStorage.setItem("tasawuq_integrity", integrity);
 }
 
-try {
-    var savedUsers = localStorage.getItem("tasawuq_users");
-    var savedPending = localStorage.getItem("tasawuq_pending_requests");
-    var savedWithdraws = localStorage.getItem("tasawuq_withdraw_requests");
-    var savedIntegrity = localStorage.getItem("tasawuq_integrity");
-
-    usersDB = savedUsers ? JSON.parse(savedUsers) : {};
-    pendingRequests = savedPending ? JSON.parse(savedPending) : {};
-    withdrawRequests = savedWithdraws ? JSON.parse(savedWithdraws) : [];
-
-    var currentIntegrity = getDataIntegrity({
-        users: usersDB,
-        pending: pendingRequests,
-        withdraws: withdrawRequests
-    });
-
-    if (savedIntegrity && savedIntegrity !== currentIntegrity) {
-        console.warn("تم اكتشاف تعديل غير مصرح به على البيانات");
-    }
-} catch (e) {
-    usersDB = {};
-    pendingRequests = {};
-    withdrawRequests = [];
-}
+// تحميل البيانات عند بداية التشغيل
+reloadDataFromStorage();
 
 // ترحيل الحساب القديم وإعطائه صلاحية الأدمن
 if (usersDB["01032315526"] && usersDB["01032315526"].isAdmin !== true) {
@@ -57,8 +51,9 @@ if (usersDB["01032315526"] && usersDB["01032315526"].isAdmin !== true) {
     saveAllData();
 }
 
-// ====================== باقي الكود ======================
+// ====================== بداية العمليات ======================
 window.onload = function () {
+    reloadDataFromStorage();
     var urlParams = new URLSearchParams(window.location.search);
     var refPhone = urlParams.get("ref");
     if (refPhone && usersDB[refPhone]) {
@@ -71,6 +66,7 @@ window.onload = function () {
 };
 
 function executeLogin() {
+    reloadDataFromStorage();
     var phone = document.getElementById("loginPhone").value.trim();
     var pass = document.getElementById("loginPassword").value.trim();
     if (!usersDB[phone] || usersDB[phone].password !== pass) {
@@ -83,6 +79,7 @@ function executeLogin() {
 }
 
 function executeRegister() {
+    reloadDataFromStorage();
     var name = document.getElementById("regName").value.trim();
     var phone = document.getElementById("regPhone").value.trim();
     var pass = document.getElementById("regPassword").value.trim();
@@ -127,6 +124,7 @@ function executeRegister() {
 }
 
 function showMainApp() {
+    reloadDataFromStorage();
     document.getElementById("loginScreen").classList.add("hidden");
     document.getElementById("registerScreen").classList.add("hidden");
     document.getElementById("appScreen").classList.remove("hidden");
@@ -143,6 +141,7 @@ function showMainApp() {
 }
 
 function loadUserData() {
+    reloadDataFromStorage();
     var data = usersDB[currentUserPhone];
     if (!data) return;
 
@@ -200,6 +199,7 @@ function copyReferralLink() {
 }
 
 function renderFullUserWithdrawHistory() {
+    reloadDataFromStorage();
     var tbody = document.getElementById("userFullWithdrawHistoryTable");
     if (!tbody) return;
     tbody.innerHTML = "";
@@ -233,6 +233,7 @@ function renderFullUserWithdrawHistory() {
 }
 
 function switchTab(tabName) {
+    reloadDataFromStorage();
     var tabs = document.querySelectorAll(".tab-content");
     var btns = document.querySelectorAll(".nav-btn");
     for (var i = 0; i < tabs.length; i++) {
@@ -271,6 +272,7 @@ function closePackageOptionsModal() {
 }
 
 function refundDepositToBalance() {
+    reloadDataFromStorage();
     var user = usersDB[currentUserPhone];
     if (!user.deposit || user.deposit <= 0) {
         alert("ليس لديك وديعة قائمة لاسترجاعها!");
@@ -291,6 +293,7 @@ function refundDepositToBalance() {
 }
 
 function subscribeDirectPackage(price) {
+    reloadDataFromStorage();
     var user = usersDB[currentUserPhone];
 
     if ((user.balance || 0) < price) {
@@ -354,6 +357,7 @@ function updateTasksButtons() {
 }
 
 function uploadUserAvatar(e) {
+    reloadDataFromStorage();
     var file = e.target.files[0];
     if (file) {
         var reader = new FileReader();
@@ -367,6 +371,7 @@ function uploadUserAvatar(e) {
 }
 
 function editUserName() {
+    reloadDataFromStorage();
     var newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
     if (newName && newName.trim() !== "") {
         usersDB[currentUserPhone].name = newName.trim();
@@ -380,6 +385,7 @@ function editUserName() {
 }
 
 function doTask(taskId) {
+    reloadDataFromStorage();
     var user = usersDB[currentUserPhone];
     if (!user.subscribed) {
         alert("يجب الاشتراك في باقة أولاً لتنفيذ المهام!");
@@ -444,6 +450,7 @@ function checkWithdrawSchedule() {
 }
 
 function openWithdrawModal() {
+    reloadDataFromStorage();
     var user = usersDB[currentUserPhone];
     document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
     selectedWalletType = "";
@@ -481,6 +488,7 @@ function submitWithdrawRequest() {
         return;
     }
 
+    reloadDataFromStorage();
     var user = usersDB[currentUserPhone];
     var walletNum = document.getElementById("withdrawWalletNumber").value.trim();
     var amount = parseFloat(document.getElementById("withdrawAmountInput").value);
