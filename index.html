@@ -176,7 +176,7 @@
                 <button onclick="handleLogout()" class="btn-logout">تسجيل الخروج</button>
             </div>
 
-            <!-- شاشة المهام (مع صور المنتجات المتحركة المتجددة يومياً) -->
+            <!-- شاشة المهام -->
             <div id="tabTasks" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> مهمات التسويق والترويج اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
@@ -398,14 +398,12 @@
             var grid = document.getElementById("dynamicTasksGrid");
             if (!grid) return;
 
-            // حساب رقم اليوم في السنة ليتغير محتوى الصور والمنتجات تلقائياً كل يوم جديد
             var now = new Date();
             var start = new Date(now.getFullYear(), 0, 0);
             var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
             var oneDay = 1000 * 60 * 60 * 24;
             var dayOfYear = Math.floor(diff / oneDay);
 
-            // مجموعات مختلفة من روابط صور المنتجات المتحركة (أو عالية الجودة) التي تتجدد دورياً
             var productPools = [
                 [
                     { name: "حملة تسويق هاتف ذكي برو", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" },
@@ -430,7 +428,6 @@
                 ]
             ];
 
-            // اختيار مجموعة بناءً على رقم اليوم لضمان التجديد التلقائي المستمر
             var selectedPool = productPools[dayOfYear % productPools.length];
             grid.innerHTML = "";
 
@@ -448,7 +445,6 @@
             }
         }
 
-        // تشغيل الدالة عند تحميل الصفحة
         window.addEventListener('DOMContentLoaded', function() {
             loadDailyDynamicTasks();
         });
@@ -464,6 +460,7 @@
     </script>
 
     <script src="admin.js"></script>
-    <script src="app.js"></script>
+    <!-- تم إضافة v=2.0 لتخطي الـ Cache وإجبار المتصفح على قراءة الكود المحدث -->
+    <script src="app.js?v=2.0"></script>
 </body>
 </html>
