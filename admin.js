@@ -1,3 +1,32 @@
+// ====================== إعادة توجيه prompt افتراضياً للنافذة المخصصة ======================
+window.prompt = function(title, defaultText) {
+    return new Promise(function(resolve) {
+        var modalEl = document.getElementById("customPromptModal");
+        var titleEl = document.getElementById("customPromptTitle");
+        var inputEl = document.getElementById("customPromptInput");
+        var confirmBtn = document.getElementById("customPromptConfirmBtn");
+
+        if (modalEl && titleEl && inputEl && confirmBtn) {
+            titleEl.innerText = title;
+            inputEl.value = defaultText || "";
+            modalEl.classList.remove("hidden");
+            inputEl.focus();
+
+            // تنظيف أي أحداث قديمة
+            var newConfirmBtn = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+            newConfirmBtn.onclick = function() {
+                var val = inputEl.value;
+                modalEl.classList.add("hidden");
+                resolve(val);
+            };
+        } else {
+            resolve(null);
+        }
+    });
+};
+
 // ====================== لوحة تحكم الإدارة (الأدمن) ======================
 
 function renderAdminPanel() {
@@ -161,19 +190,24 @@ function renderAdminUserTable() {
     });
 }
 
-function adminEditUserBalance(phone) {
+// تعديل الأرصدة باستخدام النافذة المخصصة الحديثة
+async function adminEditUserBalance(phone) {
     reloadDataFromStorage();
     var u = usersDB[phone];
     if (!u) return;
 
-    var newBal = prompt("أدخل الرصيد المتاح الجديد للمسوق (" + u.name + "):", u.balance || 0);
-    if (newBal !== null && !isNaN(parseFloat(newBal))) {
-        u.balance = parseFloat(newBal);
+    var newBalStr = await prompt("أدخل الرصيد المتاح الجديد للمسوق (" + u.name + "):", u.balance || 0);
+    if (newBalStr === null) return;
+    var newBal = parseFloat(newBalStr);
+    if (!isNaN(newBal)) {
+        u.balance = newBal;
     }
 
-    var newProfit = prompt("أدخل رصيد العمولات والأرباح الجديد للمسوق (" + u.name + "):", u.profit || 0);
-    if (newProfit !== null && !isNaN(parseFloat(newProfit))) {
-        u.profit = parseFloat(newProfit);
+    var newProfitStr = await prompt("أدخل رصيد العمولات والأرباح الجديد للمسوق (" + u.name + "):", u.profit || 0);
+    if (newProfitStr === null) return;
+    var newProfit = parseFloat(newProfitStr);
+    if (!isNaN(newProfit)) {
+        u.profit = newProfit;
     }
 
     saveAllData();
@@ -191,15 +225,12 @@ function adminDeleteUser(phone) {
     }
 
     if (confirm("هل أنت متأكد تماماً من حذف حساب المسوق: " + u.name + " (" + phone + ")؟\nلا يمكن التراجع عن هذا الإجراء وسيتم حذف بياناته بالكامل.")) {
-        // حذف الحساب من قاعدة البيانات الرئيسية
         delete usersDB[phone];
 
-        // حذف أي طلب تفعيل باقة معلق باسمه
         if (pendingRequests[phone]) {
             delete pendingRequests[phone];
         }
 
-        // إزالة طلبات السحب الخاصة به
         withdrawRequests = withdrawRequests.filter(function (req) {
             return req.phone !== phone;
         });
