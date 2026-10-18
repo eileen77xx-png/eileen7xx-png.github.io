@@ -17,7 +17,6 @@ window.closeCustomAlert = function() {
     }
 };
 
-// استبدال دالة المتصفح الافتراضية
 window.alert = function(msg) {
     window.showAlert(msg);
 };
@@ -29,7 +28,7 @@ var pendingRequests = {};
 var withdrawRequests = [];
 var selectedWalletType = "";
 
-// ====================== حماية بسيطة للبيانات ======================
+// ====================== حماية البيانات ======================
 function getDataIntegrity(data) {
     try {
         return btoa(unescape(encodeURIComponent(JSON.stringify(data)))).slice(0, 32);
@@ -67,16 +66,13 @@ function saveAllData() {
     localStorage.setItem("tasawuq_integrity", integrity);
 }
 
-// تحميل البيانات عند بداية التشغيل
 reloadDataFromStorage();
 
-// ترحيل الحساب القديم وإعطائه صلاحية الأدمن
 if (usersDB["01032315526"] && usersDB["01032315526"].isAdmin !== true) {
     usersDB["01032315526"].isAdmin = true;
     saveAllData();
 }
 
-// ====================== بداية العمليات ======================
 window.onload = function () {
     reloadDataFromStorage();
     var urlParams = new URLSearchParams(window.location.search);
