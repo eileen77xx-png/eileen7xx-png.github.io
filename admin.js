@@ -4,6 +4,10 @@ function isCurrentUserAdmin() {
 }
 
 function renderAdminPanel() {
+    if (typeof reloadDataFromStorage === "function") {
+        reloadDataFromStorage();
+    }
+    
     if (!isCurrentUserAdmin()) return;
 
     var wTbody = document.getElementById("adminWithdrawRequestsTable");
@@ -77,6 +81,10 @@ function renderAdminPanel() {
 }
 
 function adminSearchUser() {
+    if (typeof reloadDataFromStorage === "function") {
+        reloadDataFromStorage();
+    }
+
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -125,6 +133,7 @@ function adminSearchUser() {
 }
 
 function approveWithdrawRequest(reqId) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -150,6 +159,7 @@ function approveWithdrawRequest(reqId) {
 }
 
 function rejectWithdrawRequest(reqId) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -168,6 +178,7 @@ function rejectWithdrawRequest(reqId) {
 }
 
 function approvePackageRequest(phone) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -205,6 +216,7 @@ function approvePackageRequest(phone) {
 }
 
 function rejectPackageRequest(phone) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -220,6 +232,7 @@ function rejectPackageRequest(phone) {
 }
 
 function adminAddBalance(phone) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -236,6 +249,7 @@ function adminAddBalance(phone) {
 }
 
 function adminDeductBalance(phone) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -252,6 +266,7 @@ function adminDeductBalance(phone) {
 }
 
 function adminEditDeposit(phone) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -270,6 +285,7 @@ function adminEditDeposit(phone) {
 }
 
 function adminEditProfit(phone) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -286,6 +302,7 @@ function adminEditProfit(phone) {
 }
 
 function adminEditRefBonus(phone) {
+    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
     if (!isCurrentUserAdmin()) {
         alert("غير مصرح لك بهذا الإجراء");
         return;
@@ -303,4 +320,4 @@ function adminEditRefBonus(phone) {
         if (currentUserPhone === phone) loadUserData();
         alert("تم تعديل رصيد أرباح الإحالات بنجاح!");
     }
-            }
+}
