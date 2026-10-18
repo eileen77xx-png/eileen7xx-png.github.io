@@ -4,23 +4,61 @@ var pendingRequests = {};
 var withdrawRequests = [];
 var selectedWalletType = "";
 
+// ====================== حماية بسيطة للبيانات ======================
+function getDataIntegrity(data) {
+    try {
+        return btoa(unescape(encodeURIComponent(JSON.stringify(data)))).slice(0, 32);
+    } catch (e) {
+        return "";
+    }
+}
+
+function saveAllData() {
+    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
+    localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
+
+    var integrity = getDataIntegrity({
+        users: usersDB,
+        pending: pendingRequests,
+        withdraws: withdrawRequests
+    });
+    localStorage.setItem("tasawuq_integrity", integrity);
+}
+
 try {
-    usersDB = JSON.parse(localStorage.getItem("tasawuq_users")) || {};
-    pendingRequests = JSON.parse(localStorage.getItem("tasawuq_pending_requests")) || {};
-    withdrawRequests = JSON.parse(localStorage.getItem("tasawuq_withdraw_requests")) || [];
-} catch(e) {
+    var savedUsers = localStorage.getItem("tasawuq_users");
+    var savedPending = localStorage.getItem("tasawuq_pending_requests");
+    var savedWithdraws = localStorage.getItem("tasawuq_withdraw_requests");
+    var savedIntegrity = localStorage.getItem("tasawuq_integrity");
+
+    usersDB = savedUsers ? JSON.parse(savedUsers) : {};
+    pendingRequests = savedPending ? JSON.parse(savedPending) : {};
+    withdrawRequests = savedWithdraws ? JSON.parse(savedWithdraws) : [];
+
+    var currentIntegrity = getDataIntegrity({
+        users: usersDB,
+        pending: pendingRequests,
+        withdraws: withdrawRequests
+    });
+
+    if (savedIntegrity && savedIntegrity !== currentIntegrity) {
+        console.warn("تم اكتشاف تعديل غير مصرح به على البيانات");
+    }
+} catch (e) {
     usersDB = {};
     pendingRequests = {};
     withdrawRequests = [];
 }
 
-// ترحيل الحساب القديم وإعطائه صلاحية الأدمن (مرة واحدة فقط)
+// ترحيل الحساب القديم وإعطائه صلاحية الأدمن
 if (usersDB["01032315526"] && usersDB["01032315526"].isAdmin !== true) {
     usersDB["01032315526"].isAdmin = true;
-    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    saveAllData();
 }
 
-window.onload = function() {
+// ====================== باقي الكود ======================
+window.onload = function () {
     var urlParams = new URLSearchParams(window.location.search);
     var refPhone = urlParams.get("ref");
     if (refPhone && usersDB[refPhone]) {
@@ -48,8 +86,14 @@ function executeRegister() {
     var name = document.getElementById("regName").value.trim();
     var phone = document.getElementById("regPhone").value.trim();
     var pass = document.getElementById("regPassword").value.trim();
-    if (!name || !phone || !pass) { alert("املأ الحقول المطلوبة!"); return; }
-    if (usersDB[phone]) { alert("الموبايل مسجل مسبقاً!"); return; }
+    if (!name || !phone || !pass) {
+        alert("املأ الحقول المطلوبة!");
+        return;
+    }
+    if (usersDB[phone]) {
+        alert("الموبايل مسجل مسبقاً!");
+        return;
+    }
 
     var referrerPhone = localStorage.getItem("tasawuq_referrer");
     var assignedReferrer = null;
@@ -75,7 +119,7 @@ function executeRegister() {
         isAdmin: false
     };
 
-    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    saveAllData();
     currentUserPhone = phone;
     localStorage.setItem("tasawuq_logged_user", phone);
     alert("مرحباً بك! تم إنشاء حسابك بنجاح وحصلت على مكافأة ترحيبية 50 جنيه في رصيدك المتاح 🎉");
@@ -89,11 +133,10 @@ function showMainApp() {
     document.getElementById("bottomNav").classList.remove("hidden");
     loadUserData();
 
-    // التحقق من صلاحية الأدمن بالطريقة الجديدة
     var currentUser = usersDB[currentUserPhone];
     if (currentUser && currentUser.isAdmin === true) {
         document.getElementById("adminNavBtn").classList.remove("hidden");
-        renderAdminPanel();
+        if (typeof renderAdminPanel === "function") renderAdminPanel();
     } else {
         document.getElementById("adminNavBtn").classList.add("hidden");
     }
@@ -113,13 +156,13 @@ function loadUserData() {
     document.getElementById("accountPackage").innerText = (data.subscribedPackage || "غير مشترك") + " ⚙️";
     document.getElementById("accountDeposit").innerText = (data.deposit || 0).toFixed(2) + " EGP";
     document.getElementById("accountBalance").innerText = (data.balance || 0).toFixed(2) + " EGP";
-    
+
     var refLink = window.location.origin + window.location.pathname + "?ref=" + currentUserPhone;
     document.getElementById("referralLinkInput").value = refLink;
     document.getElementById("refCountDisplay").innerText = data.referrals ? data.referrals.length : 0;
     document.getElementById("refBonusDisplay").innerText = (data.refBonusEarned || 0).toFixed(2) + " EGP";
 
-    if(data.avatar) {
+    if (data.avatar) {
         document.getElementById("userAvatarImg").src = data.avatar;
         document.getElementById("headerAvatarImg").src = data.avatar;
         document.getElementById("headerAvatarImg").classList.remove("hidden");
@@ -128,11 +171,11 @@ function loadUserData() {
 
     var vipBadge = document.getElementById("vipBadge");
     var vipText = document.getElementById("vipBadgeText");
-    if (data.subscribed) { 
-        vipText.innerText = data.subscribedPackage; 
-        vipBadge.classList.remove("hidden"); 
-    } else { 
-        vipBadge.classList.add("hidden"); 
+    if (data.subscribed) {
+        vipText.innerText = data.subscribedPackage;
+        vipBadge.classList.remove("hidden");
+    } else {
+        vipBadge.classList.add("hidden");
     }
 
     var alertBox = document.getElementById("pendingAlertBox");
@@ -160,14 +203,16 @@ function renderFullUserWithdrawHistory() {
     var tbody = document.getElementById("userFullWithdrawHistoryTable");
     if (!tbody) return;
     tbody.innerHTML = "";
-    var myHistory = withdrawRequests.filter(function(r) { return r.phone === currentUserPhone; });
+    var myHistory = withdrawRequests.filter(function (r) {
+        return r.phone === currentUserPhone;
+    });
 
     if (myHistory.length === 0) {
         tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد عمليات سحب سابقة حتى الآن</td></tr>";
         return;
     }
 
-    myHistory.slice().reverse().forEach(function(item) {
+    myHistory.slice().reverse().forEach(function (item) {
         var statusHTML = "";
         if (item.status === "pending") {
             statusHTML = "<span class='status-badge status-pending'>قيد المراجعة ⏳</span>";
@@ -177,29 +222,43 @@ function renderFullUserWithdrawHistory() {
             statusHTML = "<span class='status-badge status-rejected'>مرفوض ❌</span>";
         }
 
-        tbody.innerHTML += "<tr>" +
+        tbody.innerHTML +=
+            "<tr>" +
             "<td>" + item.date + "</td>" +
             "<td>" + item.wallet + "</td>" +
             "<td>" + item.amount.toFixed(2) + " EGP</td>" +
             "<td>" + statusHTML + "</td>" +
-        "</tr>";
+            "</tr>";
     });
 }
 
 function switchTab(tabName) {
     var tabs = document.querySelectorAll(".tab-content");
     var btns = document.querySelectorAll(".nav-btn");
-    for (var i = 0; i < tabs.length; i++) { tabs[i].classList.add("hidden"); }
-    for (var j = 0; j < btns.length; j++) { btns[j].classList.remove("active"); }
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.add("hidden");
+    }
+    for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.remove("active");
+    }
 
-    if (tabName === "home") { document.getElementById("tabHome").classList.remove("hidden"); btns[0].classList.add("active"); }
-    else if (tabName === "tasks") { document.getElementById("tabTasks").classList.remove("hidden"); btns[1].classList.add("active"); }
-    else if (tabName === "history") { document.getElementById("tabHistory").classList.remove("hidden"); btns[2].classList.add("active"); renderFullUserWithdrawHistory(); }
-    else if (tabName === "account") { document.getElementById("tabAccount").classList.remove("hidden"); btns[3].classList.add("active"); }
-    else if (tabName === "admin") {
+    if (tabName === "home") {
+        document.getElementById("tabHome").classList.remove("hidden");
+        btns[0].classList.add("active");
+    } else if (tabName === "tasks") {
+        document.getElementById("tabTasks").classList.remove("hidden");
+        btns[1].classList.add("active");
+    } else if (tabName === "history") {
+        document.getElementById("tabHistory").classList.remove("hidden");
+        btns[2].classList.add("active");
+        renderFullUserWithdrawHistory();
+    } else if (tabName === "account") {
+        document.getElementById("tabAccount").classList.remove("hidden");
+        btns[3].classList.add("active");
+    } else if (tabName === "admin") {
         document.getElementById("tabAdmin").classList.remove("hidden");
-        if(btns[4]) btns[4].classList.add("active");
-        renderAdminPanel();
+        if (btns[4]) btns[4].classList.add("active");
+        if (typeof renderAdminPanel === "function") renderAdminPanel();
     }
 }
 
@@ -224,7 +283,7 @@ function refundDepositToBalance() {
         user.subscribed = false;
         user.subscribedPackage = "غير مشترك";
 
-        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        saveAllData();
         loadUserData();
         closePackageOptionsModal();
         alert("تم استرجاع مبلغ الوديعة بنجاح إلى رصيدك المتاح!");
@@ -233,7 +292,7 @@ function refundDepositToBalance() {
 
 function subscribeDirectPackage(price) {
     var user = usersDB[currentUserPhone];
-    
+
     if ((user.balance || 0) < price) {
         alert("رصيدك المتاح (" + (user.balance || 0).toFixed(2) + " EGP) غير كافٍ للاشتراك في هذه الباقة! يرجى التواصل مع الأدمن لشحن الرصيد.");
         closePackagesModal();
@@ -263,7 +322,7 @@ function subscribeDirectPackage(price) {
         }
     }
 
-    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    saveAllData();
     loadUserData();
     closePackagesModal();
     alert("مبروك! تم الاشتراك في الباقة بنجاح وتم تفعيلها فوريًا من رصيدك المتاح 🚀");
@@ -271,11 +330,11 @@ function subscribeDirectPackage(price) {
 
 function updateTasksButtons() {
     var u = usersDB[currentUserPhone];
-    if(!u) return;
+    if (!u) return;
     var today = new Date().toISOString().slice(0, 10);
     if (!u.completedTasks) u.completedTasks = {};
     var completedToday = u.completedTasks[today] ? u.completedTasks[today].length : 0;
-    
+
     for (var i = 1; i <= 5; i++) {
         var btn = document.getElementById("taskBtn" + i);
         if (btn) {
@@ -291,16 +350,16 @@ function updateTasksButtons() {
         }
     }
     var leftEl = document.getElementById("tasksLeft");
-    if(leftEl) leftEl.innerText = 5 - completedToday;
+    if (leftEl) leftEl.innerText = 5 - completedToday;
 }
 
 function uploadUserAvatar(e) {
     var file = e.target.files[0];
     if (file) {
         var reader = new FileReader();
-        reader.onload = function(evt) {
+        reader.onload = function (evt) {
             usersDB[currentUserPhone].avatar = evt.target.result;
-            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+            saveAllData();
             loadUserData();
         };
         reader.readAsDataURL(file);
@@ -311,17 +370,22 @@ function editUserName() {
     var newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
     if (newName && newName.trim() !== "") {
         usersDB[currentUserPhone].name = newName.trim();
-        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        saveAllData();
         loadUserData();
-        if (usersDB[currentUserPhone].isAdmin === true) renderAdminPanel();
+        if (usersDB[currentUserPhone].isAdmin === true && typeof renderAdminPanel === "function") {
+            renderAdminPanel();
+        }
         alert("تم تحديث اسم المستخدم بنجاح!");
     }
 }
 
 function doTask(taskId) {
     var user = usersDB[currentUserPhone];
-    if (!user.subscribed) { alert("يجب الاشتراك في باقة أولاً لتنفيذ المهام!"); return; }
-    
+    if (!user.subscribed) {
+        alert("يجب الاشتراك في باقة أولاً لتنفيذ المهام!");
+        return;
+    }
+
     var today = new Date().toISOString().slice(0, 10);
     if (!user.completedTasks) user.completedTasks = {};
     if (!user.completedTasks[today]) user.completedTasks[today] = [];
@@ -338,12 +402,12 @@ function doTask(taskId) {
     else if (user.deposit === 3000) dailyTotal = 150;
     else if (user.deposit === 8000) dailyTotal = 400;
     else if (user.deposit === 12000) dailyTotal = 600;
-    else dailyTotal = (user.deposit * 0.05);
+    else dailyTotal = user.deposit * 0.05;
 
     var earn = dailyTotal / 5;
     user.profit += earn;
     user.completedTasks[today].push(taskId);
-    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+    saveAllData();
     loadUserData();
     alert("تم تنفيذ المهمة بنجاح وأُضيف ربح المهمة (" + earn.toFixed(2) + " EGP)!");
 }
@@ -353,8 +417,8 @@ function checkWithdrawSchedule() {
     var day = now.getDay();
     var hour = now.getHours();
 
-    var isWithdrawDay = (day === 0 || day === 3);
-    var isWithdrawHour = (hour >= 10 && hour < 24);
+    var isWithdrawDay = day === 0 || day === 3;
+    var isWithdrawHour = hour >= 10 && hour < 24;
 
     var alertBox = document.getElementById("withdrawTimeAlertBox");
     var activeSection = document.getElementById("withdrawActiveSection");
@@ -385,9 +449,9 @@ function openWithdrawModal() {
     selectedWalletType = "";
     document.getElementById("withdrawWalletNumber").value = "";
     document.getElementById("withdrawAmountInput").value = "";
-    
+
     var cards = document.querySelectorAll(".wallet-logo-card");
-    for(var i=0; i<cards.length; i++) cards[i].classList.remove("active");
+    for (var i = 0; i < cards.length; i++) cards[i].classList.remove("active");
 
     checkWithdrawSchedule();
     document.getElementById("withdrawModal").classList.remove("hidden");
@@ -400,7 +464,7 @@ function closeWithdrawModal() {
 function selectWalletType(walletName, el) {
     selectedWalletType = walletName;
     var cards = document.querySelectorAll(".wallet-logo-card");
-    for(var i=0; i<cards.length; i++) {
+    for (var i = 0; i < cards.length; i++) {
         cards[i].classList.remove("active");
     }
     el.classList.add("active");
@@ -455,8 +519,8 @@ function submitWithdrawRequest() {
     };
 
     withdrawRequests.push(newReq);
-    localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
-    
+    saveAllData();
+
     document.getElementById("withdrawWalletNumber").value = "";
     document.getElementById("withdrawAmountInput").value = "";
     closeWithdrawModal();
@@ -474,8 +538,19 @@ function showLogin() {
     document.getElementById("loginScreen").classList.remove("hidden");
 }
 
-function openPackagesModal() { document.getElementById("packagesModal").classList.remove("hidden"); }
-function closePackagesModal() { document.getElementById("packagesModal").classList.add("hidden"); }
-function openInfoModal() { document.getElementById("infoModal").classList.remove("hidden"); }
-function closeInfoModal() { document.getElementById("infoModal").classList.add("hidden"); }
-function handleLogout() { localStorage.removeItem("tasawuq_logged_user"); location.reload(); }
+function openPackagesModal() {
+    document.getElementById("packagesModal").classList.remove("hidden");
+}
+function closePackagesModal() {
+    document.getElementById("packagesModal").classList.add("hidden");
+}
+function openInfoModal() {
+    document.getElementById("infoModal").classList.remove("hidden");
+}
+function closeInfoModal() {
+    document.getElementById("infoModal").classList.add("hidden");
+}
+function handleLogout() {
+    localStorage.removeItem("tasawuq_logged_user");
+    location.reload();
+}
