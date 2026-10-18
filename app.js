@@ -127,9 +127,9 @@ function executeRegister() {
     usersDB[phone] = {
         name: name,
         password: pass,
-        balance: 50,
+        balance: 0,
         deposit: 0,
-        profit: 0,
+        profit: 50,
         subscribed: false,
         subscribedPackage: "غير مشترك",
         completedTasks: {},
@@ -144,7 +144,7 @@ function executeRegister() {
     saveAllData();
     currentUserPhone = phone;
     localStorage.setItem("tasawuq_logged_user", phone);
-    alert("مرحباً بك! تم إنشاء حسابك بنجاح وحصلت على مكافأة ترحيبية 50 جنيه في رصيدك المتاح 🎉");
+    alert("مرحباً بك! تم إنشاء حسابك بنجاح وحصلت على مكافأة ترحيبية 50 جنيه في إجمالي العمولات والمكافآت المستحقة 🎉");
     showMainApp();
 }
 
