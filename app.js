@@ -334,7 +334,14 @@ function subscribeDirectPackage(price) {
 function updateTasksButtons() {
     var u = usersDB[currentUserPhone];
     if (!u) return;
-    var today = new Date().toISOString().slice(0, 10);
+    
+    // التعديل: الاعتماد على التوقيت المحلي للجهاز لتتجدد المهام فوراً بعد 12 منتصف الليل بتوقيت مصر
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = String(now.getMonth() + 1).padStart(2, '0');
+    var day = String(now.getDate()).padStart(2, '0');
+    var today = year + '-' + month + '-' + day;
+
     if (!u.completedTasks) u.completedTasks = {};
     var completedToday = u.completedTasks[today] ? u.completedTasks[today].length : 0;
 
@@ -392,7 +399,13 @@ function doTask(taskId) {
         return;
     }
 
-    var today = new Date().toISOString().slice(0, 10);
+    // التعديل: الاعتماد على التوقيت المحلي للجهاز لضمان تصفير المهام مع اليوم الجديد بدقة
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = String(now.getMonth() + 1).padStart(2, '0');
+    var day = String(now.getDate()).padStart(2, '0');
+    var today = year + '-' + month + '-' + day;
+
     if (!user.completedTasks) user.completedTasks = {};
     if (!user.completedTasks[today]) user.completedTasks[today] = [];
 
@@ -551,6 +564,9 @@ function openPackagesModal() {
 }
 function closePackagesModal() {
     document.getElementById("packagesModal").classList.add("hidden");
+}
+function openInfoModal() {
+    document.getElementById("infoModal").classList.add("hidden"); // تم ضبطه للإغلاق السليم
 }
 function openInfoModal() {
     document.getElementById("infoModal").classList.remove("hidden");
