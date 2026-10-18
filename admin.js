@@ -122,9 +122,7 @@ function approveWithdrawRequest(reqId) {
             user.profit -= req.amount;
             req.status = "approved";
 
-            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-            localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
-
+            saveAllData();
             renderAdminPanel();
             if (currentUserPhone === req.phone) loadUserData();
             alert("تمت الموافقة على طلب السحب بنجاح!");
@@ -139,7 +137,7 @@ function rejectWithdrawRequest(reqId) {
     if (reqIndex !== -1) {
         if (confirm("هل أنت متأكد من رفض طلب السحب؟")) {
             withdrawRequests[reqIndex].status = "rejected";
-            localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
+            saveAllData();
             renderAdminPanel();
             if (currentUserPhone === withdrawRequests[reqIndex].phone) loadUserData();
             alert("تم رفض طلب السحب.");
@@ -169,9 +167,7 @@ function approvePackageRequest(phone) {
             }
 
             delete pendingRequests[phone];
-            localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-            localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
-
+            saveAllData();
             renderAdminPanel();
             if (currentUserPhone === phone) loadUserData();
             alert("تمت الموافقة على طلب الباقة وتفعيلها بنجاح!");
@@ -184,7 +180,7 @@ function approvePackageRequest(phone) {
 function rejectPackageRequest(phone) {
     if (confirm("هل أنت متأكد من رفض طلب الاشتراك؟")) {
         delete pendingRequests[phone];
-        localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
+        saveAllData();
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
         alert("تم رفض الطلب.");
@@ -195,7 +191,7 @@ function adminAddBalance(phone) {
     var val = parseFloat(prompt("أدخل المبلغ المراد شحنه لحساب (" + phone + "):"));
     if (!isNaN(val) && val > 0) {
         usersDB[phone].balance = (usersDB[phone].balance || 0) + val;
-        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        saveAllData();
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
         alert("تم شحن الرصيد بنجاح!");
@@ -206,7 +202,7 @@ function adminDeductBalance(phone) {
     var val = parseFloat(prompt("أدخل المبلغ المراد خصمه من حساب (" + phone + "):"));
     if (!isNaN(val) && val > 0) {
         usersDB[phone].balance = Math.max(0, (usersDB[phone].balance || 0) - val);
-        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        saveAllData();
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
         alert("تم خصم الرصيد بنجاح!");
@@ -219,7 +215,7 @@ function adminEditDeposit(phone) {
         usersDB[phone].deposit = val;
         usersDB[phone].subscribed = val > 0;
         usersDB[phone].subscribedPackage = val > 0 ? "باقة " + val + " EGP" : "غير مشترك";
-        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        saveAllData();
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
         alert("تم تحديث قيمة الوديعة بنجاح!");
@@ -230,7 +226,7 @@ function adminEditProfit(phone) {
     var val = parseFloat(prompt("أدخل إجمالي الأرباح الجديد للحساب:", usersDB[phone].profit || 0));
     if (!isNaN(val)) {
         usersDB[phone].profit = val;
-        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        saveAllData();
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
         alert("تم تعديل الأرباح بنجاح!");
@@ -245,9 +241,9 @@ function adminEditRefBonus(phone) {
         usersDB[phone].refBonusEarned = newBonus;
         usersDB[phone].profit = Math.max(0, (usersDB[phone].profit || 0) + diff);
         
-        localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
+        saveAllData();
         renderAdminPanel();
         if (currentUserPhone === phone) loadUserData();
         alert("تم تعديل رصيد أرباح الإحالات بنجاح!");
     }
-}
+                                              }
