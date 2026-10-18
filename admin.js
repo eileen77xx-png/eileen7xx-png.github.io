@@ -1,4 +1,11 @@
+// دالة مساعدة للتحقق من صلاحية الأدمن
+function isCurrentUserAdmin() {
+    return currentUserPhone && usersDB[currentUserPhone] && usersDB[currentUserPhone].isAdmin === true;
+}
+
 function renderAdminPanel() {
+    if (!isCurrentUserAdmin()) return;
+
     var wTbody = document.getElementById("adminWithdrawRequestsTable");
     if (wTbody) {
         wTbody.innerHTML = "";
@@ -70,6 +77,11 @@ function renderAdminPanel() {
 }
 
 function adminSearchUser() {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var phone = document.getElementById("adminSearchInput").value.trim();
     var resDiv = document.getElementById("adminSearchResult");
 
@@ -113,6 +125,11 @@ function adminSearchUser() {
 }
 
 function approveWithdrawRequest(reqId) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
     if (reqIndex !== -1) {
         var req = withdrawRequests[reqIndex];
@@ -133,6 +150,11 @@ function approveWithdrawRequest(reqId) {
 }
 
 function rejectWithdrawRequest(reqId) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
     if (reqIndex !== -1) {
         if (confirm("هل أنت متأكد من رفض طلب السحب؟")) {
@@ -146,6 +168,11 @@ function rejectWithdrawRequest(reqId) {
 }
 
 function approvePackageRequest(phone) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var req = pendingRequests[phone];
     var user = usersDB[phone];
     if (req && user) {
@@ -178,6 +205,11 @@ function approvePackageRequest(phone) {
 }
 
 function rejectPackageRequest(phone) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     if (confirm("هل أنت متأكد من رفض طلب الاشتراك؟")) {
         delete pendingRequests[phone];
         saveAllData();
@@ -188,6 +220,11 @@ function rejectPackageRequest(phone) {
 }
 
 function adminAddBalance(phone) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var val = parseFloat(prompt("أدخل المبلغ المراد شحنه لحساب (" + phone + "):"));
     if (!isNaN(val) && val > 0) {
         usersDB[phone].balance = (usersDB[phone].balance || 0) + val;
@@ -199,6 +236,11 @@ function adminAddBalance(phone) {
 }
 
 function adminDeductBalance(phone) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var val = parseFloat(prompt("أدخل المبلغ المراد خصمه من حساب (" + phone + "):"));
     if (!isNaN(val) && val > 0) {
         usersDB[phone].balance = Math.max(0, (usersDB[phone].balance || 0) - val);
@@ -210,6 +252,11 @@ function adminDeductBalance(phone) {
 }
 
 function adminEditDeposit(phone) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var val = parseFloat(prompt("أدخل قيمة الوديعة الجديدة للحساب:", usersDB[phone].deposit || 0));
     if (!isNaN(val)) {
         usersDB[phone].deposit = val;
@@ -223,6 +270,11 @@ function adminEditDeposit(phone) {
 }
 
 function adminEditProfit(phone) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var val = parseFloat(prompt("أدخل إجمالي الأرباح الجديد للحساب:", usersDB[phone].profit || 0));
     if (!isNaN(val)) {
         usersDB[phone].profit = val;
@@ -234,6 +286,11 @@ function adminEditProfit(phone) {
 }
 
 function adminEditRefBonus(phone) {
+    if (!isCurrentUserAdmin()) {
+        alert("غير مصرح لك بهذا الإجراء");
+        return;
+    }
+
     var currentBonus = usersDB[phone].refBonusEarned || 0;
     var newBonus = parseFloat(prompt("أدخل قيمة مكافآت الإحالات الجديدة للحساب (EGP):", currentBonus));
     if (!isNaN(newBonus)) {
@@ -246,4 +303,4 @@ function adminEditRefBonus(phone) {
         if (currentUserPhone === phone) loadUserData();
         alert("تم تعديل رصيد أرباح الإحالات بنجاح!");
     }
-                                              }
+            }
