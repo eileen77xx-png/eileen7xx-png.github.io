@@ -380,6 +380,18 @@
         <button onclick="closeInfoModal()" class="btn-submit" style="margin-top:15px; background:#334155;">إغلاق</button>
     </div></div>
 
+    <!-- نافذة التنبيهات المخصصة بديلة alert المتصفح -->
+    <div id="customAlertModal" class="modal-overlay hidden" style="z-index: 99999;">
+        <div class="modal-box" style="max-width: 360px; text-align: center; border: 1px solid var(--neon-green);">
+            <div style="font-size: 36px; color: var(--neon-green); margin-bottom: 10px;">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 style="color: var(--neon-green); margin-bottom: 10px; font-size: 16px;">تسوق بلس</h3>
+            <p id="customAlertMessage" style="font-size: 13px; color: #e2e8f0; line-height: 1.6; margin-bottom: 20px;"></p>
+            <button onclick="closeCustomAlert()" class="btn-submit" style="width: 100%; padding: 10px;">حسناً</button>
+        </div>
+    </div>
+
     <!-- دوال توليد المنتجات المتحركة والمتجددة يومياً تلقائياً -->
     <script>
         function loadDailyDynamicTasks() {
