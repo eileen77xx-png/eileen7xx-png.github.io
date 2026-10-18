@@ -378,6 +378,15 @@
         <button onclick="closeInfoModal()" class="btn-submit" style="margin-top:15px; background:#334155;">إغلاق</button>
     </div></div>
 
+    <!-- كود تسجيل Service Worker لتفعيل التثبيت كـ PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() => console.log('Service Worker Registered Successfully'))
+                .catch((err) => console.log('Service Worker Registration Failed', err));
+        }
+    </script>
+
     <script src="admin.js"></script>
     <script src="app.js"></script>
 </body>
