@@ -129,6 +129,11 @@ function showMainApp() {
     document.getElementById("registerScreen").classList.add("hidden");
     document.getElementById("appScreen").classList.remove("hidden");
     document.getElementById("bottomNav").classList.remove("hidden");
+    
+    if (typeof loadDailyDynamicTasks === "function") {
+        loadDailyDynamicTasks();
+    }
+
     loadUserData();
 
     var currentUser = usersDB[currentUserPhone];
@@ -249,6 +254,10 @@ function switchTab(tabName) {
     } else if (tabName === "tasks") {
         document.getElementById("tabTasks").classList.remove("hidden");
         btns[1].classList.add("active");
+        if (typeof loadDailyDynamicTasks === "function") {
+            loadDailyDynamicTasks();
+        }
+        updateTasksButtons();
     } else if (tabName === "history") {
         document.getElementById("tabHistory").classList.remove("hidden");
         btns[2].classList.add("active");
@@ -275,11 +284,11 @@ function refundDepositToBalance() {
     reloadDataFromStorage();
     var user = usersDB[currentUserPhone];
     if (!user.deposit || user.deposit <= 0) {
-        alert("ليس لديك وديعة قائمة لاسترجاعها!");
+        alert("ليس لديك رصيد خطة قائمة لاسترجاعه!");
         return;
     }
 
-    if (confirm("هل أنت متأكد من استرجاع قيمة الوديعة (" + user.deposit + " EGP) وإضافتها إلى رصيدك المتاح؟ سيتم إلغاء تفعيل الباقة الحالية.")) {
+    if (confirm("هل أنت متأكد من استرجاع قيمة خطة الترويج (" + user.deposit + " EGP) وإضافتها إلى رصيدك المتاح؟ سيتم إلغاء تفعيل الباقة الحالية.")) {
         user.balance = (user.balance || 0) + user.deposit;
         user.deposit = 0;
         user.subscribed = false;
@@ -288,7 +297,7 @@ function refundDepositToBalance() {
         saveAllData();
         loadUserData();
         closePackageOptionsModal();
-        alert("تم استرجاع مبلغ الوديعة بنجاح إلى رصيدك المتاح!");
+        alert("تم استرجاع مبلغ الخطة بنجاح إلى رصيدك المتاح!");
     }
 }
 
@@ -297,13 +306,13 @@ function subscribeDirectPackage(price) {
     var user = usersDB[currentUserPhone];
 
     if ((user.balance || 0) < price) {
-        alert("رصيدك المتاح (" + (user.balance || 0).toFixed(2) + " EGP) غير كافٍ للاشتراك في هذه الباقة! يرجى التواصل مع الأدمن لشحن الرصيد.");
+        alert("رصيدك المتاح (" + (user.balance || 0).toFixed(2) + " EGP) غير كافٍ لتفعيل هذه الباقة! يرجى التواصل مع الدعم لتغذية الحساب.");
         closePackagesModal();
         return;
     }
 
     if (user.deposit > 0) {
-        if (!confirm("لديك وديعة سابقة بقيمة " + user.deposit + " EGP. هل تريد استبدالها والاشتراك في الباقة الجديدة؟")) {
+        if (!confirm("لديك خطة تسويق سابقة بقيمة " + user.deposit + " EGP. هل تريد استبدالها وتفعيل الباقة الجديدة؟")) {
             return;
         }
         user.balance += user.deposit;
@@ -328,14 +337,14 @@ function subscribeDirectPackage(price) {
     saveAllData();
     loadUserData();
     closePackagesModal();
-    alert("مبروك! تم الاشتراك في الباقة بنجاح وتم تفعيلها فوريًا من رصيدك المتاح 🚀");
+    alert("مبروك! تم تفعيل الباقة التسويقية بنجاح فوريًا من رصيدك المتاح 🚀");
 }
 
 function updateTasksButtons() {
     var u = usersDB[currentUserPhone];
     if (!u) return;
     
-    // التعديل: الاعتماد على التوقيت المحلي للجهاز لتتجدد المهام فوراً بعد 12 منتصف الليل بتوقيت مصر
+    // الاعتماد على التوقيت المحلي للجهاز لتتجدد المهام فوراً بعد 12 منتصف الليل
     var now = new Date();
     var year = now.getFullYear();
     var month = String(now.getMonth() + 1).padStart(2, '0');
@@ -379,7 +388,7 @@ function uploadUserAvatar(e) {
 
 function editUserName() {
     reloadDataFromStorage();
-    var newName = prompt("ادخل اسم المستخدم الجديد:", usersDB[currentUserPhone].name);
+    var newName = prompt("ادخل اسم المسوق الجديد:", usersDB[currentUserPhone].name);
     if (newName && newName.trim() !== "") {
         usersDB[currentUserPhone].name = newName.trim();
         saveAllData();
@@ -387,7 +396,7 @@ function editUserName() {
         if (usersDB[currentUserPhone].isAdmin === true && typeof renderAdminPanel === "function") {
             renderAdminPanel();
         }
-        alert("تم تحديث اسم المستخدم بنجاح!");
+        alert("تم تحديث اسم المسوق بنجاح!");
     }
 }
 
@@ -395,11 +404,11 @@ function doTask(taskId) {
     reloadDataFromStorage();
     var user = usersDB[currentUserPhone];
     if (!user.subscribed) {
-        alert("يجب الاشتراك في باقة أولاً لتنفيذ المهام!");
+        alert("يجب تفعيل باقة تسويقية أولاً لتنفيذ المهام!");
         return;
     }
 
-    // التعديل: الاعتماد على التوقيت المحلي للجهاز لضمان تصفير المهام مع اليوم الجديد بدقة
+    // الاعتماد على التوقيت المحلي للجهاز لضمان تجدد المهام يومياً
     var now = new Date();
     var year = now.getFullYear();
     var month = String(now.getMonth() + 1).padStart(2, '0');
@@ -428,7 +437,7 @@ function doTask(taskId) {
     user.completedTasks[today].push(taskId);
     saveAllData();
     loadUserData();
-    alert("تم تنفيذ المهمة بنجاح وأُضيف ربح المهمة (" + earn.toFixed(2) + " EGP)!");
+    alert("تم تنفيذ المهمة بنجاح وأُضيفت عمولة الترويج المستحقة (" + earn.toFixed(2) + " EGP)!");
 }
 
 function checkWithdrawSchedule() {
@@ -447,7 +456,7 @@ function checkWithdrawSchedule() {
         alertBox.style.background = "rgba(34, 197, 94, 0.15)";
         alertBox.style.border = "1px solid var(--neon-green)";
         alertBox.style.color = "var(--neon-green)";
-        alertBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> <strong>باب السحب مفتوح الآن ✅</strong>";
+        alertBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> <strong>باب سحب العمولات مفتوح الآن ✅</strong>";
         activeSection.classList.remove("hidden");
         lockedSection.classList.add("hidden");
         return true;
@@ -497,7 +506,7 @@ function setWithdrawAmount(amt) {
 
 function submitWithdrawRequest() {
     if (!checkWithdrawSchedule()) {
-        alert("عذراً، أوقات السحب غير متاح حالياً. يرجى الالتزام بمواعيد الأحد والأربعاء!");
+        alert("عذراً، سحب العمولات غير متاح حالياً. يرجى الالتزام بمواعيد الأحد والأربعاء!");
         return;
     }
 
@@ -522,7 +531,7 @@ function submitWithdrawRequest() {
     }
 
     if (amount > (user.profit || 0)) {
-        alert("تنبيه: المبلغ المطلوبة أكبر من رصيد الأرباح المتاح لديك!");
+        alert("تنبيه: المبلغ المطلوبة أكبر من رصيد العمولات المتاح لديك!");
         return;
     }
 
@@ -546,7 +555,7 @@ function submitWithdrawRequest() {
     document.getElementById("withdrawAmountInput").value = "";
     closeWithdrawModal();
     loadUserData();
-    alert("تم تقديم طلب سحب الأرباح بنجاح!");
+    alert("تم تقديم طلب سحب العمولات بنجاح!");
 }
 
 function showRegister() {
@@ -564,9 +573,6 @@ function openPackagesModal() {
 }
 function closePackagesModal() {
     document.getElementById("packagesModal").classList.add("hidden");
-}
-function openInfoModal() {
-    document.getElementById("infoModal").classList.add("hidden"); // تم ضبطه للإغلاق السليم
 }
 function openInfoModal() {
     document.getElementById("infoModal").classList.remove("hidden");
