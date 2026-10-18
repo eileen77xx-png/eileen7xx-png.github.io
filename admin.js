@@ -1,323 +1,248 @@
-// دالة مساعدة للتحقق من صلاحية الأدمن
-function isCurrentUserAdmin() {
-    return currentUserPhone && usersDB[currentUserPhone] && usersDB[currentUserPhone].isAdmin === true;
-}
+// ====================== لوحة تحكم الإدارة (الأدمن) ======================
 
 function renderAdminPanel() {
-    if (typeof reloadDataFromStorage === "function") {
-        reloadDataFromStorage();
-    }
-    
-    if (!isCurrentUserAdmin()) return;
+    reloadDataFromStorage();
+    renderAdminRequestsTable();
+    renderAdminWithdrawRequestsTable();
+    renderAdminUserTable();
+}
 
-    var wTbody = document.getElementById("adminWithdrawRequestsTable");
-    if (wTbody) {
-        wTbody.innerHTML = "";
-        var pendingWithdraws = withdrawRequests.filter(function(r) { return r.status === "pending"; });
-        if (pendingWithdraws.length === 0) {
-            wTbody.innerHTML = "<tr><td colspan='5' style='color:var(--text-muted);'>لا توجد طلبات سحب معلقة حالياً</td></tr>";
-        } else {
-            pendingWithdraws.forEach(function(req) {
-                wTbody.innerHTML += "<tr>" +
-                    "<td><strong>" + req.name + "</strong><br><span style='color:var(--neon-green);'>" + req.phone + "</span></td>" +
-                    "<td><strong style='color:var(--accent);'>" + req.wallet + "</strong></td>" +
-                    "<td>" + req.amount.toFixed(2) + " EGP</td>" +
-                    "<td>" + req.date + "</td>" +
-                    "<td>" +
-                        "<button onclick=\"approveWithdrawRequest(" + req.id + ")\" class='btn-action-sm' style='background:var(--neon-green); color:black;'>موافقة</button>" +
-                        "<button onclick=\"rejectWithdrawRequest(" + req.id + ")\" class='btn-action-sm' style='background:var(--danger); color:white;'>رفض</button>" +
-                    "</td>" +
-                "</tr>";
-            });
-        }
+function renderAdminRequestsTable() {
+    var tbody = document.getElementById("adminRequestsTable");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    var pendingKeys = Object.keys(pendingRequests);
+    if (pendingKeys.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد طلبات معلقة حالياً</td></tr>";
+        return;
     }
 
-    var reqTbody = document.getElementById("adminRequestsTable");
-    if (reqTbody) {
-        reqTbody.innerHTML = "";
-        var hasRequests = false;
-        for (var phoneKey in pendingRequests) {
-            hasRequests = true;
-            var req = pendingRequests[phoneKey];
-            reqTbody.innerHTML += "<tr>" +
-                "<td><strong>" + req.name + "</strong><br><span style='color:var(--neon-green);'>" + phoneKey + "</span></td>" +
-                "<td>" + req.packageName + "</td>" +
-                "<td>" + req.price + " EGP</td>" +
-                "<td>" +
-                    "<button onclick=\"approvePackageRequest('" + phoneKey + "')\" class='btn-action-sm' style='background:var(--neon-green); color:black;'>موافقة</button>" +
-                    "<button onclick=\"rejectPackageRequest('" + phoneKey + "')\" class='btn-action-sm' style='background:var(--danger); color:white;'>رفض</button>" +
-                "</td>" +
+    pendingKeys.forEach(function (phone) {
+        var req = pendingRequests[phone];
+        var uName = usersDB[phone] ? usersDB[phone].name : "غير معروف";
+        tbody.innerHTML +=
+            "<tr>" +
+            "<td>" + uName + " (" + phone + ")</td>" +
+            "<td>" + req.packageName + "</td>" +
+            "<td>" + req.price + " EGP</td>" +
+            "<td>" +
+            "<button onclick='approvePackageRequest(\"" + phone + "\")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--neon-green); color:black; margin-left:5px;'>قبول ✅</button>" +
+            "<button onclick='rejectPackageRequest(\"" + phone + "\")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--danger);'>رفض ❌</button>" +
+            "</td>" +
             "</tr>";
-        }
-        if (!hasRequests) {
-            reqTbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد طلبات معلقة حالياً</td></tr>";
+    });
+}
+
+function approvePackageRequest(phone) {
+    reloadDataFromStorage();
+    var req = pendingRequests[phone];
+    if (!req) return;
+
+    if (usersDB[phone]) {
+        usersDB[phone].subscribed = true;
+        usersDB[phone].subscribedPackage = req.packageName;
+        usersDB[phone].deposit = req.price;
+
+        if (usersDB[phone].referrerPhone && usersDB[usersDB[phone].referrerPhone]) {
+            var refUser = usersDB[usersDB[phone].referrerPhone];
+            if (!refUser.referrals) refUser.referrals = [];
+            if (refUser.referrals.indexOf(phone) === -1) {
+                refUser.referrals.push(phone);
+                refUser.profit = (refUser.profit || 0) + 100;
+                refUser.refBonusEarned = (refUser.refBonusEarned || 0) + 100;
+                usersDB[phone].referrerPhone = null;
+            }
         }
     }
 
+    delete pendingRequests[phone];
+    saveAllData();
+    renderAdminPanel();
+    alert("تم قبول طلب تفعيل الباقة بنجاح!");
+}
+
+function rejectPackageRequest(phone) {
+    reloadDataFromStorage();
+    delete pendingRequests[phone];
+    saveAllData();
+    renderAdminPanel();
+    alert("تم رفض طلب الباقة!");
+}
+
+function renderAdminWithdrawRequestsTable() {
+    var tbody = document.getElementById("adminWithdrawRequestsTable");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    var pendingWithdraws = withdrawRequests.filter(function (r) {
+        return r.status === "pending";
+    });
+
+    if (pendingWithdraws.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='5' style='color:var(--text-muted);'>لا توجد طلبات سحب معلقة حالياً</td></tr>";
+        return;
+    }
+
+    pendingWithdraws.forEach(function (req) {
+        tbody.innerHTML +=
+            "<tr>" +
+            "<td>" + req.name + " (" + req.phone + ")</td>" +
+            "<td>" + req.wallet + "</td>" +
+            "<td>" + req.amount.toFixed(2) + " EGP</td>" +
+            "<td>" + req.date + "</td>" +
+            "<td>" +
+            "<button onclick='approveWithdrawRequest(" + req.id + ")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--neon-green); color:black; margin-left:5px;'>موافقة وتسديد ✅</button>" +
+            "<button onclick='rejectWithdrawRequest(" + req.id + ")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--danger);'>رفض ❌</button>" +
+            "</td>" +
+            "</tr>";
+    });
+}
+
+function approveWithdrawRequest(reqId) {
+    reloadDataFromStorage();
+    var reqIndex = withdrawRequests.findIndex(function (r) { return r.id === reqId; });
+    if (reqIndex === -1) return;
+
+    var req = withdrawRequests[reqIndex];
+    var user = usersDB[req.phone];
+
+    if (user) {
+        if ((user.profit || 0) < req.amount) {
+            alert("تنبيه: رصيد العمولات الحالي للمسوق أقل من المبلغ المطلوب!");
+            return;
+        }
+        user.profit -= req.amount;
+    }
+
+    withdrawRequests[reqIndex].status = "approved";
+    saveAllData();
+    renderAdminPanel();
+    alert("تمت الموافقة على طلب السحب وخصم المبلغ من أرباح المسوق بنجاح!");
+}
+
+function rejectWithdrawRequest(reqId) {
+    reloadDataFromStorage();
+    var reqIndex = withdrawRequests.findIndex(function (r) { return r.id === reqId; });
+    if (reqIndex === -1) return;
+
+    withdrawRequests[reqIndex].status = "rejected";
+    saveAllData();
+    renderAdminPanel();
+    alert("تم رفض طلب السحب!");
+}
+
+function renderAdminUserTable() {
     var tbody = document.getElementById("adminUserTable");
     if (!tbody) return;
     tbody.innerHTML = "";
-    for (var p in usersDB) {
-        var u = usersDB[p];
-        var refCount = u.referrals ? u.referrals.length : 0;
-        var refBonus = u.refBonusEarned || 0;
-        var pkgName = u.subscribedPackage || "غير مشترك";
 
-        tbody.innerHTML += "<tr>" +
-            "<td><strong>" + u.name + "</strong><br><span style='color:var(--neon-green);'>" + p + "</span></td>" +
-            "<td>" + (u.balance||0).toFixed(2) + " EGP</td>" +
-            "<td>" + (u.deposit||0).toFixed(2) + " EGP</td>" +
-            "<td><span style='color:var(--accent); font-weight:bold;'>" + pkgName + "</span></td>" +
-            "<td>" + (u.profit||0).toFixed(2) + " EGP<br><span style='font-size:10px; color:var(--neon-green);'>إحالات: " + refCount + " (" + refBonus + " ج)</span></td>" +
+    var phones = Object.keys(usersDB);
+    if (phones.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='6' style='color:var(--text-muted);'>لا يوجد مسوقون مسجلون</td></tr>";
+        return;
+    }
+
+    phones.forEach(function (phone) {
+        var u = usersDB[phone];
+        var adminBadge = u.isAdmin ? " <span style='color:var(--neon-green); font-size:10px;'>(أدمن)</span>" : "";
+        tbody.innerHTML +=
+            "<tr>" +
+            "<td><strong>" + u.name + "</strong>" + adminBadge + "<br><small style='color:var(--text-muted);'>" + phone + "</small></td>" +
+            "<td>" + (u.balance || 0).toFixed(2) + " EGP</td>" +
+            "<td>" + (u.deposit || 0).toFixed(2) + " EGP</td>" +
+            "<td>" + (u.subscribedPackage || "غير مشترك") + "</td>" +
+            "<td>عمولات: " + (u.profit || 0).toFixed(2) + " EGP<br><small style='color:var(--neon-green);'>إحالات: " + (u.referrals ? u.referrals.length : 0) + "</small></td>" +
             "<td>" +
-                "<button onclick=\"adminAddBalance('" + p + "')\" class='btn-action-sm' style='background:var(--neon-green); color:black;'>شحن</button>" +
-                "<button onclick=\"adminDeductBalance('" + p + "')\" class='btn-action-sm' style='background:var(--danger); color:white;'>خصم</button>" +
-                "<button onclick=\"adminEditDeposit('" + p + "')\" class='btn-action-sm' style='background:var(--accent); color:black;'>الوديعة</button>" +
-                "<button onclick=\"adminEditProfit('" + p + "')\" class='btn-action-sm' style='background:#3b82f6; color:white;'>الأرباح</button>" +
-                "<button onclick=\"adminEditRefBonus('" + p + "')\" class='btn-action-sm' style='background:#8b5cf6; color:white;'>الإحالات</button>" +
+            "<button onclick='adminEditUserBalance(\"" + phone + "\")' class='btn-submit' style='padding:4px 8px; font-size:11px; margin-bottom:4px;'>تعديل الرصيد</button><br>" +
+            "<button onclick='adminDeleteUser(\"" + phone + "\")' class='btn-submit' style='padding:4px 8px; font-size:11px; background:var(--danger);'>حذف الحساب 🗑️</button>" +
             "</td>" +
-        "</tr>";
+            "</tr>";
+    });
+}
+
+function adminEditUserBalance(phone) {
+    reloadDataFromStorage();
+    var u = usersDB[phone];
+    if (!u) return;
+
+    var newBal = prompt("أدخل الرصيد المتاح الجديد للمسوق (" + u.name + "):", u.balance || 0);
+    if (newBal !== null && !isNaN(parseFloat(newBal))) {
+        u.balance = parseFloat(newBal);
+    }
+
+    var newProfit = prompt("أدخل رصيد العمولات والأرباح الجديد للمسوق (" + u.name + "):", u.profit || 0);
+    if (newProfit !== null && !isNaN(parseFloat(newProfit))) {
+        u.profit = parseFloat(newProfit);
+    }
+
+    saveAllData();
+    renderAdminPanel();
+    alert("تم تحديث أرصدة المسوق بنجاح!");
+}
+
+// دالة حذف المشترك بشكل كلي
+function adminDeleteUser(phone) {
+    reloadDataFromStorage();
+    var u = usersDB[phone];
+    if (!u) {
+        alert("الحساب غير موجود!");
+        return;
+    }
+
+    if (confirm("هل أنت متأكد تماماً من حذف حساب المسوق: " + u.name + " (" + phone + ")؟\nلا يمكن التراجع عن هذا الإجراء وسيتم حذف بياناته بالكامل.")) {
+        // حذف الحساب من قاعدة البيانات الرئيسية
+        delete usersDB[phone];
+
+        // حذف أي طلب تفعيل باقة معلق باسمه
+        if (pendingRequests[phone]) {
+            delete pendingRequests[phone];
+        }
+
+        // إزالة طلبات السحب الخاصة به
+        withdrawRequests = withdrawRequests.filter(function (req) {
+            return req.phone !== phone;
+        });
+
+        saveAllData();
+        renderAdminPanel();
+        
+        var resultDiv = document.getElementById("adminSearchResult");
+        if (resultDiv) resultDiv.classList.add("hidden");
+
+        alert("تم حذف حساب المسوق وكل بياناته المرتبطة بنجاح!");
     }
 }
 
 function adminSearchUser() {
-    if (typeof reloadDataFromStorage === "function") {
-        reloadDataFromStorage();
-    }
+    reloadDataFromStorage();
+    var query = document.getElementById("adminSearchInput").value.trim();
+    var resultDiv = document.getElementById("adminSearchResult");
 
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
+    if (!query) {
+        alert("يرجى إدخال رقم الموبايل للبحث!");
         return;
     }
 
-    var phone = document.getElementById("adminSearchInput").value.trim();
-    var resDiv = document.getElementById("adminSearchResult");
-
-    if (!phone || !usersDB[phone]) {
-        resDiv.innerHTML = "<p style='color:var(--danger); margin-top:10px;'>المستخدم غير موجود!</p>";
-        resDiv.classList.remove("hidden");
+    var u = usersDB[query];
+    if (!u) {
+        resultDiv.innerHTML = "<p style='color:var(--danger); text-align:center; padding:10px;'>لم يتم العثور على مسوق بهذا الرقم!</p>";
+        resultDiv.classList.remove("hidden");
         return;
     }
 
-    var u = usersDB[phone];
-    var uHistory = withdrawRequests.filter(function(r) { return r.phone === phone; });
-    var historyHTML = "";
-
-    if (uHistory.length === 0) {
-        historyHTML = "<tr><td colspan='4'>لا توجد سحوبات سابقة</td></tr>";
-    } else {
-        uHistory.forEach(function(h) {
-            historyHTML += "<tr><td>" + h.date + "</td><td>" + h.wallet + "</td><td>" + h.amount + " EGP</td><td>" + h.status + "</td></tr>";
-        });
-    }
-
-    var refCount = u.referrals ? u.referrals.length : 0;
-    var refBonus = u.refBonusEarned || 0;
-
-    resDiv.innerHTML = "<div class='user-detail-card'>" +
-        "<div style='display:flex; align-items:center; gap:12px; margin-bottom:10px;'>" +
-            "<img src='" + (u.avatar || "https://via.placeholder.com/150") + "' style='width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid var(--neon-green);'>" +
-            "<div><h4 style='color:var(--neon-green);'>" + u.name + "</h4><p style='font-size:12px; color:var(--text-muted);'>" + phone + "</p></div>" +
+    resultDiv.innerHTML =
+        "<div style='background:#090d16; border:1px solid #23304d; border-radius:10px; padding:15px; margin-top:10px;'>" +
+        "<h4 style='color:var(--neon-green); margin-bottom:8px;'>" + u.name + " (" + query + ")</h4>" +
+        "<p style='font-size:12px; color:#cbd5e1; margin-bottom:4px;'>كلمة السر: <strong style='color:var(--accent);'>" + u.password + "</strong></p>" +
+        "<p style='font-size:12px; color:#cbd5e1; margin-bottom:4px;'>الرصيد المتاح: <strong>" + (u.balance || 0).toFixed(2) + " EGP</strong></p>" +
+        "<p style='font-size:12px; color:#cbd5e1; margin-bottom:4px;'>خطة الترويج: <strong>" + (u.deposit || 0).toFixed(2) + " EGP</strong></p>" +
+        "<p style='font-size:12px; color:#cbd5e1; margin-bottom:4px;'>الباقة النشطة: <strong>" + (u.subscribedPackage || "غير مشترك") + "</strong></p>" +
+        "<p style='font-size:12px; color:#cbd5e1; margin-bottom:12px;'>العمولات والمكافآت: <strong>" + (u.profit || 0).toFixed(2) + " EGP</strong></p>" +
+        "<div style='display:flex; gap:8px;'>" +
+        "<button onclick='adminEditUserBalance(\"" + query + "\")' class='btn-submit' style='padding:6px 12px; font-size:12px;'>تعديل الأرصدة</button>" +
+        "<button onclick='adminDeleteUser(\"" + query + "\")' class='btn-submit' style='padding:6px 12px; font-size:12px; background:var(--danger);'>حذف الحساب 🗑️</button>" +
         "</div>" +
-        "<p style='font-size:12px; margin-bottom:5px;'><strong>تاريخ إنشاء الحساب:</strong> " + (u.createdAt || "غير محدد") + "</p>" +
-        "<p style='font-size:12px; margin-bottom:5px;'><strong>الباقة المشترك فيها:</strong> <span style='color:var(--accent);'>" + (u.subscribedPackage || "غير مشترك") + "</span></p>" +
-        "<p style='font-size:12px; margin-bottom:5px;'><strong>الرصيد المتاح:</strong> " + (u.balance||0).toFixed(2) + " EGP</p>" +
-        "<p style='font-size:12px; margin-bottom:5px;'><strong>الوديعة الحالية:</strong> " + (u.deposit||0).toFixed(2) + " EGP</p>" +
-        "<p style='font-size:12px; margin-bottom:5px;'><strong>إجمالي الأرباح:</strong> " + (u.profit||0).toFixed(2) + " EGP</p>" +
-        "<p style='font-size:12px; margin-bottom:10px;'><strong>إحصائيات الإحالة:</strong> عدد الأشخاص: " + refCount + " | أرباح الإحالات: " + refBonus + " EGP</p>" +
-        "<h5 style='color:var(--accent); margin-bottom:5px;'>سجل سحوبات المستخدم:</h5>" +
-        "<table><thead><tr><th>التاريخ</th><th>المحفظة</th><th>المبلغ</th><th>الحالة</th></tr></thead><tbody>" + historyHTML + "</tbody></table>" +
-    "</div>";
-
-    resDiv.classList.remove("hidden");
-}
-
-function approveWithdrawRequest(reqId) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
-    if (reqIndex !== -1) {
-        var req = withdrawRequests[reqIndex];
-        var user = usersDB[req.phone];
-
-        if (user && (user.profit || 0) >= req.amount) {
-            user.profit -= req.amount;
-            req.status = "approved";
-
-            saveAllData();
-            renderAdminPanel();
-            if (currentUserPhone === req.phone) loadUserData();
-            alert("تمت الموافقة على طلب السحب بنجاح!");
-        } else {
-            alert("رصيد الأرباح غير كافٍ!");
-        }
-    }
-}
-
-function rejectWithdrawRequest(reqId) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var reqIndex = withdrawRequests.findIndex(function(r) { return r.id === reqId; });
-    if (reqIndex !== -1) {
-        if (confirm("هل أنت متأكد من رفض طلب السحب؟")) {
-            withdrawRequests[reqIndex].status = "rejected";
-            saveAllData();
-            renderAdminPanel();
-            if (currentUserPhone === withdrawRequests[reqIndex].phone) loadUserData();
-            alert("تم رفض طلب السحب.");
-        }
-    }
-}
-
-function approvePackageRequest(phone) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var req = pendingRequests[phone];
-    var user = usersDB[phone];
-    if (req && user) {
-        if ((user.balance || 0) >= req.price) {
-            user.balance -= req.price;
-            user.deposit = req.price;
-            user.subscribed = true;
-            user.subscribedPackage = req.packageName;
-
-            if (user.referrerPhone && usersDB[user.referrerPhone]) {
-                var refUser = usersDB[user.referrerPhone];
-                if (!refUser.referrals) refUser.referrals = [];
-                if (refUser.referrals.indexOf(phone) === -1) {
-                    refUser.referrals.push(phone);
-                    refUser.profit = (refUser.profit || 0) + 100;
-                    refUser.refBonusEarned = (refUser.refBonusEarned || 0) + 100;
-                    user.referrerPhone = null;
-                }
-            }
-
-            delete pendingRequests[phone];
-            saveAllData();
-            renderAdminPanel();
-            if (currentUserPhone === phone) loadUserData();
-            alert("تمت الموافقة على طلب الباقة وتفعيلها بنجاح!");
-        } else {
-            alert("رصيد المستخدم غير كافٍ.");
-        }
-    }
-}
-
-function rejectPackageRequest(phone) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    if (confirm("هل أنت متأكد من رفض طلب الاشتراك؟")) {
-        delete pendingRequests[phone];
-        saveAllData();
-        renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم رفض الطلب.");
-    }
-}
-
-function adminAddBalance(phone) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var val = parseFloat(prompt("أدخل المبلغ المراد شحنه لحساب (" + phone + "):"));
-    if (!isNaN(val) && val > 0) {
-        usersDB[phone].balance = (usersDB[phone].balance || 0) + val;
-        saveAllData();
-        renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم شحن الرصيد بنجاح!");
-    }
-}
-
-function adminDeductBalance(phone) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var val = parseFloat(prompt("أدخل المبلغ المراد خصمه من حساب (" + phone + "):"));
-    if (!isNaN(val) && val > 0) {
-        usersDB[phone].balance = Math.max(0, (usersDB[phone].balance || 0) - val);
-        saveAllData();
-        renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم خصم الرصيد بنجاح!");
-    }
-}
-
-function adminEditDeposit(phone) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var val = parseFloat(prompt("أدخل قيمة الوديعة الجديدة للحساب:", usersDB[phone].deposit || 0));
-    if (!isNaN(val)) {
-        usersDB[phone].deposit = val;
-        usersDB[phone].subscribed = val > 0;
-        usersDB[phone].subscribedPackage = val > 0 ? "باقة " + val + " EGP" : "غير مشترك";
-        saveAllData();
-        renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم تحديث قيمة الوديعة بنجاح!");
-    }
-}
-
-function adminEditProfit(phone) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var val = parseFloat(prompt("أدخل إجمالي الأرباح الجديد للحساب:", usersDB[phone].profit || 0));
-    if (!isNaN(val)) {
-        usersDB[phone].profit = val;
-        saveAllData();
-        renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم تعديل الأرباح بنجاح!");
-    }
-}
-
-function adminEditRefBonus(phone) {
-    if (typeof reloadDataFromStorage === "function") reloadDataFromStorage();
-    if (!isCurrentUserAdmin()) {
-        alert("غير مصرح لك بهذا الإجراء");
-        return;
-    }
-
-    var currentBonus = usersDB[phone].refBonusEarned || 0;
-    var newBonus = parseFloat(prompt("أدخل قيمة مكافآت الإحالات الجديدة للحساب (EGP):", currentBonus));
-    if (!isNaN(newBonus)) {
-        var diff = newBonus - currentBonus;
-        usersDB[phone].refBonusEarned = newBonus;
-        usersDB[phone].profit = Math.max(0, (usersDB[phone].profit || 0) + diff);
-        
-        saveAllData();
-        renderAdminPanel();
-        if (currentUserPhone === phone) loadUserData();
-        alert("تم تعديل رصيد أرباح الإحالات بنجاح!");
-    }
+        "</div>";
+    resultDiv.classList.remove("hidden");
 }
