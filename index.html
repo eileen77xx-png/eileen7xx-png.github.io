@@ -407,7 +407,7 @@
             
             <div style="display: flex; gap: 10px;">
                 <button id="customPromptConfirmBtn" class="btn-submit" style="flex: 1; padding: 10px;">حفظ التعديل</button>
-                <button onclick="closeCustomPrompt()" class="btn-submit" style="flex: 1; padding: 10px; background: #334155;">إغلاق</button>
+                <button onclick="document.getElementById('customPromptModal').classList.add('hidden')" class="btn-submit" style="flex: 1; padding: 10px; background: #334155;">إغلاق</button>
             </div>
         </div>
     </div>
@@ -479,7 +479,7 @@
         }
     </script>
 
-    <script src="admin.js"></script>
+    <script src="admin.js?v=2.0"></script>
     <script src="app.js?v=2.0"></script>
 </body>
 </html>
