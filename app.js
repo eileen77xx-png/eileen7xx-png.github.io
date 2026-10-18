@@ -1,29 +1,28 @@
-// ====================== نظام التنبيهات المخصصة بديل alert المتصفح ======================
-function showAlert(message) {
+// ====================== إعادة توجيه alert فوراً من أول سطر ======================
+window.showAlert = function(message) {
     var msgEl = document.getElementById("customAlertMessage");
     var modalEl = document.getElementById("customAlertModal");
     if (msgEl && modalEl) {
         msgEl.innerText = message;
         modalEl.classList.remove("hidden");
     } else {
-        // حافة أمان في حال عدم وجود المودال
         console.log(message);
     }
-}
+};
 
-function closeCustomAlert() {
+window.closeCustomAlert = function() {
     var modalEl = document.getElementById("customAlertModal");
     if (modalEl) {
         modalEl.classList.add("hidden");
     }
-}
-
-// إعادة توجيه alert الافتراضية لتستخدم نافذة تسوق بلس المخصصة
-window.alert = function(msg) {
-    showAlert(msg);
 };
 
-// ====================== البيانات والمهمات العامة ======================
+// استبدال دالة المتصفح الافتراضية
+window.alert = function(msg) {
+    window.showAlert(msg);
+};
+
+// ====================== المتغيرات العامة ======================
 var currentUserPhone = localStorage.getItem("tasawuq_logged_user") || null;
 var usersDB = {};
 var pendingRequests = {};
@@ -370,7 +369,6 @@ function updateTasksButtons() {
     var u = usersDB[currentUserPhone];
     if (!u) return;
     
-    // الاعتماد على التوقيت المحلي للجهاز لتتجدد المهام فوراً بعد 12 منتصف الليل
     var now = new Date();
     var year = now.getFullYear();
     var month = String(now.getMonth() + 1).padStart(2, '0');
@@ -434,7 +432,6 @@ function doTask(taskId) {
         return;
     }
 
-    // الاعتماد على التوقيت المحلي للجهاز لضمان تجدد المهام يومياً
     var now = new Date();
     var year = now.getFullYear();
     var month = String(now.getMonth() + 1).padStart(2, '0');
