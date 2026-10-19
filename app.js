@@ -485,7 +485,7 @@ function renderUserWithdrawHistory() {
     container.innerHTML = html;
 }
 
-// ====================== المهام اليومية ======================
+// ====================== المهام اليومية ونسب العمولات الأصلية ======================
 function doTask(taskNo) {
     reloadDataFromStorage();
     var user = getCurrentUser();
@@ -506,7 +506,7 @@ function doTask(taskNo) {
 
     var earned = 15;
     if (user.subscribedPackage.indexOf("800") !== -1) earned = 40;
-    else if (user.subscribedPackage.indexOf("1500") !== -1) earned, 75;
+    else if (user.subscribedPackage.indexOf("1500") !== -1) earned = 75;
     else if (user.subscribedPackage.indexOf("3000") !== -1) earned = 150;
     else if (user.subscribedPackage.indexOf("8000") !== -1) earned = 400;
     else if (user.subscribedPackage.indexOf("12000") !== -1) earned = 600;
@@ -517,7 +517,7 @@ function doTask(taskNo) {
     alert("أحسنت! تمت إتمام مهمة الترويج بنجاح وتمت إضافة " + earned + " جنيه إلى أرباحك.");
 }
 
-// الحل الجذري: إجبار خانة إدخال الاسم على استقبال النصوص والأحرف وفتح لوحة الحروف نهائياً
+// تعديل الاسم بنجاح ودون قيود رقمية
 function editUserName() {
     reloadDataFromStorage();
     var user = getCurrentUser();
