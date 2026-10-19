@@ -85,9 +85,20 @@ function approvePackageRequest(phone) {
     if (!req) return;
 
     if (usersDB[phone]) {
+        var pPrice = parseFloat(req.price) || 0;
+        
         usersDB[phone].subscribed = true;
         usersDB[phone].subscribedPackage = req.packageName;
-        usersDB[phone].deposit = req.price;
+
+        // منطق خصم الرصيد المتاح وتحويله للوديعة بشكل دقيق
+        var currentBalance = usersDB[phone].balance || 0;
+        if (currentBalance >= pPrice) {
+            usersDB[phone].balance = currentBalance - pPrice;
+        } else {
+            usersDB[phone].balance = 0;
+        }
+        
+        usersDB[phone].deposit = (usersDB[phone].deposit || 0) + pPrice;
 
         if (usersDB[phone].referrerPhone && usersDB[usersDB[phone].referrerPhone]) {
             var refUser = usersDB[usersDB[phone].referrerPhone];
@@ -104,7 +115,7 @@ function approvePackageRequest(phone) {
     delete pendingRequests[phone];
     saveAllData();
     renderAdminPanel();
-    alert("تم قبول طلب تفعيل الباقة بنجاح!");
+    alert("تم قبول طلب تفعيل الباقة بنجاح وتحويل المبلغ إلى خطة الترويج!");
 }
 
 function rejectPackageRequest(phone) {
