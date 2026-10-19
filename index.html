@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#090d16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.6">
+    <link rel="stylesheet" href="style.css?v=2.7">
 </head>
 <body>
 
@@ -445,13 +445,14 @@
         });
     </script>
 
-    <!-- دوال توليد المنتجات المتحركة والمتجددة يومياً تلقائياً -->
+    <!-- دوال توليد المنتجات وحفظ حالة المهام اليومية المكتملة لمنع التصفير عند التحديث -->
     <script>
         function loadDailyDynamicTasks() {
             var grid = document.getElementById("dynamicTasksGrid");
             if (!grid) return;
 
             var now = new Date();
+            var todayStr = now.toISOString().split('T')[0];
             var start = new Date(now.getFullYear(), 0, 0);
             var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
             var oneDay = 1000 * 60 * 60 * 24;
@@ -484,14 +485,38 @@
             var selectedPool = productPools[dayOfYear % productPools.length];
             grid.innerHTML = "";
 
+            var currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+            var completedList = [];
+            
+            // قراءة المهام المنفذة لليوم الحالي
+            if (currentUser) {
+                if (currentUser.lastTaskDate !== todayStr) {
+                    currentUser.lastTaskDate = todayStr;
+                    currentUser.completedTasks = [];
+                    if (typeof saveAllData === 'function') saveAllData();
+                } else {
+                    completedList = currentUser.completedTasks || [];
+                }
+            }
+
+            var leftCount = 5 - completedList.length;
+            var tasksLeftEl = document.getElementById("tasksLeft");
+            if (tasksLeftEl) tasksLeftEl.innerText = leftCount >= 0 ? leftCount : 0;
+
             for (var i = 0; i < selectedPool.length; i++) {
                 var taskIndex = i + 1;
                 var item = selectedPool[i];
+                var isDone = completedList.indexOf(taskIndex) !== -1;
+                
+                var btnText = isDone ? "تم التنفيذ بنجاح ✅" : "تنفيذ المهمة";
+                var btnStyle = isDone ? "padding: 6px; font-size: 13px; background: #22c55e; color: black;" : "padding: 6px; font-size: 13px;";
+                var disabledAttr = isDone ? "disabled" : "";
+
                 var cardHTML = '<div class="task-card">' +
                     '<img src="' + item.img + '" class="task-img" alt="منتج تسويقي">' +
                     '<div style="flex-grow: 1;">' +
                     '<h4 style="font-size: 14px; margin-bottom: 5px;">' + item.name + '</h4>' +
-                    '<button id="taskBtn' + taskIndex + '" onclick="doTask(' + taskIndex + ')" class="btn-submit" style="padding: 6px; font-size: 13px;">تنفيذ المهمة</button>' +
+                    '<button id="taskBtn' + taskIndex + '" onclick="doTask(' + taskIndex + ')" class="btn-submit" style="' + btnStyle + '" ' + disabledAttr + '>' + btnText + '</button>' +
                     '</div>' +
                     '</div>';
                 grid.innerHTML += cardHTML;
@@ -512,7 +537,7 @@
         }
     </script>
 
-    <script src="admin.js?v=2.6"></script>
-    <script src="app.js?v=2.6"></script>
+    <script src="admin.js?v=2.7"></script>
+    <script src="app.js?v=2.7"></script>
 </body>
 </html>
