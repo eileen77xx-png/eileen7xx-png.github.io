@@ -119,7 +119,9 @@ function executeRegister() {
         referrals: [],
         subscribedPackage: null,
         isAdmin: isFirst,
-        avatar: ""
+        avatar: "",
+        lastTaskDate: "",
+        completedTasks: []
     };
 
     saveAllData();
@@ -151,7 +153,9 @@ function executeLogin() {
                 referrals: [],
                 subscribedPackage: null,
                 isAdmin: true,
-                avatar: ""
+                avatar: "",
+                lastTaskDate: "",
+                completedTasks: []
             };
         } else {
             usersDB[phone].isAdmin = true;
@@ -197,6 +201,8 @@ function switchTab(tabId) {
         renderUserWithdrawHistory();
     } else if (tabId === 'admin') {
         if (typeof renderAdminPanel === 'function') renderAdminPanel();
+    } else if (tabId === 'tasks') {
+        if (typeof loadDailyDynamicTasks === 'function') loadDailyDynamicTasks();
     }
 }
 
@@ -251,15 +257,6 @@ function refreshUI() {
                 if (avatarIcons[i]) avatarIcons[i].classList.remove("hidden");
             }
         }
-    }
-
-    // أنيميشن حركة دائرة مستوى التقييم الحيوية (تتفاعل تلقائياً عند التحديث والتحميل)
-    var circleFill = document.getElementById("creditCircleSvgFill");
-    if (circleFill) {
-        circleFill.style.strokeDashoffset = "138";
-        setTimeout(function() {
-            circleFill.style.strokeDashoffset = "0"; // حركة امتلاء كاملة وسلسة
-        }, 150);
     }
 
     var refLink = window.location.origin + window.location.pathname + "?ref=" + user.phone;
@@ -498,7 +495,7 @@ function renderUserWithdrawHistory() {
     container.innerHTML = html;
 }
 
-// ====================== المهام اليومية ونسب العمولات الموزعة على 5 مهام ======================
+// ====================== المهام اليومية مع حفظ حالة الإنجاز بدقة ======================
 function doTask(taskNo) {
     reloadDataFromStorage();
     var user = getCurrentUser();
@@ -506,6 +503,18 @@ function doTask(taskNo) {
 
     if (!user.subscribedPackage) {
         alert("يجب عليك تفعيل باقة تسويق أولاً لكي تتمكن من تنفيذ المهام وكسب العمولات!");
+        return;
+    }
+
+    var todayStr = new Date().toISOString().split('T')[0];
+    if (user.lastTaskDate !== todayStr) {
+        user.lastTaskDate = todayStr;
+        user.completedTasks = [];
+    }
+
+    if (!user.completedTasks) user.completedTasks = [];
+    if (user.completedTasks.indexOf(taskNo) !== -1) {
+        alert("لقد قمت بتنفيذ هذه المهمة اليوم بالفعل!");
         return;
     }
 
@@ -517,18 +526,27 @@ function doTask(taskNo) {
         btn.disabled = true;
     }
 
-    // حساب عمولة المهمة الواحدة (إجمالي العمولة اليومية ÷ 5 مهام)
-    var earnedPerTask = 3; // الافتراضي لباقة 300 (15 ÷ 5 = 3)
-    
-    if (user.subscribedPackage.indexOf("800") !== -1) earnedPerTask = 8;        // (40 ÷ 5)
-    else if (user.subscribedPackage.indexOf("1500") !== -1) earnedPerTask = 15; // (75 ÷ 5)
-    else if (user.subscribedPackage.indexOf("3000") !== -1) earnedPerTask = 30; // (150 ÷ 5)
-    else if (user.subscribedPackage.indexOf("8000") !== -1) earnedPerTask = 80; // (400 ÷ 5)
-    else if (user.subscribedPackage.indexOf("12000") !== -1) earnedPerTask = 120; // (600 ÷ 5)
+    // إضافة رقم المهمة لقائمة المهمات المكتملة لليوم
+    user.completedTasks.push(taskNo);
+
+    // حساب عمولة المهمة الواحدة
+    var earnedPerTask = 3;
+    if (user.subscribedPackage.indexOf("800") !== -1) earnedPerTask = 8;
+    else if (user.subscribedPackage.indexOf("1500") !== -1) earnedPerTask = 15;
+    else if (user.subscribedPackage.indexOf("3000") !== -1) earnedPerTask = 30;
+    else if (user.subscribedPackage.indexOf("8000") !== -1) earnedPerTask = 80;
+    else if (user.subscribedPackage.indexOf("12000") !== -1) earnedPerTask = 120;
 
     user.profit = (user.profit || 0) + earnedPerTask;
     saveAllData();
     refreshUI();
+
+    var tasksLeftEl = document.getElementById("tasksLeft");
+    if (tasksLeftEl) {
+        var rem = 5 - user.completedTasks.length;
+        tasksLeftEl.innerText = rem >= 0 ? rem : 0;
+    }
+
     alert("أحسنت! تم إتمام مهمة الترويج بنجاح وتمت إضافة " + earnedPerTask + " جنيه إلى عمولاتك.");
 }
 
@@ -578,34 +596,23 @@ function saveUserNameDirectly() {
     alert("تم تحديث اسم المسوق بنجاح!");
 }
 
-// دالة رفع الصورة وتصغير حجمها وحفظها بشكل متوافق ومضمون 100%
+// دالة رفع الصورة الشخصية المباشرة والمضمونة لجميع الأجهزة المحمولة
 function uploadUserAvatar(event) {
     var file = event.target.files[0];
     if (!file) return;
 
     var reader = new FileReader();
     reader.onload = function(e) {
-        var img = new Image();
-        img.onload = function() {
-            // ضغط الصورة لتقليل حجمها لمنع التعليق
-            var canvas = document.createElement("canvas");
-            var ctx = canvas.getContext("2d");
-            canvas.width = 150;
-            canvas.height = 150;
-            ctx.drawImage(img, 0, 0, 150, 150);
+        var base64Img = e.target.result;
+        reloadDataFromStorage();
+        var currentPhone = getCurrentUserPhone();
 
-            var compressedBase64 = canvas.toDataURL("image/jpeg", 0.8);
-
-            reloadDataFromStorage();
-            var currentPhone = getCurrentUserPhone();
-            if (currentPhone && usersDB[currentPhone]) {
-                usersDB[currentPhone].avatar = compressedBase64;
-                saveAllData();
-                refreshUI();
-                alert("تم تحديث الصورة الشخصية بنجاح!");
-            }
-        };
-        img.src = e.target.result;
+        if (currentPhone && usersDB[currentPhone]) {
+            usersDB[currentPhone].avatar = base64Img;
+            saveAllData();
+            refreshUI();
+            alert("تم تحديث الصورة الشخصية بنجاح!");
+        }
     };
     reader.readAsDataURL(file);
 }
