@@ -46,6 +46,13 @@ function getCurrentUser() {
     return null;
 }
 
+// دالة لجلب تاريخ اليوم بتوقيت مصر (تتغير بعد منتصف الليل تلقائياً)
+function getEgyptDateString() {
+    var options = { timeZone: 'Africa/Cairo', year: 'numeric', month: '2-digit', day: '2-digit' };
+    var formatter = new Intl.DateTimeFormat('en-CA', options);
+    return formatter.format(new Date()); // يعطي صيغة YYYY-MM-DD بتوقيت مصر
+}
+
 // ====================== التنبيهات المخصصة ======================
 function showCustomAlert(msg) {
     var modal = document.getElementById("customAlertModal");
@@ -244,7 +251,6 @@ function refreshUI() {
         adminNavBtn.classList.add("hidden");
     }
 
-    // تحديث الصور الشخصية
     var avatarImgs = [document.getElementById("userAvatarImg"), document.getElementById("headerAvatarImg")];
     var avatarIcons = [null, document.getElementById("headerAvatarIcon")];
     for (var i = 0; i < avatarImgs.length; i++) {
@@ -280,11 +286,10 @@ function refreshUI() {
         if (pendingBox) pendingBox.classList.add("hidden");
     }
 
-    // تحميل وعرض المهام مباشرة
     loadDailyDynamicTasks();
 }
 
-// ====================== المهام اليومية مع الحفظ الثابت ======================
+// ====================== المهام اليومية (لا تتجدد الا بعد منتصف الليل بتوقيت مصر) ======================
 function loadDailyDynamicTasks() {
     var grid = document.getElementById("dynamicTasksGrid");
     if (!grid) return;
@@ -293,8 +298,16 @@ function loadDailyDynamicTasks() {
     var currentUser = getCurrentUser();
     if (!currentUser) return;
 
+    var todayEgyptStr = getEgyptDateString();
+
+    // التحقق من التاريخ بتوقيت مصر: إذا تغير اليوم بعد منتصف الليل، يتم تصفير المهام المنفزة تلقائياً ليوم جديد
+    if (currentUser.lastTaskDate !== todayEgyptStr) {
+        currentUser.lastTaskDate = todayEgyptStr;
+        currentUser.completedTasks = [];
+        saveAllData();
+    }
+
     var now = new Date();
-    var todayStr = now.toISOString().split('T')[0];
     var start = new Date(now.getFullYear(), 0, 0);
     var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
     var oneDay = 1000 * 60 * 60 * 24;
@@ -325,13 +338,6 @@ function loadDailyDynamicTasks() {
     ];
 
     var selectedPool = productPools[dayOfYear % productPools.length];
-
-    if (currentUser.lastTaskDate !== todayStr) {
-        currentUser.lastTaskDate = todayStr;
-        currentUser.completedTasks = [];
-        saveAllData();
-    }
-
     var completedList = currentUser.completedTasks || [];
     var leftCount = 5 - completedList.length;
     var tasksLeftEl = document.getElementById("tasksLeft");
@@ -368,9 +374,9 @@ function doTask(taskNo) {
         return;
     }
 
-    var todayStr = new Date().toISOString().split('T')[0];
-    if (user.lastTaskDate !== todayStr) {
-        user.lastTaskDate = todayStr;
+    var todayEgyptStr = getEgyptDateString();
+    if (user.lastTaskDate !== todayEgyptStr) {
+        user.lastTaskDate = todayEgyptStr;
         user.completedTasks = [];
     }
 
@@ -413,7 +419,7 @@ function subscribeDirectPackage(price) {
         return;
     }
     var packageName = "باقة " + price + " EGP";
-    pendingRequests[user.phone] = { packageName: packageName, price: price, date: new Date().toISOString().split('T')[0] };
+    pendingRequests[user.phone] = { packageName: packageName, price: price, date: getEgyptDateString() };
     saveAllData();
     closePackagesModal();
     refreshUI();
@@ -446,9 +452,14 @@ function openWithdrawModal() {
     if (!user) return;
     document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
     var now = new Date();
-    var day = now.getDay();
-    var hour = now.getHours();
-    var isWithdrawAllowed = (day === 0 || day === 3) && (hour >= 10 && hour < 24);
+    // ضبط التوقيت حسب مصر لسحب العمولات
+    var cairoHours = parseInt(new Intl.DateTimeFormat('en-US', { timeZone: 'Africa/Cairo', hour: 'numeric', hour12: false }).format(now));
+    var cairoDay = new Intl.DateTimeFormat('en-US', { timeZone: 'Africa/Cairo', weekday: 'short' }).format(now);
+    
+    var isSunOrWed = (cairoDay === 'Sun' || cairoDay === 'Wed');
+    var isAllowedHour = (cairoHours >= 10 && cairoHours < 24);
+    var isWithdrawAllowed = isSunOrWed && isAllowedHour;
+
     var timeAlert = document.getElementById("withdrawTimeAlertBox");
     var activeSec = document.getElementById("withdrawActiveSection");
     var lockedSec = document.getElementById("withdrawLockedSection");
@@ -464,7 +475,7 @@ function openWithdrawModal() {
         timeAlert.style.background = "rgba(239, 68, 68, 0.15)";
         timeAlert.style.color = "var(--danger)";
         timeAlert.style.border = "1px solid var(--danger)";
-        timeAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> باب السحب مغلق حالياً. مواعيد السحب: الأحد والأربعاء من 10 ص حتى منتصف الليل';
+        timeAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> باب السحب مغلق حالياً. مواعيد السحب: الأحد والأربعاء من 10 ص حتى منتصف الليل بتوقيت مصر';
         activeSec.classList.add("hidden");
         lockedSec.classList.remove("hidden");
     }
@@ -504,7 +515,7 @@ function submitWithdrawRequest() {
         name: user.name,
         wallet: selectedWallet + " (" + walletNum + ")",
         amount: finalAmt,
-        date: new Date().toISOString().split('T')[0],
+        date: getEgyptDateString(),
         status: "pending"
     });
 
