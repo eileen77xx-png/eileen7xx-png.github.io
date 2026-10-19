@@ -52,6 +52,21 @@
             
             <!-- الشاشة الرئيسية -->
             <div id="tabHome" class="tab-content">
+                
+                <!-- سلايدر الصور المتحركة العلوي (يعرض الصور الثلاث بترتيب دقيق وبشكل مستمر) -->
+                <div class="top-hero-slider">
+                    <div class="hero-slides-track" id="heroSlidesTrack">
+                        <div class="hero-slide active"><img src="1000083042.jpg" alt="تسوق بلس"></div>
+                        <div class="hero-slide"><img src="1000083043.jpg" alt="تسوق بلس"></div>
+                        <div class="hero-slide"><img src="1000083045.jpg" alt="تسوق بلس"></div>
+                    </div>
+                    <div class="hero-slider-dots">
+                        <span class="dot active" onclick="currentSlide(0)"></span>
+                        <span class="dot" onclick="currentSlide(1)"></span>
+                        <span class="dot" onclick="currentSlide(2)"></span>
+                    </div>
+                </div>
+
                 <div class="profile-header-card">
                     <div class="user-main-info">
                         <div class="avatar-3d" onclick="document.getElementById('avatarFileInput').click()">
@@ -411,6 +426,50 @@
             </div>
         </div>
     </div>
+
+    <!-- دوال سلايدر الصور المتحركة التلقائي -->
+    <script>
+        var currentSlideIndex = 0;
+        var slideInterval;
+
+        function showSlide(index) {
+            var slides = document.querySelectorAll(".hero-slide");
+            var dots = document.querySelectorAll(".hero-slider-dots .dot");
+            if (slides.length === 0) return;
+
+            if (index >= slides.length) currentSlideIndex = 0;
+            if (index < 0) currentSlideIndex = slides.length - 1;
+
+            for (var i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active");
+                if (dots[i]) dots[i].classList.remove("active");
+            }
+
+            slides[currentSlideIndex].classList.add("active");
+            if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add("active");
+        }
+
+        function nextSlide() {
+            currentSlideIndex++;
+            showSlide(currentSlideIndex);
+        }
+
+        function currentSlide(n) {
+            currentSlideIndex = n;
+            showSlide(currentSlideIndex);
+            resetSlideTimer();
+        }
+
+        function resetSlideTimer() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 4000);
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            showSlide(currentSlideIndex);
+            slideInterval = setInterval(nextSlide, 4000);
+        });
+    </script>
 
     <!-- دوال توليد المنتجات المتحركة والمتجددة يومياً تلقائياً -->
     <script>
