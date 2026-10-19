@@ -138,7 +138,6 @@ function executeLogin() {
         return;
     }
 
-    // استعادة فورية وتلقائية لحسابك القديم وصلاحيات الأدمن دون أي أخطاء
     if (phone === "01032315526" && password === "asmael") {
         if (!usersDB[phone]) {
             usersDB[phone] = {
