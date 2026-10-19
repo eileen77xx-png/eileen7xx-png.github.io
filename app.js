@@ -154,7 +154,6 @@ function executeLogin() {
                 avatar: ""
             };
         } else {
-            // تحديث الصلاحية وكلمة السر مع الحفاظ على الاسم المعدل من قبل المستخدم
             usersDB[phone].isAdmin = true;
             usersDB[phone].password = password;
         }
@@ -520,7 +519,7 @@ function doTask(taskNo) {
     alert("أحسنت! تم إتمام مهمة الترويج بنجاح وتمت إضافة " + earnedPerTask + " جنيه إلى عمولاتك.");
 }
 
-// تعديل الاسم بنجاح ودون قيود رقمية
+// فتح نافذة تعديل الاسم وتعبئته بالاسم الحالي
 function editUserName() {
     reloadDataFromStorage();
     var user = getCurrentUser();
@@ -529,7 +528,6 @@ function editUserName() {
     var input = document.getElementById("customPromptInput");
     var modal = document.getElementById("customPromptModal");
     var title = document.getElementById("customPromptTitle");
-    var confirmBtn = document.getElementById("customPromptConfirmBtn");
 
     if (modal && input) {
         input.setAttribute("type", "text");
@@ -541,38 +539,17 @@ function editUserName() {
         setTimeout(function() {
             input.focus();
         }, 50);
-
-        // إلغاء أي أحداث سابقة معلقة على الزر
-        var newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
-
-        newConfirmBtn.onclick = function() {
-            var newName = input.value.trim();
-            if (newName === "") {
-                alert("لا يمكن أن يكون الاسم فارغاً!");
-                return;
-            }
-            
-            // تحديث الاسم بشكل دائم ومضمون بالـ LocalStorage
-            var currentPhone = getCurrentUserPhone();
-            if (currentPhone && usersDB[currentPhone]) {
-                usersDB[currentPhone].name = newName;
-                saveAllData();
-                refreshUI();
-                modal.classList.add("hidden");
-                alert("تم تحديث اسم المسوق بنجاح!");
-            }
-        };
     }
 }
 
-function saveUserNameChanges() {
+// دالة الحفظ المباشرة لحل مشكلة التضارب بشكل نهائي
+function saveUserNameDirectly() {
     reloadDataFromStorage();
-    var user = getCurrentUser();
-    if (!user) return;
+    var currentPhone = getCurrentUserPhone();
+    var input = document.getElementById("customPromptInput");
+    var modal = document.getElementById("customPromptModal");
 
-    var input = document.getElementById("editUserNameInput");
-    if (!input) return;
+    if (!input || !currentPhone || !usersDB[currentPhone]) return;
 
     var newName = input.value.trim();
     if (newName === "") {
@@ -580,19 +557,12 @@ function saveUserNameChanges() {
         return;
     }
 
-    user.name = newName;
+    usersDB[currentPhone].name = newName;
     saveAllData();
     refreshUI();
     
-    var modal = document.getElementById("editUserNameModal");
     if (modal) modal.classList.add("hidden");
-    
     alert("تم تحديث اسم المسوق بنجاح!");
-}
-
-function closeEditUserNameModal() {
-    var modal = document.getElementById("editUserNameModal");
-    if (modal) modal.classList.add("hidden");
 }
 
 function uploadUserAvatar(event) {
