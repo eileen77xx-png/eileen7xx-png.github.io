@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#090d16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.2">
 </head>
 <body>
 
@@ -53,17 +53,17 @@
             <!-- الشاشة الرئيسية -->
             <div id="tabHome" class="tab-content">
                 
-                <!-- سلايدر الصور المتحركة العلوي بالأسماء الجديدة -->
+                <!-- سلايدر الصور المتحركة العلوي (يعرض الصور الثلاث بسلاسة تامة) -->
                 <div class="top-hero-slider">
                     <div class="hero-slides-track" id="heroSlidesTrack">
                         <div class="hero-slide active">
-                            <img src="slide-shopping.jpg" alt="تسوق بلس">
+                            <img src="1000083042.jpg" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600'" alt="تسوق بلس">
                         </div>
                         <div class="hero-slide">
-                            <img src="slide-business.jpg" alt="تسوق بلس">
+                            <img src="1000083043.jpg" onerror="this.src='https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600'" alt="تسوق بلس">
                         </div>
                         <div class="hero-slide">
-                            <img src="slide-success.jpg" alt="تسوق بلس">
+                            <img src="1000083045.jpg" onerror="this.src='https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600'" alt="تسوق بلس">
                         </div>
                     </div>
                     <div class="hero-slider-dots">
@@ -221,54 +221,60 @@
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب العمولات المعلقة</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>المسوق</th>
-                                <th>رقم المحفظة</th>
-                                <th>المبلغ المطلوب</th>
-                                <th>التاريخ</th>
-                                <th>قرار الأدمن</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminWithdrawRequestsTable">
-                            <tr><td colspan="5" style="color:var(--text-muted);">لا توجد طلبات سحب معلقة حالياً</td></tr>
-                        </tbody>
-                    </table>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>المسوق</th>
+                                    <th>رقم المحفظة</th>
+                                    <th>المبلغ المطلوب</th>
+                                    <th>التاريخ</th>
+                                    <th>قرار الأدمن</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminWithdrawRequestsTable">
+                                <tr><td colspan="5" style="color:var(--text-muted);">لا توجد طلبات سحب معلقة حالياً</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-list-check"></i> طلبات تفعيل الباقات المعلقة</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>المسوق</th>
-                                <th>الباقة المطلوبة</th>
-                                <th>التكلفة</th>
-                                <th>قرار الإدارة</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminRequestsTable">
-                            <tr><td colspan="4" style="color:var(--text-muted);">لا توجد طلبات معلقة حالياً</td></tr>
-                        </tbody>
-                    </table>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>المسوق</th>
+                                    <th>الباقة المطلوبة</th>
+                                    <th>التكلفة</th>
+                                    <th>قرار الإدارة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminRequestsTable">
+                                <tr><td colspan="4" style="color:var(--text-muted);">لا توجد طلبات معلقة حالياً</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الشاملة لشبكة المسوقين والعمولات</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>المسوق</th>
-                                <th>الرصيد المتاح</th>
-                                <th>خطة الترويج</th>
-                                <th>الباقة الحالية</th>
-                                <th>العمولات والإحالات</th>
-                                <th>إدارة الحساب</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminUserTable"></tbody>
-                    </table>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>المسوق</th>
+                                    <th>الرصيد المتاح</th>
+                                    <th>خطة الترويج</th>
+                                    <th>الباقة الحالية</th>
+                                    <th>العمولات والإحالات</th>
+                                    <th>إدارة الحساب</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUserTable"></tbody>
+                        </table>
+                    </div>
                 </section>
             </div>
         </main>
@@ -544,7 +550,7 @@
         }
     </script>
 
-    <script src="admin.js?v=2.0"></script>
-    <script src="app.js?v=2.0"></script>
+    <script src="admin.js?v=2.2"></script>
+    <script src="app.js?v=2.2"></script>
 </body>
 </html>
