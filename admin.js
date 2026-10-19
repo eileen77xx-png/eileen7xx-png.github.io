@@ -161,33 +161,50 @@ function rejectWithdrawRequest(reqId) {
     alert("تم رفض طلب السحب!");
 }
 
+// تحويل الجدول إلى نظام بطاقات متجاوبة (Cards Grid) لعرض كافة المعلومات بوضوح تام بدون تحريك أفقي
 function renderAdminUserTable() {
-    var tbody = document.getElementById("adminUserTable");
-    if (!tbody) return;
-    tbody.innerHTML = "";
+    var container = document.getElementById("adminUserTable");
+    if (!container) return;
+    container.innerHTML = "";
 
     var phones = Object.keys(usersDB);
     if (phones.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='6' style='color:var(--text-muted);'>لا يوجد مسوقون مسجلون</td></tr>";
+        container.innerHTML = "<div style='text-align:center; padding:15px; color:var(--text-muted);'>لا يوجد مسوقون مسجلون</div>";
         return;
     }
 
+    var cardsHTML = "";
     phones.forEach(function (phone) {
         var u = usersDB[phone];
-        var adminBadge = u.isAdmin ? " <span style='color:var(--neon-green); font-size:10px;'>(أدمن)</span>" : "";
-        tbody.innerHTML +=
-            "<tr>" +
-            "<td><strong>" + u.name + "</strong>" + adminBadge + "<br><small style='color:var(--text-muted);'>" + phone + "</small></td>" +
-            "<td>" + (u.balance || 0).toFixed(2) + " EGP</td>" +
-            "<td>" + (u.deposit || 0).toFixed(2) + " EGP</td>" +
-            "<td>" + (u.subscribedPackage || "غير مشترك") + "</td>" +
-            "<td>عمولات: " + (u.profit || 0).toFixed(2) + " EGP<br><small style='color:var(--neon-green);'>إحالات: " + (u.referrals ? u.referrals.length : 0) + "</small></td>" +
-            "<td>" +
-            "<button onclick='adminEditUserBalance(\"" + phone + "\")' class='btn-submit' style='padding:4px 8px; font-size:11px; margin-bottom:4px;'>تعديل الرصيد</button><br>" +
-            "<button onclick='adminDeleteUser(\"" + phone + "\")' class='btn-submit' style='padding:4px 8px; font-size:11px; background:var(--danger);'>حذف الحساب 🗑️</button>" +
-            "</td>" +
-            "</tr>";
+        var adminBadge = u.isAdmin ? " <span style='color:var(--neon-green); font-size:11px;'>(أدمن)</span>" : "";
+        
+        cardsHTML += `
+            <div style="background: #090d16; border: 1px solid #23304d; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                    <div>
+                        <span style="font-weight: bold; color: white; font-size: 14px;">${u.name}</span> ${adminBadge}
+                        <div style="font-size: 11px; color: var(--text-muted);">${phone}</div>
+                    </div>
+                    <div style="text-align: left;">
+                        <span style="font-size: 11px; color: var(--text-muted);">الرصيد المتاح:</span>
+                        <div style="font-weight: bold; color: var(--neon-green); font-size: 13px;">${(u.balance || 0).toFixed(2)} EGP</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 8px;">
+                    <div><span style="color: var(--text-muted);">خطة الترويج:</span> <strong style="color: var(--accent);">${(u.deposit || 0).toFixed(2)} EGP</strong></div>
+                    <div><span style="color: var(--text-muted);">الباقة الحالية:</span> <strong style="color: var(--neon-green);">${u.subscribedPackage || "غير مشترك"}</strong></div>
+                    <div style="grid-column: span 2;"><span style="color: var(--text-muted);">العمولات والإحالات:</span> عمولات: ${(u.profit || 0).toFixed(2)} EGP | إحالات: ${u.referrals ? u.referrals.length : 0}</div>
+                </div>
+
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <button onclick="adminEditUserBalance('${phone}')" class="btn-submit" style="flex: 1; padding: 8px; font-size: 12px; background: linear-gradient(135deg, #22c55e, #16a34a);">تعديل الأرصدة</button>
+                    <button onclick="adminDeleteUser('${phone}')" class="btn-submit" style="flex: 1; padding: 8px; font-size: 12px; background: rgba(239, 68, 68, 0.2); border: 1px solid var(--danger); color: var(--danger);">حذف الحساب 🗑️</button>
+                </div>
+            </div>
+        `;
     });
+    container.innerHTML = cardsHTML;
 }
 
 // تعديل الأرصدة باستخدام النافذة المخصصة الحديثة
