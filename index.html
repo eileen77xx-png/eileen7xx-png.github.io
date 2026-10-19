@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#090d16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.6">
+    <link rel="stylesheet" href="style.css?v=2.5">
 </head>
 <body>
 
@@ -143,13 +143,13 @@
                 </div>
             </div>
 
-            <!-- شاشة السجلات (سجل السحب الفخم) -->
+            <!-- شاشة السجلات (محدثة بنظام البطاقات) -->
             <div id="tabHistory" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل عمليات تحويل وسحب العمولات</h3>
                     <div style="background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid rgba(255,255,255,0.08);">
                         <div id="userFullWithdrawHistoryTable">
-                            <!-- بطاقات سجلات السحب الفخمة -->
+                            <!-- سيتم عرض بطاقات سجلات السحب هنا -->
                         </div>
                     </div>
                 </div>
@@ -191,12 +191,12 @@
                     <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> مهمات التسويق والترويج اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
                     
                     <div class="tasks-grid" id="dynamicTasksGrid">
-                        <!-- المهام الديناميكية -->
+                        <!-- سيتم تعبئة المهام بمعطيات ديناميكية متحركة تلقائياً هنا -->
                     </div>
                 </div>
             </div>
 
-            <!-- لوحة تحكم الأدمن (بطاقات فخمة ومنظمة بالكامل) -->
+            <!-- لوحة تحكم الأدمن (محدثة بالكامل ببطاقات متجاوبة لجميع الأقسام) -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
                     <h3 style="color: var(--neon-green); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-magnifying-glass"></i> البحث الشامل عن مسوق</h3>
@@ -210,21 +210,21 @@
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب العمولات المعلقة</h3>
                     <div id="adminWithdrawRequestsTable">
-                        <!-- طلبات السحب المعلقة -->
+                        <!-- بطاقات طلبات السحب المعلقة -->
                     </div>
                 </section>
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> طلبات تفعيل الباقات المعلقة</h3>
                     <div id="adminRequestsTable">
-                        <!-- طلبات الباقات المعلقة -->
+                        <!-- بطاقات طلبات الباقات المعلقة -->
                     </div>
                 </section>
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الشاملة لشبكة المسوقين والعمولات</h3>
                     <div id="adminUserTable">
-                        <!-- شبكة المسوقين -->
+                        <!-- بطاقات شبكة المسوقين والعمولات -->
                     </div>
                 </section>
             </div>
@@ -257,8 +257,8 @@
         <div class="modal-box">
             <h3 style="color:var(--neon-green); margin-bottom:15px; text-align:center;"><i class="fa-solid fa-arrows-rotate"></i> خيارات الباقة التسويقية</h3>
             <p style="font-size:13px; color:var(--text-muted); margin-bottom:15px; text-align:center;">يمكنك استرجاع قيمة خطة الترويج إلى الرصيد المتاح، أو اختيار الترقية والتفعيل الفوري.</p>
-            <button onclick="refundDepositToBalance()" class="btn-submit" style="background:var(--accent); color:black; margin-bottom:10px; font-weight:bold;">استرجاع خطة الترويج للرصيد وإلغاء الباقة</button>
-            <button onclick="closePackageOptionsModal(); openPackagesModal();" class="btn-submit" style="margin-bottom:10px; font-weight:bold;">التفعيل في باقة جديدة (من الرصيد المتاح)</button>
+            <button onclick="refundDepositToBalance()" class="btn-submit" style="background:var(--accent); color:black; margin-bottom:10px;">استرجاع خطة الترويج للرصيد وإلغاء الباقة</button>
+            <button onclick="closePackageOptionsModal(); openPackagesModal();" class="btn-submit" style="margin-bottom:10px;">التفعيل في باقة جديدة (من الرصيد المتاح)</button>
             <button onclick="closePackageOptionsModal()" class="btn-submit" style="background:#334155;">إغلاق</button>
         </div>
     </div>
@@ -331,7 +331,7 @@
                     <input type="number" id="withdrawAmountInput" placeholder="ادخل المبلغ المراد سحبه">
                 </div>
 
-                <button onclick="submitWithdrawRequest()" class="btn-submit" style="font-weight: bold;">تقديم طلب سحب العمولات</button>
+                <button onclick="submitWithdrawRequest()" class="btn-submit">تقديم طلب سحب العمولات</button>
             </div>
 
             <div id="withdrawLockedSection" class="hidden" style="text-align:center; padding: 20px 10px;">
@@ -366,7 +366,7 @@
             </div>
             <h3 style="color: var(--neon-green); margin-bottom: 10px; font-size: 16px;">تسوق بلس</h3>
             <p id="customAlertMessage" style="font-size: 13px; color: #e2e8f0; line-height: 1.6; margin-bottom: 20px;"></p>
-            <button onclick="closeCustomAlert()" class="btn-submit" style="width: 100%; padding: 10px; font-weight: bold;">حسناً</button>
+            <button onclick="closeCustomAlert()" class="btn-submit" style="width: 100%; padding: 10px;">حسناً</button>
         </div>
     </div>
 
@@ -384,7 +384,7 @@
             </div>
             
             <div style="display: flex; gap: 10px;">
-                <button id="customPromptConfirmBtn" class="btn-submit" style="flex: 1; padding: 10px; font-weight: bold;">حفظ التعديل</button>
+                <button id="customPromptConfirmBtn" class="btn-submit" style="flex: 1; padding: 10px;">حفظ التعديل</button>
                 <button onclick="document.getElementById('customPromptModal').classList.add('hidden')" class="btn-submit" style="flex: 1; padding: 10px; background: #334155;">إغلاق</button>
             </div>
         </div>
@@ -480,7 +480,7 @@
                     '<img src="' + item.img + '" class="task-img" alt="منتج تسويقي">' +
                     '<div style="flex-grow: 1;">' +
                     '<h4 style="font-size: 14px; margin-bottom: 5px;">' + item.name + '</h4>' +
-                    '<button id="taskBtn' + taskIndex + '" onclick="doTask(' + taskIndex + ')" class="btn-submit" style="padding: 6px; font-size: 13px; font-weight: bold;">تنفيذ المهمة</button>' +
+                    '<button id="taskBtn' + taskIndex + '" onclick="doTask(' + taskIndex + ')" class="btn-submit" style="padding: 6px; font-size: 13px;">تنفيذ المهمة</button>' +
                     '</div>' +
                     '</div>';
                 grid.innerHTML += cardHTML;
@@ -501,7 +501,7 @@
         }
     </script>
 
-    <script src="admin.js?v=2.6"></script>
-    <script src="app.js?v=2.6"></script>
+    <script src="admin.js?v=2.5"></script>
+    <script src="app.js?v=2.5"></script>
 </body>
 </html>
