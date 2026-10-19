@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#090d16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.3">
+    <link rel="stylesheet" href="style.css?v=2.4">
 </head>
 <body>
 
@@ -258,22 +258,11 @@
                     </div>
                 </section>
 
+                <!-- قسم لوحة التحكم الشاملة لشبكة المسوقين والعمولات (محدث بنظام البطاقات) -->
                 <section class="admin-panel">
-                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الشاملة لشبكة المسوقين والعمولات</h3>
-                    <div style="overflow-x: auto;">
-                        <table class="admin-responsive-table">
-                            <thead>
-                                <tr>
-                                    <th>المسوق</th>
-                                    <th>الرصيد المتاح</th>
-                                    <th>خطة الترويج</th>
-                                    <th>الباقة الحالية</th>
-                                    <th>العمولات والإحالات</th>
-                                    <th>إدارة الحساب</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminUserTable"></tbody>
-                        </table>
+                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الشاملة لشبكة المسوقين والعمولات</h3>
+                    <div id="adminUserTable">
+                        <!-- سيتم تعبئة بطاقات المسوقين هنا ديناميكياً بدون جدول أو تحريك أفقي -->
                     </div>
                 </section>
             </div>
@@ -550,7 +539,7 @@
         }
     </script>
 
-    <script src="admin.js?v=2.3"></script>
-    <script src="app.js?v=2.3"></script>
+    <script src="admin.js?v=2.4"></script>
+    <script src="app.js?v=2.4"></script>
 </body>
 </html>
