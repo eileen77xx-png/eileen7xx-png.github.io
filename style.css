@@ -179,17 +179,45 @@ body {
     gap: 6px; 
 }
 
-.credit-circle { 
-    width: 48px; 
-    height: 48px; 
-    border-radius: 50%; 
-    border: 3px solid var(--neon-green); 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+/* دائرة مستوى التقييم الحيوية المحدثة */
+.credit-circle-wrapper {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.credit-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.credit-svg-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 4;
+}
+
+.credit-svg-fill {
+    fill: none;
+    stroke: var(--neon-green);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 138;
+    stroke-dashoffset: 138;
+    transition: stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.8));
+}
+
+.credit-circle-val { 
+    position: absolute;
     font-weight: bold; 
     font-size: 13px; 
     color: white; 
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
 }
 
 .balance-card { 
