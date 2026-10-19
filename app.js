@@ -434,9 +434,19 @@ function submitWithdrawRequest() {
 }
 
 function renderUserWithdrawHistory() {
-    var tbody = document.getElementById("userFullWithdrawHistoryTable");
-    if (!tbody) return;
-    tbody.innerHTML = "";
+    var container = document.getElementById("userFullWithdrawHistoryTable");
+    if (!container) return;
+    
+    var parent = container.parentElement;
+    if (parent && parent.tagName === 'TABLE') {
+        var wrapper = parent.parentElement;
+        parent.remove();
+        var newDiv = document.createElement('div');
+        newDiv.id = "userFullWithdrawHistoryTable";
+        newDiv.style.cssText = "display: flex; flex-direction: column; gap: 12px;";
+        wrapper.appendChild(newDiv);
+        container = newDiv;
+    }
 
     var currentUser = getCurrentUser();
     if (!currentUser) return;
@@ -446,22 +456,33 @@ function renderUserWithdrawHistory() {
     });
 
     if (userWithdraws.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد عمليات سحب سابقة حتى الآن</td></tr>";
+        container.innerHTML = "<div style='text-align:center; padding:20px; color:var(--text-muted); background:#090d16; border-radius:12px; border:1px solid #23304d;'>لا توجد عمليات سحب سابقة حتى الآن</div>";
         return;
     }
 
+    var html = "";
     userWithdraws.forEach(function(req) {
         var statusColor = req.status === 'approved' ? 'var(--neon-green)' : (req.status === 'rejected' ? 'var(--danger)' : 'var(--accent)');
-        var statusText = req.status === 'approved' ? 'تم إرسال المبلغ ✅' : (req.status === 'rejected' ? 'مرفوض ❌' : 'قيد المراجعة ⏳');
+        var statusText = req.status === 'approved' ? 'تم استلام المبلغ ✅' : (req.status === 'rejected' ? 'مرفوض ❌' : 'قيد المراجعة ⏳');
 
-        tbody.innerHTML +=
-            "<tr>" +
-            "<td>" + req.date + "</td>" +
-            "<td>" + req.wallet + "</td>" +
-            "<td>" + req.amount.toFixed(2) + " EGP</td>" +
-            "<td style='color:" + statusColor + "; font-weight:bold;'>" + statusText + "</td>" +
-            "</tr>";
+        html += `
+            <div style="background: linear-gradient(135deg, #090d16 0%, #111827 100%); border: 1px solid #23304d; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-wallet" style="color: var(--neon-green); font-size: 16px;"></i>
+                        <span style="font-weight: bold; color: white; font-size: 14px;">${req.wallet}</span>
+                    </div>
+                    <div style="font-weight: bold; color: var(--neon-green); font-size: 15px;">EGP ${req.amount.toFixed(2)}</div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+                    <span style="color: var(--text-muted);"><i class="fa-regular fa-clock"></i> ${req.date}</span>
+                    <span style="color: ${statusColor}; font-weight: bold; background: rgba(255,255,255,0.03); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">${statusText}</span>
+                </div>
+            </div>
+        `;
     });
+    container.innerHTML = html;
 }
 
 // ====================== المهام اليومية ======================
@@ -538,7 +559,6 @@ function copyReferralLink() {
 }
 
 function openInfoModal() {
-    document.getElementById("infoModal").classList.add("hidden");
     document.getElementById("infoModal").classList.remove("hidden");
 }
 
