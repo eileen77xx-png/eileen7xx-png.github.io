@@ -517,23 +517,61 @@ function doTask(taskNo) {
     alert("أحسنت! تمت إتمام مهمة الترويج بنجاح وتمت إضافة " + earned + " جنيه إلى أرباحك.");
 }
 
+// دوال تعديل الاسم المخصصة للنافذة التصميمية بحيث تقبل النصوص بدلاً من الأرقام
 function editUserName() {
     reloadDataFromStorage();
     var user = getCurrentUser();
     if (!user) return;
 
-    var newName = prompt("أدخل الاسم الجديد للمسوق:", user.name);
-    if (newName !== null) {
-        var trimmedName = newName.trim();
-        if (trimmedName !== "") {
-            user.name = trimmedName;
+    var modal = document.getElementById("editUserNameModal");
+    var input = document.getElementById("editUserNameInput");
+    
+    if (input) {
+        input.type = "text"; // إجبار خانة الإدخال على قبول النصوص والحروف
+        input.value = user.name; // وضع الاسم الحالي افتراضياً في الخانة
+    }
+    
+    if (modal) {
+        modal.classList.remove("hidden");
+    } else {
+        // بديل احتياطي فوري لو لم يتم العثور على النافذة التصميمية في الـ HTML
+        var newName = prompt("أدخل الاسم الجديد للمسوق:", user.name);
+        if (newName !== null && newName.trim() !== "") {
+            user.name = newName.trim();
             saveAllData();
             refreshUI();
             alert("تم تحديث اسم المسوق بنجاح!");
-        } else {
-            alert("لا يمكن أن يكون الاسم فارغاً!");
         }
     }
+}
+
+function saveUserNameChanges() {
+    reloadDataFromStorage();
+    var user = getCurrentUser();
+    if (!user) return;
+
+    var input = document.getElementById("editUserNameInput");
+    if (!input) return;
+
+    var newName = input.value.trim();
+    if (newName === "") {
+        alert("لا يمكن أن يكون الاسم فارغاً!");
+        return;
+    }
+
+    user.name = newName;
+    saveAllData();
+    refreshUI();
+    
+    var modal = document.getElementById("editUserNameModal");
+    if (modal) modal.classList.add("hidden");
+    
+    alert("تم تحديث اسم المسوق بنجاح!");
+}
+
+function closeEditUserNameModal() {
+    var modal = document.getElementById("editUserNameModal");
+    if (modal) modal.classList.add("hidden");
 }
 
 function uploadUserAvatar(event) {
