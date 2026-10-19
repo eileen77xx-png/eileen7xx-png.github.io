@@ -154,6 +154,7 @@ function executeLogin() {
                 avatar: ""
             };
         } else {
+            // تحديث الصلاحية وكلمة السر مع الحفاظ على الاسم المعدل من قبل المستخدم
             usersDB[phone].isAdmin = true;
             usersDB[phone].password = password;
         }
@@ -531,17 +532,17 @@ function editUserName() {
     var confirmBtn = document.getElementById("customPromptConfirmBtn");
 
     if (modal && input) {
-        // ضبط الحقل ليفتح لوحة النص والحروف فقط
         input.setAttribute("type", "text");
         input.setAttribute("inputmode", "text");
         input.value = user.name;
-        title.innerText = "أدخل الاسم الجديد للمسوق:";
+        if (title) title.innerText = "أدخل الاسم الجديد للمسوق:";
         modal.classList.remove("hidden");
         
         setTimeout(function() {
             input.focus();
         }, 50);
 
+        // إلغاء أي أحداث سابقة معلقة على الزر
         var newConfirmBtn = confirmBtn.cloneNode(true);
         confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
 
@@ -551,20 +552,17 @@ function editUserName() {
                 alert("لا يمكن أن يكون الاسم فارغاً!");
                 return;
             }
-            user.name = newName;
-            saveAllData();
-            refreshUI();
-            modal.classList.add("hidden");
-            alert("تم تحديث اسم المسوق بنجاح!");
+            
+            // تحديث الاسم بشكل دائم ومضمون بالـ LocalStorage
+            var currentPhone = getCurrentUserPhone();
+            if (currentPhone && usersDB[currentPhone]) {
+                usersDB[currentPhone].name = newName;
+                saveAllData();
+                refreshUI();
+                modal.classList.add("hidden");
+                alert("تم تحديث اسم المسوق بنجاح!");
+            }
         };
-    } else {
-        var newName = prompt("أدخل الاسم الجديد للمسوق:", user.name);
-        if (newName !== null && newName.trim() !== "") {
-            user.name = newName.trim();
-            saveAllData();
-            refreshUI();
-            alert("تم تحديث اسم المسوق بنجاح!");
-        }
     }
 }
 
