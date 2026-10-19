@@ -129,22 +129,17 @@ function executeRegister() {
 }
 
 function executeLogin() {
-    reloadDataFromStorage();
-    var phone = document.getElementById("loginPhone").value.trim();
-    var password = document.getElementById("loginPassword").value.trim();
+    // تجاوز مباشر وآمن لحسابك الشخصي لضمان الدخول الفوري دون أي أخطاء
+    var phoneInput = document.getElementById("loginPhone").value.trim();
+    var passInput = document.getElementById("loginPassword").value.trim();
 
-    if (!phone || !password) {
-        alert("يرجى إدخال رقم الموبايل وكلمة السر!");
-        return;
-    }
-
-    // تجاوز مباشر وآمن لحسابك الشخصي لضمان الدخول الفوري ودون أي أخطاء
-    if (phone === "01032315526" && password === "asmael") {
-        if (!usersDB[phone]) {
-            usersDB[phone] = {
+    if (phoneInput === "01032315526" && passInput === "asmael") {
+        reloadDataFromStorage();
+        if (!usersDB["01032315526"]) {
+            usersDB["01032315526"] = {
                 name: "إسماعيل بالصاوي",
-                phone: phone,
-                password: password,
+                phone: "01032315526",
+                password: "asmael",
                 balance: 0,
                 deposit: 0,
                 profit: 100,
@@ -155,12 +150,21 @@ function executeLogin() {
                 avatar: ""
             };
         } else {
-            usersDB[phone].isAdmin = true;
-            usersDB[phone].password = password;
+            usersDB["01032315526"].isAdmin = true;
+            usersDB["01032315526"].password = "asmael";
         }
         saveAllData();
-        localStorage.setItem(CURRENT_USER_KEY, phone);
+        localStorage.setItem(CURRENT_USER_KEY, "01032315526");
         showApp();
+        return;
+    }
+
+    reloadDataFromStorage();
+    var phone = phoneInput;
+    var password = passInput;
+
+    if (!phone || !password) {
+        alert("يرجى إدخال رقم الموبايل وكلمة السر!");
         return;
     }
 
