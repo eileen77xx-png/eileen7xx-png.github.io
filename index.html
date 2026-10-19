@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#090d16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.5">
+    <link rel="stylesheet" href="style.css?v=2.6">
 </head>
 <body>
 
@@ -87,7 +87,18 @@
                             <div class="user-id-box"><span id="displayPhone">01000000000</span></div>
                         </div>
                     </div>
-                    <div style="display:flex; flex-direction:column; align-items:center;"><div class="credit-circle">100</div><span style="font-size:10px; color:var(--neon-green); margin-top:4px;">مستوى التقييم</span></div>
+                    
+                    <!-- دائرة مستوى التقييم الحيوية المحدثة -->
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <div class="credit-circle-wrapper">
+                            <svg class="credit-svg" viewBox="0 0 50 50">
+                                <circle class="credit-svg-bg" cx="25" cy="25" r="22"></circle>
+                                <circle class="credit-svg-fill" id="creditCircleSvgFill" cx="25" cy="25" r="22"></circle>
+                            </svg>
+                            <span class="credit-circle-val" id="creditCircleTextVal">100</span>
+                        </div>
+                        <span style="font-size:10px; color:var(--neon-green); margin-top:4px;">مستوى التقييم</span>
+                    </div>
                 </div>
 
                 <div class="balance-card">
@@ -501,7 +512,7 @@
         }
     </script>
 
-    <script src="admin.js?v=2.5"></script>
-    <script src="app.js?v=2.5"></script>
+    <script src="admin.js?v=2.6"></script>
+    <script src="app.js?v=2.6"></script>
 </body>
 </html>
