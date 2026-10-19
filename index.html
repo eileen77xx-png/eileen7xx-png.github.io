@@ -370,22 +370,22 @@
         </div>
     </div>
 
-    <!-- نافذة الإدخال المخصصة بديلة prompt المتصفح -->
+    <!-- نافذة الإدخال المخصصة المباشرة لتعديل الاسم بدون أي تضارب -->
     <div id="customPromptModal" class="modal-overlay hidden" style="z-index: 99999;">
         <div class="modal-box" style="max-width: 380px; text-align: center; border: 1px solid var(--neon-green);">
             <div style="font-size: 32px; color: var(--neon-green); margin-bottom: 10px;">
                 <i class="fa-solid fa-pen-to-square"></i>
             </div>
             <h3 style="color: var(--neon-green); margin-bottom: 12px; font-size: 16px;">تسوق بلس</h3>
-            <p id="customPromptTitle" style="font-size: 13px; color: #e2e8f0; margin-bottom: 15px;"></p>
+            <p id="customPromptTitle" style="font-size: 13px; color: #e2e8f0; margin-bottom: 15px;">أدخل الاسم الجديد للمسوق:</p>
             
             <div class="form-group" style="margin-bottom: 20px;">
                 <input type="text" id="customPromptInput" style="width: 100%; text-align: center; font-size: 15px;" placeholder="أدخل القيمة هنا">
             </div>
             
             <div style="display: flex; gap: 10px;">
-                <button id="customPromptConfirmBtn" class="btn-submit" style="flex: 1; padding: 10px;">حفظ التعديل</button>
-                <button onclick="document.getElementById('customPromptModal').classList.add('hidden')" class="btn-submit" style="flex: 1; padding: 10px; background: #334155;">إغلاق</button>
+                <button type="button" id="customPromptConfirmBtn" onclick="saveUserNameDirectly()" class="btn-submit" style="flex: 1; padding: 10px;">حفظ التعديل</button>
+                <button type="button" onclick="document.getElementById('customPromptModal').classList.add('hidden')" class="btn-submit" style="flex: 1; padding: 10px; background: #334155;">إغلاق</button>
             </div>
         </div>
     </div>
