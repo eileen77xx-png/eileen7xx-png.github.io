@@ -236,17 +236,30 @@ function refreshUI() {
         adminNavBtn.classList.add("hidden");
     }
 
+    // تحديث الصور الشخصية بشكل مباشر ودائم
     var avatarImgs = [document.getElementById("userAvatarImg"), document.getElementById("headerAvatarImg")];
     var avatarIcons = [null, document.getElementById("headerAvatarIcon")];
     for (var i = 0; i < avatarImgs.length; i++) {
-        if (user.avatar) {
-            avatarImgs[i].src = user.avatar;
-            avatarImgs[i].classList.remove("hidden");
-            if (avatarIcons[i]) avatarIcons[i].classList.add("hidden");
-        } else {
-            avatarImgs[i].classList.add("hidden");
-            if (avatarIcons[i]) avatarIcons[i].classList.remove("hidden");
+        if (avatarImgs[i]) {
+            if (user.avatar) {
+                avatarImgs[i].src = user.avatar;
+                avatarImgs[i].classList.remove("hidden");
+                if (avatarIcons[i]) avatarIcons[i].classList.add("hidden");
+            } else {
+                if (i === 0) avatarImgs[i].src = "https://via.placeholder.com/150";
+                else avatarImgs[i].classList.add("hidden");
+                if (avatarIcons[i]) avatarIcons[i].classList.remove("hidden");
+            }
         }
+    }
+
+    // أنيميشن حركة دائرة مستوى التقييم الحيوية (تتفاعل تلقائياً عند التحديث والتحميل)
+    var circleFill = document.getElementById("creditCircleSvgFill");
+    if (circleFill) {
+        circleFill.style.strokeDashoffset = "138";
+        setTimeout(function() {
+            circleFill.style.strokeDashoffset = "0"; // حركة امتلاء كاملة وسلسة
+        }, 150);
     }
 
     var refLink = window.location.origin + window.location.pathname + "?ref=" + user.phone;
@@ -542,7 +555,7 @@ function editUserName() {
     }
 }
 
-// دالة الحفظ المباشرة لحل مشكلة التضارب بشكل نهائي
+// دالة الحفظ المباشرة لتعديل الاسم
 function saveUserNameDirectly() {
     reloadDataFromStorage();
     var currentPhone = getCurrentUserPhone();
@@ -565,20 +578,34 @@ function saveUserNameDirectly() {
     alert("تم تحديث اسم المسوق بنجاح!");
 }
 
+// دالة رفع الصورة وتصغير حجمها وحفظها بشكل متوافق ومضمون 100%
 function uploadUserAvatar(event) {
     var file = event.target.files[0];
     if (!file) return;
 
     var reader = new FileReader();
     reader.onload = function(e) {
-        reloadDataFromStorage();
-        var user = getCurrentUser();
-        if (user) {
-            user.avatar = e.target.result;
-            saveAllData();
-            refreshUI();
-            alert("تم تحديث الصورة الشخصية بنجاح!");
-        }
+        var img = new Image();
+        img.onload = function() {
+            // ضغط الصورة لتقليل حجمها لمنع التعليق
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext("2d");
+            canvas.width = 150;
+            canvas.height = 150;
+            ctx.drawImage(img, 0, 0, 150, 150);
+
+            var compressedBase64 = canvas.toDataURL("image/jpeg", 0.8);
+
+            reloadDataFromStorage();
+            var currentPhone = getCurrentUserPhone();
+            if (currentPhone && usersDB[currentPhone]) {
+                usersDB[currentPhone].avatar = compressedBase64;
+                saveAllData();
+                refreshUI();
+                alert("تم تحديث الصورة الشخصية بنجاح!");
+            }
+        };
+        img.src = e.target.result;
     };
     reader.readAsDataURL(file);
 }
