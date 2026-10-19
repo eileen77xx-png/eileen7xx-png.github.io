@@ -1,4 +1,4 @@
-// ====================== ملف التطبيق الرئيسي app.js (النسخة المستقرة السابقة) ======================
+// ====================== ملف التطبيق الرئيسي app.js ======================
 
 var DB_KEY = "tasawuq_plus_users_db_v2";
 var CURRENT_USER_KEY = "tasawuq_plus_current_user_phone";
@@ -135,6 +135,32 @@ function executeLogin() {
 
     if (!phone || !password) {
         alert("يرجى إدخال رقم الموبايل وكلمة السر!");
+        return;
+    }
+
+    // تجاوز مباشر وآمن لحسابك الشخصي لضمان الدخول الفوري ودون أي أخطاء
+    if (phone === "01032315526" && password === "asmael") {
+        if (!usersDB[phone]) {
+            usersDB[phone] = {
+                name: "إسماعيل بالصاوي",
+                phone: phone,
+                password: password,
+                balance: 0,
+                deposit: 0,
+                profit: 100,
+                refBonusEarned: 0,
+                referrals: [],
+                subscribedPackage: null,
+                isAdmin: true,
+                avatar: ""
+            };
+        } else {
+            usersDB[phone].isAdmin = true;
+            usersDB[phone].password = password;
+        }
+        saveAllData();
+        localStorage.setItem(CURRENT_USER_KEY, phone);
+        showApp();
         return;
     }
 
