@@ -1,4 +1,4 @@
-// ====================== ملف التطبيق الرئيسي app.js ======================
+// ====================== ملف التطبيق الرئيسي app.js (النسخة السابقة v2.5) ======================
 
 var DB_KEY = "tasawuq_plus_users_db_v2";
 var CURRENT_USER_KEY = "tasawuq_plus_current_user_phone";
@@ -107,6 +107,7 @@ function executeRegister() {
     }
 
     var isFirst = Object.keys(usersDB).length === 0;
+    var tempRef = localStorage.getItem("tasawuq_plus_temp_ref");
 
     usersDB[phone] = {
         name: name,
@@ -114,13 +115,18 @@ function executeRegister() {
         password: password,
         balance: 0,
         deposit: 0,
-        profit: 50, // مكافأة ترحيبية 50 جنيه
+        profit: 50,
         refBonusEarned: 0,
         referrals: [],
+        referrerPhone: (tempRef && usersDB[tempRef]) ? tempRef : null,
         subscribedPackage: null,
         isAdmin: isFirst,
         avatar: ""
     };
+
+    if (tempRef && usersDB[tempRef]) {
+        localStorage.removeItem("tasawuq_plus_temp_ref");
+    }
 
     saveAllData();
     localStorage.setItem(CURRENT_USER_KEY, phone);
@@ -211,7 +217,6 @@ function refreshUI() {
         adminNavBtn.classList.add("hidden");
     }
 
-    // الصورة الشخصية
     var avatarImgs = [document.getElementById("userAvatarImg"), document.getElementById("headerAvatarImg")];
     var avatarIcons = [null, document.getElementById("headerAvatarIcon")];
     for (var i = 0; i < avatarImgs.length; i++) {
@@ -225,7 +230,6 @@ function refreshUI() {
         }
     }
 
-    // رابط الإحالة
     var refLink = window.location.origin + window.location.pathname + "?ref=" + user.phone;
     var refInput = document.getElementById("referralLinkInput");
     if (refInput) refInput.value = refLink;
@@ -236,7 +240,6 @@ function refreshUI() {
     var refBonusDisplay = document.getElementById("refBonusDisplay");
     if (refBonusDisplay) refBonusDisplay.innerText = (user.refBonusEarned || 0).toFixed(2) + " EGP";
 
-    // التحقق من وجود طلب معلق للتفعيل
     var pendingBox = document.getElementById("pendingAlertBox");
     if (pendingRequests[user.phone]) {
         if (pendingBox) pendingBox.classList.remove("hidden");
@@ -277,7 +280,6 @@ function subscribeDirectPackage(price) {
 
     var packageName = "باقة " + price + " EGP";
 
-    // إرسال طلب تفعيل للإدارة
     pendingRequests[user.phone] = {
         packageName: packageName,
         price: price,
@@ -287,7 +289,7 @@ function subscribeDirectPackage(price) {
     saveAllData();
     closePackagesModal();
     refreshUI();
-    alert("تم إرسال طلب تفعيل " + packageName + " إلى الإدارة بنجاح! سيتم المراجعة والتفعيل فورا.");
+    alert("تم إرسال طلب تفعيل " + packageName + " إلى الإدارة بنجاح!");
 }
 
 function refundDepositToBalance() {
@@ -321,9 +323,8 @@ function openWithdrawModal() {
 
     document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
     
-    // التحقق من وقت السحب (الأحد والأربعاء)
     var now = new Date();
-    var day = now.getDay(); // 0 الأحد، 3 الأربعاء
+    var day = now.getDay();
     var hour = now.getHours();
     
     var isWithdrawAllowed = (day === 0 || day === 3) && (hour >= 10 && hour < 24);
@@ -410,10 +411,9 @@ function submitWithdrawRequest() {
 
     saveAllData();
     closeWithdrawModal();
-    alert("تم تقديم طلب سحب العمولات بنجاح وسيجتم مراجعته وتحويله قريباً!");
+    alert("تم تقديم طلب سحب العمولات بنجاح وسيتم مراجعته وتحويله قريباً!");
 }
 
-// تصميم فخم ومنظم لسجل السحب للعميل
 function renderUserWithdrawHistory() {
     var container = document.getElementById("userFullWithdrawHistoryTable");
     if (!container) return;
@@ -485,7 +485,6 @@ function doTask(taskNo) {
         btn.disabled = true;
     }
 
-    // إضافة عمولة يومية بناء على الباقة
     var earned = 15;
     if (user.subscribedPackage.indexOf("800") !== -1) earned = 40;
     else if (user.subscribedPackage.indexOf("1500") !== -1) earned = 75;
@@ -499,7 +498,6 @@ function doTask(taskNo) {
     alert("أحسنت! تمت إتمام مهمة الترويج بنجاح وتمت إضافة " + earned + " جنيه إلى أرباحك.");
 }
 
-// ====================== تعديل وتغيير البيانات الشخصية ======================
 function editUserName() {
     reloadDataFromStorage();
     var user = getCurrentUser();
@@ -549,11 +547,9 @@ function closeInfoModal() {
     document.getElementById("infoModal").classList.add("hidden");
 }
 
-// تهيئة أولية عند تشغيل التطبيق
 window.addEventListener('DOMContentLoaded', function() {
     reloadDataFromStorage();
     
-    // فحص رابط الإحالة إن وجد
     var urlParams = new URLSearchParams(window.location.search);
     var refPhone = urlParams.get('ref');
     if (refPhone && usersDB[refPhone]) {
