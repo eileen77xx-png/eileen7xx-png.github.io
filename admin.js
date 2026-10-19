@@ -12,7 +12,6 @@ window.prompt = function(title, defaultText) {
             modalEl.classList.remove("hidden");
             inputEl.focus();
 
-            // تنظيف أي أحداث قديمة
             var newConfirmBtn = confirmBtn.cloneNode(true);
             confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
 
@@ -36,31 +35,48 @@ function renderAdminPanel() {
     renderAdminUserTable();
 }
 
+// 1. تحويل جدول طلبات تفعيل الباقات المعلقة إلى بطاقات واضحة
 function renderAdminRequestsTable() {
-    var tbody = document.getElementById("adminRequestsTable");
-    if (!tbody) return;
-    tbody.innerHTML = "";
+    var container = document.getElementById("adminRequestsTable");
+    if (!container) return;
+    container.innerHTML = "";
 
     var pendingKeys = Object.keys(pendingRequests);
     if (pendingKeys.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد طلبات معلقة حالياً</td></tr>";
+        container.innerHTML = "<div style='text-align:center; padding:15px; color:var(--text-muted); background:#090d16; border-radius:10px; border:1px solid #23304d;'>لا توجد طلبات تفعيل باقات معلقة حالياً</div>";
         return;
     }
 
+    var cardsHTML = "";
     pendingKeys.forEach(function (phone) {
         var req = pendingRequests[phone];
         var uName = usersDB[phone] ? usersDB[phone].name : "غير معروف";
-        tbody.innerHTML +=
-            "<tr>" +
-            "<td>" + uName + " (" + phone + ")</td>" +
-            "<td>" + req.packageName + "</td>" +
-            "<td>" + req.price + " EGP</td>" +
-            "<td>" +
-            "<button onclick='approvePackageRequest(\"" + phone + "\")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--neon-green); color:black; margin-left:5px;'>قبول ✅</button>" +
-            "<button onclick='rejectPackageRequest(\"" + phone + "\")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--danger);'>رفض ❌</button>" +
-            "</td>" +
-            "</tr>";
+        
+        cardsHTML += `
+            <div style="background: #090d16; border: 1px solid #23304d; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                    <div>
+                        <span style="font-weight: bold; color: white; font-size: 14px;">${uName}</span>
+                        <div style="font-size: 11px; color: var(--text-muted);">${phone}</div>
+                    </div>
+                    <div style="text-align: left;">
+                        <span style="font-size: 11px; color: var(--text-muted);">التكلفة:</span>
+                        <div style="font-weight: bold; color: var(--accent); font-size: 13px;">${req.price} EGP</div>
+                    </div>
+                </div>
+
+                <div style="font-size: 12px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 8px;">
+                    <span style="color: var(--text-muted);">الباقة المطلوبة:</span> <strong style="color: var(--neon-green);">${req.packageName}</strong>
+                </div>
+
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <button onclick='approvePackageRequest("${phone}")' class="btn-submit" style="flex: 1; padding: 8px; font-size: 12px; background: var(--neon-green); color: black;">قبول الطلب ✅</button>
+                    <button onclick='rejectPackageRequest("${phone}")' class="btn-submit" style="flex: 1; padding: 8px; font-size: 12px; background: var(--danger); color: white;">رفض الطلب ❌</button>
+                </div>
+            </div>
+        `;
     });
+    container.innerHTML = cardsHTML;
 }
 
 function approvePackageRequest(phone) {
@@ -99,33 +115,49 @@ function rejectPackageRequest(phone) {
     alert("تم رفض طلب الباقة!");
 }
 
+// 2. تحويل جدول طلبات سحب العمولات المعلقة إلى بطاقات واضحة
 function renderAdminWithdrawRequestsTable() {
-    var tbody = document.getElementById("adminWithdrawRequestsTable");
-    if (!tbody) return;
-    tbody.innerHTML = "";
+    var container = document.getElementById("adminWithdrawRequestsTable");
+    if (!container) return;
+    container.innerHTML = "";
 
     var pendingWithdraws = withdrawRequests.filter(function (r) {
         return r.status === "pending";
     });
 
     if (pendingWithdraws.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='5' style='color:var(--text-muted);'>لا توجد طلبات سحب معلقة حالياً</td></tr>";
+        container.innerHTML = "<div style='text-align:center; padding:15px; color:var(--text-muted); background:#090d16; border-radius:10px; border:1px solid #23304d;'>لا توجد طلبات سحب معلقة حالياً</div>";
         return;
     }
 
+    var cardsHTML = "";
     pendingWithdraws.forEach(function (req) {
-        tbody.innerHTML +=
-            "<tr>" +
-            "<td>" + req.name + " (" + req.phone + ")</td>" +
-            "<td>" + req.wallet + "</td>" +
-            "<td>" + req.amount.toFixed(2) + " EGP</td>" +
-            "<td>" + req.date + "</td>" +
-            "<td>" +
-            "<button onclick='approveWithdrawRequest(" + req.id + ")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--neon-green); color:black; margin-left:5px;'>موافقة وتسديد ✅</button>" +
-            "<button onclick='rejectWithdrawRequest(" + req.id + ")' class='btn-submit' style='padding:5px 10px; font-size:12px; background:var(--danger);'>رفض ❌</button>" +
-            "</td>" +
-            "</tr>";
+        cardsHTML += `
+            <div style="background: #090d16; border: 1px solid #23304d; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                    <div>
+                        <span style="font-weight: bold; color: white; font-size: 14px;">${req.name}</span>
+                        <div style="font-size: 11px; color: var(--text-muted);">${req.phone}</div>
+                    </div>
+                    <div style="text-align: left;">
+                        <span style="font-size: 11px; color: var(--text-muted);">المبلغ المطلوب:</span>
+                        <div style="font-weight: bold; color: var(--neon-green); font-size: 13px;">${req.amount.toFixed(2)} EGP</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 8px;">
+                    <div><span style="color: var(--text-muted);">المحفظة:</span> <strong style="color: var(--accent);">${req.wallet}</strong></div>
+                    <div><span style="color: var(--text-muted);">التاريخ:</span> <strong style="color: #cbd5e1; font-size: 11px;">${req.date}</strong></div>
+                </div>
+
+                <div style="display: flex; gap: 8px; margin-top: 4px;">
+                    <button onclick="approveWithdrawRequest(${req.id})" class="btn-submit" style="flex: 1; padding: 8px; font-size: 12px; background: var(--neon-green); color: black;">موافقة وتسديد ✅</button>
+                    <button onclick="rejectWithdrawRequest(${req.id})" class="btn-submit" style="flex: 1; padding: 8px; font-size: 12px; background: var(--danger); color: white;">رفض ❌</button>
+                </div>
+            </div>
+        `;
     });
+    container.innerHTML = cardsHTML;
 }
 
 function approveWithdrawRequest(reqId) {
@@ -161,7 +193,7 @@ function rejectWithdrawRequest(reqId) {
     alert("تم رفض طلب السحب!");
 }
 
-// تحويل الجدول إلى نظام بطاقات متجاوبة (Cards Grid) لعرض كافة المعلومات بوضوح تام بدون تحريك أفقي
+// 3. لوحة التحكم الشاملة لشبكة المسوقين (نظام البطاقات)
 function renderAdminUserTable() {
     var container = document.getElementById("adminUserTable");
     if (!container) return;
@@ -169,7 +201,7 @@ function renderAdminUserTable() {
 
     var phones = Object.keys(usersDB);
     if (phones.length === 0) {
-        container.innerHTML = "<div style='text-align:center; padding:15px; color:var(--text-muted);'>لا يوجد مسوقون مسجلون</div>";
+        container.innerHTML = "<div style='text-align:center; padding:15px; color:var(--text-muted); background:#090d16; border-radius:10px; border:1px solid #23304d;'>لا يوجد مسوقون مسجلون</div>";
         return;
     }
 
