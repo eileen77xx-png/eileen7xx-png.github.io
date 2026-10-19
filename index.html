@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#090d16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.4">
+    <link rel="stylesheet" href="style.css?v=2.5">
 </head>
 <body>
 
@@ -143,25 +143,13 @@
                 </div>
             </div>
 
-            <!-- شاشة السجلات -->
+            <!-- شاشة السجلات (محدثة بنظام البطاقات) -->
             <div id="tabHistory" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل عمليات تحويل وسحب العمولات</h3>
                     <div style="background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid rgba(255,255,255,0.08);">
-                        <div style="overflow-x: auto;">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>التاريخ</th>
-                                        <th>رقم المحفظة</th>
-                                        <th>المبلغ المطلوب</th>
-                                        <th>حالة الطلب</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="userFullWithdrawHistoryTable">
-                                    <tr><td colspan="4" style="color:var(--text-muted);">لا توجد عمليات سحب سابقة حتى الآن</td></tr>
-                                </tbody>
-                            </table>
+                        <div id="userFullWithdrawHistoryTable">
+                            <!-- سيتم عرض بطاقات سجلات السحب هنا -->
                         </div>
                     </div>
                 </div>
@@ -208,7 +196,7 @@
                 </div>
             </div>
 
-            <!-- لوحة تحكم الأدمن -->
+            <!-- لوحة تحكم الأدمن (محدثة بالكامل ببطاقات متجاوبة لجميع الأقسام) -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
                     <h3 style="color: var(--neon-green); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-magnifying-glass"></i> البحث الشامل عن مسوق</h3>
@@ -220,49 +208,23 @@
                 </section>
 
                 <section class="admin-panel">
-                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب العمولات المعلقة</h3>
-                    <div style="overflow-x: auto;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>المسوق</th>
-                                    <th>رقم المحفظة</th>
-                                    <th>المبلغ المطلوب</th>
-                                    <th>التاريخ</th>
-                                    <th>قرار الأدمن</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminWithdrawRequestsTable">
-                                <tr><td colspan="5" style="color:var(--text-muted);">لا توجد طلبات سحب معلقة حالياً</td></tr>
-                            </tbody>
-                        </table>
+                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب العمولات المعلقة</h3>
+                    <div id="adminWithdrawRequestsTable">
+                        <!-- بطاقات طلبات السحب المعلقة -->
                     </div>
                 </section>
 
                 <section class="admin-panel">
-                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-list-check"></i> طلبات تفعيل الباقات المعلقة</h3>
-                    <div style="overflow-x: auto;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>المسوق</th>
-                                    <th>الباقة المطلوبة</th>
-                                    <th>التكلفة</th>
-                                    <th>قرار الإدارة</th>
-                                </tr>
-                            </thead>
-                            <tbody id="adminRequestsTable">
-                                <tr><td colspan="4" style="color:var(--text-muted);">لا توجد طلبات معلقة حالياً</td></tr>
-                            </tbody>
-                        </table>
+                    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> طلبات تفعيل الباقات المعلقة</h3>
+                    <div id="adminRequestsTable">
+                        <!-- بطاقات طلبات الباقات المعلقة -->
                     </div>
                 </section>
 
-                <!-- قسم لوحة التحكم الشاملة لشبكة المسوقين والعمولات (محدث بنظام البطاقات) -->
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الشاملة لشبكة المسوقين والعمولات</h3>
                     <div id="adminUserTable">
-                        <!-- سيتم تعبئة بطاقات المسوقين هنا ديناميكياً بدون جدول أو تحريك أفقي -->
+                        <!-- بطاقات شبكة المسوقين والعمولات -->
                     </div>
                 </section>
             </div>
@@ -539,7 +501,7 @@
         }
     </script>
 
-    <script src="admin.js?v=2.4"></script>
-    <script src="app.js?v=2.4"></script>
+    <script src="admin.js?v=2.5"></script>
+    <script src="app.js?v=2.5"></script>
 </body>
 </html>
