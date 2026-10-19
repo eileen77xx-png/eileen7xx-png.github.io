@@ -1,4 +1,4 @@
-// ====================== ملف التطبيق الرئيسي app.js (النسخة السابقة v2.5) ======================
+// ====================== ملف التطبيق الرئيسي app.js ======================
 
 var DB_KEY = "tasawuq_plus_users_db_v2";
 var CURRENT_USER_KEY = "tasawuq_plus_current_user_phone";
@@ -107,7 +107,6 @@ function executeRegister() {
     }
 
     var isFirst = Object.keys(usersDB).length === 0;
-    var tempRef = localStorage.getItem("tasawuq_plus_temp_ref");
 
     usersDB[phone] = {
         name: name,
@@ -118,15 +117,10 @@ function executeRegister() {
         profit: 50,
         refBonusEarned: 0,
         referrals: [],
-        referrerPhone: (tempRef && usersDB[tempRef]) ? tempRef : null,
         subscribedPackage: null,
         isAdmin: isFirst,
         avatar: ""
     };
-
-    if (tempRef && usersDB[tempRef]) {
-        localStorage.removeItem("tasawuq_plus_temp_ref");
-    }
 
     saveAllData();
     localStorage.setItem(CURRENT_USER_KEY, phone);
