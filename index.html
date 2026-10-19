@@ -13,7 +13,7 @@
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#090d16">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=2.7">
+    <link rel="stylesheet" href="style.css?v=2.9">
 </head>
 <body>
 
@@ -53,7 +53,7 @@
             <!-- الشاشة الرئيسية -->
             <div id="tabHome" class="tab-content">
                 
-                <!-- سلايدر الصور المتحركة العلوي بالصور الأصلية الخاصة بك -->
+                <!-- سلايدر الصور المتحركة العلوي -->
                 <div class="top-hero-slider">
                     <div class="hero-slides-track" id="heroSlidesTrack">
                         <div class="hero-slide active">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     
-                    <!-- دائرة مستوى التقييم الحيوية المحدثة -->
+                    <!-- دائرة مستوى التقييم الحيوية المتحركة -->
                     <div style="display:flex; flex-direction:column; align-items:center;">
                         <div class="credit-circle-wrapper">
                             <svg class="credit-svg" viewBox="0 0 50 50">
@@ -154,14 +154,12 @@
                 </div>
             </div>
 
-            <!-- شاشة السجلات (محدثة بنظام البطاقات) -->
+            <!-- شاشة السجلات -->
             <div id="tabHistory" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--neon-green); margin-bottom:15px;"><i class="fa-solid fa-clock-rotate-left"></i> سجل عمليات تحويل وسحب العمولات</h3>
                     <div style="background: var(--card-bg); border-radius: 14px; padding: 15px; border: 1px solid rgba(255,255,255,0.08);">
-                        <div id="userFullWithdrawHistoryTable">
-                            <!-- سيتم عرض بطاقات سجلات السحب هنا -->
-                        </div>
+                        <div id="userFullWithdrawHistoryTable"></div>
                     </div>
                 </div>
             </div>
@@ -200,14 +198,11 @@
             <div id="tabTasks" class="tab-content hidden">
                 <div style="padding:15px;">
                     <h3 style="color:var(--accent); margin-bottom:12px;"><i class="fa-solid fa-list-check"></i> مهمات التسويق والترويج اليومية (المتبقي: <span id="tasksLeft">5</span>)</h3>
-                    
-                    <div class="tasks-grid" id="dynamicTasksGrid">
-                        <!-- سيتم تعبئة المهام بمعطيات ديناميكية متحركة تلقائياً هنا -->
-                    </div>
+                    <div class="tasks-grid" id="dynamicTasksGrid"></div>
                 </div>
             </div>
 
-            <!-- لوحة تحكم الأدمن (محدثة بالكامل ببطاقات متجاوبة لجميع الأقسام) -->
+            <!-- لوحة تحكم الأدمن -->
             <div id="tabAdmin" class="tab-content hidden">
                 <section class="admin-panel">
                     <h3 style="color: var(--neon-green); font-size: 16px; margin-bottom: 10px;"><i class="fa-solid fa-magnifying-glass"></i> البحث الشامل عن مسوق</h3>
@@ -220,23 +215,17 @@
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-money-bill-transfer"></i> طلبات سحب العمولات المعلقة</h3>
-                    <div id="adminWithdrawRequestsTable">
-                        <!-- بطاقات طلبات السحب المعلقة -->
-                    </div>
+                    <div id="adminWithdrawRequestsTable"></div>
                 </section>
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-list-check"></i> طلبات تفعيل الباقات المعلقة</h3>
-                    <div id="adminRequestsTable">
-                        <!-- بطاقات طلبات الباقات المعلقة -->
-                    </div>
+                    <div id="adminRequestsTable"></div>
                 </section>
 
                 <section class="admin-panel">
                     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-user-shield"></i> لوحة التحكم الشاملة لشبكة المسوقين والعمولات</h3>
-                    <div id="adminUserTable">
-                        <!-- بطاقات شبكة المسوقين والعمولات -->
-                    </div>
+                    <div id="adminUserTable"></div>
                 </section>
             </div>
         </main>
@@ -274,22 +263,19 @@
         </div>
     </div>
 
-    <!-- نافذة سحب العمولات الجديدة -->
+    <!-- نافذة سحب العمولات -->
     <div id="withdrawModal" class="modal-overlay hidden">
         <div class="modal-box" style="max-width: 480px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <h3 style="color:var(--neon-green);"><i class="fa-solid fa-money-bill-wave"></i> سحب العمولات التسويقية</h3>
                 <i class="fa-solid fa-xmark" onclick="closeWithdrawModal()" style="color:var(--text-muted); cursor:pointer; font-size:18px;"></i>
             </div>
-
             <div id="withdrawTimeAlertBox" style="margin-bottom: 15px; padding: 12px; border-radius: 10px; font-size: 13px; text-align: center;"></div>
-
             <div id="withdrawActiveSection">
                 <div style="background:#090d16; padding:12px; border-radius:10px; margin-bottom:15px; text-align:center; border:1px solid #23304d;">
                     <span style="font-size:12px; color:var(--text-muted);">رصيد العمولات المتاح للسحب:</span>
                     <div style="font-size:20px; font-weight:bold; color:var(--neon-green);" id="withdrawAvailableProfit">0.00 EGP</div>
                 </div>
-
                 <div style="margin-bottom: 15px;">
                     <label style="display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">اختر شبكة المحفظة الإلكترونية:</label>
                     <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;">
@@ -315,12 +301,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label>رقم المحفظة الإلكترونية المختارة</label>
-                    <input type="text" id="withdrawWalletNumber" placeholder="مثال: 01012345678">
-                </div>
-
+                <div class="form-group"><label>رقم المحفظة الإلكترونية المختارة</label><input type="text" id="withdrawWalletNumber" placeholder="مثال: 01012345678"></div>
                 <div class="form-group">
                     <label>اختر مبلغ السحب (الحد الأدنى 250 EGP)</label>
                     <div class="amounts-grid-btns">
@@ -336,27 +317,14 @@
                         <button type="button" onclick="setWithdrawAmount(12000)" class="amt-btn">12000</button>
                     </div>
                 </div>
-
-                <div class="form-group" style="margin-top: 10px;">
-                    <label>أو أدخل المبلغ يدوياً (حد أدنى 250)</label>
-                    <input type="number" id="withdrawAmountInput" placeholder="ادخل المبلغ المراد سحبه">
-                </div>
-
+                <div class="form-group" style="margin-top: 10px;"><label>أو أدخل المبلغ يدوياً (حد أدنى 250)</label><input type="number" id="withdrawAmountInput" placeholder="ادخل المبلغ المراد سحبه"></div>
                 <button onclick="submitWithdrawRequest()" class="btn-submit">تقديم طلب سحب العمولات</button>
             </div>
-
             <div id="withdrawLockedSection" class="hidden" style="text-align:center; padding: 20px 10px;">
                 <div style="font-size: 42px; color: var(--accent); margin-bottom: 12px;"><i class="fa-solid fa-clock-rotate-left"></i></div>
                 <h4 style="color: var(--accent); margin-bottom: 10px; font-size: 16px;">أنت الآن في فترة تنفيذ الحملات والتسويق</h4>
-                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">
-                    عزيزي المسوق، مواعيد سحب العمولات المخصصة للمنصة هي: <br>
-                    <strong style="color: var(--neon-green);">الأحد والأربعاء من الساعة 10:00 صباحاً حتى 12:00 منتصف الليل.</strong>
-                </p>
-                <p style="font-size: 12px; color: #cbd5e1; background: #090d16; padding: 10px; border-radius: 8px; border: 1px solid #23304d;">
-                    يرجى العودة في الموعد المخصص لتقديم طلب سحب عمولاتك بكل سهولة.
-                </p>
+                <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px;">عزيزي المسوق، مواعيد سحب العمولات المخصصة للمنصة هي: <br><strong style="color: var(--neon-green);">الأحد والأربعاء من الساعة 10:00 صباحاً حتى 12:00 منتصف الليل.</strong></p>
             </div>
-
             <button onclick="closeWithdrawModal()" class="btn-submit" style="background:#334155; margin-top:15px;">إغلاق</button>
         </div>
     </div>
@@ -369,31 +337,23 @@
         <button onclick="closeInfoModal()" class="btn-submit" style="margin-top:15px; background:#334155;">إغلاق</button>
     </div></div>
 
-    <!-- نافذة التنبيهات المخصصة بديلة alert المتصفح -->
+    <!-- نافذة التنبيهات -->
     <div id="customAlertModal" class="modal-overlay hidden" style="z-index: 99999;">
         <div class="modal-box" style="max-width: 360px; text-align: center; border: 1px solid var(--neon-green);">
-            <div style="font-size: 36px; color: var(--neon-green); margin-bottom: 10px;">
-                <i class="fa-solid fa-circle-info"></i>
-            </div>
+            <div style="font-size: 36px; color: var(--neon-green); margin-bottom: 10px;"><i class="fa-solid fa-circle-info"></i></div>
             <h3 style="color: var(--neon-green); margin-bottom: 10px; font-size: 16px;">تسوق بلس</h3>
             <p id="customAlertMessage" style="font-size: 13px; color: #e2e8f0; line-height: 1.6; margin-bottom: 20px;"></p>
             <button onclick="closeCustomAlert()" class="btn-submit" style="width: 100%; padding: 10px;">حسناً</button>
         </div>
     </div>
 
-    <!-- نافذة الإدخال المخصصة المباشرة لتعديل الاسم بدون أي تضارب -->
+    <!-- نافذة الإدخال المخصصة -->
     <div id="customPromptModal" class="modal-overlay hidden" style="z-index: 99999;">
         <div class="modal-box" style="max-width: 380px; text-align: center; border: 1px solid var(--neon-green);">
-            <div style="font-size: 32px; color: var(--neon-green); margin-bottom: 10px;">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </div>
+            <div style="font-size: 32px; color: var(--neon-green); margin-bottom: 10px;"><i class="fa-solid fa-pen-to-square"></i></div>
             <h3 style="color: var(--neon-green); margin-bottom: 12px; font-size: 16px;">تسوق بلس</h3>
             <p id="customPromptTitle" style="font-size: 13px; color: #e2e8f0; margin-bottom: 15px;">أدخل الاسم الجديد للمسوق:</p>
-            
-            <div class="form-group" style="margin-bottom: 20px;">
-                <input type="text" id="customPromptInput" style="width: 100%; text-align: center; font-size: 15px;" placeholder="أدخل القيمة هنا">
-            </div>
-            
+            <div class="form-group" style="margin-bottom: 20px;"><input type="text" id="customPromptInput" style="width: 100%; text-align: center; font-size: 15px;" placeholder="أدخل القيمة هنا"></div>
             <div style="display: flex; gap: 10px;">
                 <button type="button" id="customPromptConfirmBtn" onclick="saveUserNameDirectly()" class="btn-submit" style="flex: 1; padding: 10px;">حفظ التعديل</button>
                 <button type="button" onclick="document.getElementById('customPromptModal').classList.add('hidden')" class="btn-submit" style="flex: 1; padding: 10px; background: #334155;">إغلاق</button>
@@ -401,7 +361,7 @@
         </div>
     </div>
 
-    <!-- دوال سلايدر الصور المتحركة التلقائي -->
+    <!-- سلايدر الصور -->
     <script>
         var currentSlideIndex = 0;
         var slideInterval;
@@ -410,15 +370,12 @@
             var slides = document.querySelectorAll(".hero-slide");
             var dots = document.querySelectorAll(".hero-slider-dots .dot");
             if (slides.length === 0) return;
-
             if (index >= slides.length) currentSlideIndex = 0;
             if (index < 0) currentSlideIndex = slides.length - 1;
-
             for (var i = 0; i < slides.length; i++) {
                 slides[i].classList.remove("active");
                 if (dots[i]) dots[i].classList.remove("active");
             }
-
             slides[currentSlideIndex].classList.add("active");
             if (dots[currentSlideIndex]) dots[currentSlideIndex].classList.add("active");
         }
@@ -445,90 +402,7 @@
         });
     </script>
 
-    <!-- دوال توليد المنتجات وحفظ حالة المهام اليومية المكتملة لمنع التصفير عند التحديث -->
-    <script>
-        function loadDailyDynamicTasks() {
-            var grid = document.getElementById("dynamicTasksGrid");
-            if (!grid) return;
-
-            var now = new Date();
-            var todayStr = now.toISOString().split('T')[0];
-            var start = new Date(now.getFullYear(), 0, 0);
-            var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
-            var oneDay = 1000 * 60 * 60 * 24;
-            var dayOfYear = Math.floor(diff / oneDay);
-
-            var productPools = [
-                [
-                    { name: "حملة تسويق هاتف ذكي برو", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" },
-                    { name: "ترويج سماعات إيربودز لاسلكية", img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400" },
-                    { name: "تسويق ساعة ذكية رياضية", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
-                    { name: "ترويج كاميرا تصوير رقمية حديثة", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" },
-                    { name: "تسويق أجهزة منزلية ذكية متطورة", img: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400" }
-                ],
-                [
-                    { name: "ترويج حاسوب محمول للألعاب", img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400" },
-                    { name: "تسويق نظارات واقع مجازی متطورة", img: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=400" },
-                    { name: "ترويج منصة ألعاب إلكترونية", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400" },
-                    { name: "تسويق جهاز لوحي بشاشة فائقة", img: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400" },
-                    { name: "ترويج طائرة تصوير درون ذكية", img: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?w=400" }
-                ],
-                [
-                    { name: "تسويق أزياء وعطور عالمية فاخرة", img: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400" },
-                    { name: "ترويج أحذية رياضية عصرية إكسسوار", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" },
-                    { name: "تسويق أدوات لياقة بدنية منزلية", img: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=400" },
-                    { name: "ترويج حقائب ظهر ذكية للسفر", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400" },
-                    { name: "تسويق أدوات تجميل وعناية رقمية", img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400" }
-                ]
-            ];
-
-            var selectedPool = productPools[dayOfYear % productPools.length];
-            grid.innerHTML = "";
-
-            var currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-            var completedList = [];
-            
-            // قراءة المهام المنفذة لليوم الحالي
-            if (currentUser) {
-                if (currentUser.lastTaskDate !== todayStr) {
-                    currentUser.lastTaskDate = todayStr;
-                    currentUser.completedTasks = [];
-                    if (typeof saveAllData === 'function') saveAllData();
-                } else {
-                    completedList = currentUser.completedTasks || [];
-                }
-            }
-
-            var leftCount = 5 - completedList.length;
-            var tasksLeftEl = document.getElementById("tasksLeft");
-            if (tasksLeftEl) tasksLeftEl.innerText = leftCount >= 0 ? leftCount : 0;
-
-            for (var i = 0; i < selectedPool.length; i++) {
-                var taskIndex = i + 1;
-                var item = selectedPool[i];
-                var isDone = completedList.indexOf(taskIndex) !== -1;
-                
-                var btnText = isDone ? "تم التنفيذ بنجاح ✅" : "تنفيذ المهمة";
-                var btnStyle = isDone ? "padding: 6px; font-size: 13px; background: #22c55e; color: black;" : "padding: 6px; font-size: 13px;";
-                var disabledAttr = isDone ? "disabled" : "";
-
-                var cardHTML = '<div class="task-card">' +
-                    '<img src="' + item.img + '" class="task-img" alt="منتج تسويقي">' +
-                    '<div style="flex-grow: 1;">' +
-                    '<h4 style="font-size: 14px; margin-bottom: 5px;">' + item.name + '</h4>' +
-                    '<button id="taskBtn' + taskIndex + '" onclick="doTask(' + taskIndex + ')" class="btn-submit" style="' + btnStyle + '" ' + disabledAttr + '>' + btnText + '</button>' +
-                    '</div>' +
-                    '</div>';
-                grid.innerHTML += cardHTML;
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', function() {
-            loadDailyDynamicTasks();
-        });
-    </script>
-
-    <!-- كود تسجيل Service Worker لتفعيل التثبيت كـ PWA -->
+    <!-- تسجيل Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
@@ -537,7 +411,7 @@
         }
     </script>
 
-    <script src="admin.js?v=2.7"></script>
-    <script src="app.js?v=2.7"></script>
+    <script src="admin.js?v=2.9"></script>
+    <script src="app.js?v=2.9"></script>
 </body>
 </html>
