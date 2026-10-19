@@ -1,296 +1,259 @@
-// ====================== إعادة توجيه alert فوراً من أول سطر ======================
-window.showAlert = function(message) {
-    var msgEl = document.getElementById("customAlertMessage");
-    var modalEl = document.getElementById("customAlertModal");
-    if (msgEl && modalEl) {
-        msgEl.innerText = message;
-        modalEl.classList.remove("hidden");
-    } else {
-        console.log(message);
-    }
-};
+// ====================== ملف التطبيق الرئيسي app.js ======================
 
-window.closeCustomAlert = function() {
-    var modalEl = document.getElementById("customAlertModal");
-    if (modalEl) {
-        modalEl.classList.add("hidden");
-    }
-};
+var DB_KEY = "tasawuq_plus_users_db_v2";
+var CURRENT_USER_KEY = "tasawuq_plus_current_user_phone";
+var PENDING_REQ_KEY = "tasawuq_plus_pending_requests";
+var WITHDRAW_REQ_KEY = "tasawuq_plus_withdraw_requests";
 
-window.alert = function(msg) {
-    window.showAlert(msg);
-};
-
-// ====================== المتغيرات العامة ======================
-var currentUserPhone = localStorage.getItem("tasawuq_logged_user") || null;
 var usersDB = {};
 var pendingRequests = {};
 var withdrawRequests = [];
-var selectedWalletType = "";
-
-// ====================== حماية البيانات ======================
-function getDataIntegrity(data) {
-    try {
-        return btoa(unescape(encodeURIComponent(JSON.stringify(data)))).slice(0, 32);
-    } catch (e) {
-        return "";
-    }
-}
 
 function reloadDataFromStorage() {
     try {
-        var savedUsers = localStorage.getItem("tasawuq_users");
-        var savedPending = localStorage.getItem("tasawuq_pending_requests");
-        var savedWithdraws = localStorage.getItem("tasawuq_withdraw_requests");
+        var dbData = localStorage.getItem(DB_KEY);
+        if (dbData) usersDB = JSON.parse(dbData);
 
-        usersDB = savedUsers ? JSON.parse(savedUsers) : {};
-        pendingRequests = savedPending ? JSON.parse(savedPending) : {};
-        withdrawRequests = savedWithdraws ? JSON.parse(savedWithdraws) : [];
+        var pendingData = localStorage.getItem(PENDING_REQ_KEY);
+        if (pendingData) pendingRequests = JSON.parse(pendingData);
+
+        var withdrawData = localStorage.getItem(WITHDRAW_REQ_KEY);
+        if (withdrawData) withdrawRequests = JSON.parse(withdrawData);
     } catch (e) {
-        usersDB = usersDB || {};
-        pendingRequests = pendingRequests || {};
-        withdrawRequests = withdrawRequests || [];
+        console.error("Error loading data", e);
     }
 }
 
 function saveAllData() {
-    localStorage.setItem("tasawuq_users", JSON.stringify(usersDB));
-    localStorage.setItem("tasawuq_pending_requests", JSON.stringify(pendingRequests));
-    localStorage.setItem("tasawuq_withdraw_requests", JSON.stringify(withdrawRequests));
-
-    var integrity = getDataIntegrity({
-        users: usersDB,
-        pending: pendingRequests,
-        withdraws: withdrawRequests
-    });
-    localStorage.setItem("tasawuq_integrity", integrity);
+    try {
+        localStorage.setItem(DB_KEY, JSON.stringify(usersDB));
+        localStorage.setItem(PENDING_REQ_KEY, JSON.stringify(pendingRequests));
+        localStorage.setItem(WITHDRAW_REQ_KEY, JSON.stringify(withdrawRequests));
+    } catch (e) {
+        console.error("Error saving data", e);
+    }
 }
 
-reloadDataFromStorage();
-
-if (usersDB["01032315526"] && usersDB["01032315526"].isAdmin !== true) {
-    usersDB["01032315526"].isAdmin = true;
-    saveAllData();
+function getCurrentUserPhone() {
+    return localStorage.getItem(CURRENT_USER_KEY);
 }
 
-window.onload = function () {
-    reloadDataFromStorage();
-    var urlParams = new URLSearchParams(window.location.search);
-    var refPhone = urlParams.get("ref");
-    if (refPhone && usersDB[refPhone]) {
-        localStorage.setItem("tasawuq_referrer", refPhone);
+function getCurrentUser() {
+    var phone = getCurrentUserPhone();
+    if (phone && usersDB[phone]) {
+        return usersDB[phone];
     }
+    return null;
+}
 
-    if (currentUserPhone && usersDB[currentUserPhone]) {
-        showMainApp();
+// ====================== النظام التفاعلي للتنبيهات ======================
+function showCustomAlert(msg) {
+    var modal = document.getElementById("customAlertModal");
+    var msgEl = document.getElementById("customAlertMessage");
+    if (modal && msgEl) {
+        msgEl.innerText = msg;
+        modal.classList.remove("hidden");
+    } else {
+        alert(msg);
     }
+}
+
+function closeCustomAlert() {
+    var modal = document.getElementById("customAlertModal");
+    if (modal) modal.classList.add("hidden");
+}
+
+window.alert = function(msg) {
+    showCustomAlert(msg);
 };
 
-function executeLogin() {
-    reloadDataFromStorage();
-    var phone = document.getElementById("loginPhone").value.trim();
-    var pass = document.getElementById("loginPassword").value.trim();
-    if (!usersDB[phone] || usersDB[phone].password !== pass) {
-        alert("رقم الموبايل أو كلمة السر غير صحيحة!");
-        return;
-    }
-    currentUserPhone = phone;
-    localStorage.setItem("tasawuq_logged_user", phone);
-    showMainApp();
+// ====================== المصادقة والدخول ======================
+function showLogin() {
+    document.getElementById("loginScreen").classList.remove("hidden");
+    document.getElementById("registerScreen").classList.add("hidden");
+    document.getElementById("appScreen").classList.add("hidden");
+    document.getElementById("bottomNav").classList.add("hidden");
+}
+
+function showRegister() {
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("registerScreen").classList.remove("hidden");
+    document.getElementById("appScreen").classList.add("hidden");
+    document.getElementById("bottomNav").classList.add("hidden");
+}
+
+function showApp() {
+    document.getElementById("loginScreen").classList.add("hidden");
+    document.getElementById("registerScreen").classList.add("hidden");
+    document.getElementById("appScreen").classList.remove("hidden");
+    document.getElementById("bottomNav").classList.remove("hidden");
+    refreshUI();
 }
 
 function executeRegister() {
     reloadDataFromStorage();
     var name = document.getElementById("regName").value.trim();
     var phone = document.getElementById("regPhone").value.trim();
-    var pass = document.getElementById("regPassword").value.trim();
-    if (!name || !phone || !pass) {
-        alert("املأ الحقول المطلوبة!");
-        return;
-    }
-    if (usersDB[phone]) {
-        alert("الموبايل مسجل مسبقاً!");
+    var password = document.getElementById("regPassword").value.trim();
+
+    if (!name || !phone || !password) {
+        alert("يرجى ملء جميع الحقول المطلوبة لإنشاء الحساب!");
         return;
     }
 
-    var referrerPhone = localStorage.getItem("tasawuq_referrer");
-    var assignedReferrer = null;
-    if (referrerPhone && usersDB[referrerPhone] && referrerPhone !== phone) {
-        assignedReferrer = referrerPhone;
-        localStorage.removeItem("tasawuq_referrer");
+    if (usersDB[phone]) {
+        alert("رقم الموبايل مسجل مسبقاً! يرجى تسجيل الدخول.");
+        return;
     }
+
+    var isFirst = Object.keys(usersDB).length === 0;
 
     usersDB[phone] = {
         name: name,
-        password: pass,
+        phone: phone,
+        password: password,
         balance: 0,
         deposit: 0,
-        profit: 50,
-        subscribed: false,
-        subscribedPackage: "غير مشترك",
-        completedTasks: {},
-        referrals: [],
+        profit: 50, // مكافأة ترحيبية 50 جنيه
         refBonusEarned: 0,
-        referrerPhone: assignedReferrer,
-        createdAt: new Date().toISOString().slice(0, 10),
-        avatar: "https://via.placeholder.com/150",
-        isAdmin: false
+        referrals: [],
+        subscribedPackage: null,
+        isAdmin: isFirst,
+        avatar: ""
     };
 
     saveAllData();
-    currentUserPhone = phone;
-    localStorage.setItem("tasawuq_logged_user", phone);
-    alert("مرحباً بك! تم إنشاء حسابك بنجاح وحصلت على مكافأة ترحيبية 50 جنيه في إجمالي العمولات والمكافآت المستحقة 🎉");
-    showMainApp();
+    localStorage.setItem(CURRENT_USER_KEY, phone);
+    alert("تم إنشاء الحساب بنجاح وتم منحك 50 جنيه مكافأة ترحيبية!");
+    showApp();
 }
 
-function showMainApp() {
+function executeLogin() {
     reloadDataFromStorage();
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("registerScreen").classList.add("hidden");
-    document.getElementById("appScreen").classList.remove("hidden");
-    document.getElementById("bottomNav").classList.remove("hidden");
-    
-    if (typeof loadDailyDynamicTasks === "function") {
-        loadDailyDynamicTasks();
+    var phone = document.getElementById("loginPhone").value.trim();
+    var password = document.getElementById("loginPassword").value.trim();
+
+    if (!phone || !password) {
+        alert("يرجى إدخال رقم الموبايل وكلمة السر!");
+        return;
     }
 
-    loadUserData();
+    if (!usersDB[phone] || usersDB[phone].password !== password) {
+        alert("رقم الموبايل أو كلمة السر غير صحيحة!");
+        return;
+    }
 
-    var currentUser = usersDB[currentUserPhone];
-    if (currentUser && currentUser.isAdmin === true) {
-        document.getElementById("adminNavBtn").classList.remove("hidden");
-        if (typeof renderAdminPanel === "function") renderAdminPanel();
-    } else {
-        document.getElementById("adminNavBtn").classList.add("hidden");
+    localStorage.setItem(CURRENT_USER_KEY, phone);
+    showApp();
+}
+
+function handleLogout() {
+    localStorage.removeItem(CURRENT_USER_KEY);
+    showLogin();
+}
+
+// ====================== التبويبات واجهة المستخدم ======================
+function switchTab(tabId) {
+    var tabs = document.querySelectorAll(".tab-content");
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.add("hidden");
+    }
+
+    var selectedTab = document.getElementById("tab" + tabId.charAt(0).toUpperCase() + tabId.slice(1));
+    if (selectedTab) selectedTab.classList.remove("hidden");
+
+    var navBtns = document.querySelectorAll(".nav-btn");
+    for (var j = 0; j < navBtns.length; j++) {
+        navBtns[j].classList.remove("active");
+    }
+    event.currentTarget.classList.add("active");
+
+    if (tabId === 'history') {
+        renderUserWithdrawHistory();
+    } else if (tabId === 'admin') {
+        if (typeof renderAdminPanel === 'function') renderAdminPanel();
     }
 }
 
-function loadUserData() {
+function refreshUI() {
     reloadDataFromStorage();
-    var data = usersDB[currentUserPhone];
-    if (!data) return;
-
-    document.getElementById("displayNameHeader").innerText = data.name;
-    document.getElementById("displayPhone").innerText = currentUserPhone;
-    document.getElementById("depositVal").innerText = (data.deposit || 0).toFixed(2);
-    document.getElementById("balanceVal").innerText = (data.balance || 0).toFixed(2);
-    document.getElementById("profitVal").innerText = (data.profit || 0).toFixed(2);
-    document.getElementById("accountName").innerText = data.name;
-    document.getElementById("accountPhone").innerText = currentUserPhone;
-    document.getElementById("accountPackage").innerText = (data.subscribedPackage || "غير مشترك") + " ⚙️";
-    document.getElementById("accountDeposit").innerText = (data.deposit || 0).toFixed(2) + " EGP";
-    document.getElementById("accountBalance").innerText = (data.balance || 0).toFixed(2) + " EGP";
-
-    var refLink = window.location.origin + window.location.pathname + "?ref=" + currentUserPhone;
-    document.getElementById("referralLinkInput").value = refLink;
-    document.getElementById("refCountDisplay").innerText = data.referrals ? data.referrals.length : 0;
-    document.getElementById("refBonusDisplay").innerText = (data.refBonusEarned || 0).toFixed(2) + " EGP";
-
-    if (data.avatar) {
-        document.getElementById("userAvatarImg").src = data.avatar;
-        document.getElementById("headerAvatarImg").src = data.avatar;
-        document.getElementById("headerAvatarImg").classList.remove("hidden");
-        document.getElementById("headerAvatarIcon").classList.add("hidden");
+    var user = getCurrentUser();
+    if (!user) {
+        showLogin();
+        return;
     }
+
+    document.getElementById("displayNameHeader").innerText = user.name;
+    document.getElementById("displayPhone").innerText = user.phone;
+    document.getElementById("depositVal").innerText = (user.deposit || 0).toFixed(2);
+    document.getElementById("balanceVal").innerText = (user.balance || 0).toFixed(2);
+    document.getElementById("profitVal").innerText = (user.profit || 0).toFixed(2);
+
+    document.getElementById("accountName").innerText = user.name;
+    document.getElementById("accountPhone").innerText = user.phone;
+    document.getElementById("accountDeposit").innerText = (user.deposit || 0).toFixed(2) + " EGP";
+    document.getElementById("accountBalance").innerText = (user.balance || 0).toFixed(2) + " EGP";
+    document.getElementById("accountPackage").innerText = user.subscribedPackage || "غير مشترك";
 
     var vipBadge = document.getElementById("vipBadge");
-    var vipText = document.getElementById("vipBadgeText");
-    if (data.subscribed) {
-        vipText.innerText = data.subscribedPackage;
+    var vipBadgeText = document.getElementById("vipBadgeText");
+    if (user.subscribedPackage) {
         vipBadge.classList.remove("hidden");
+        vipBadgeText.innerText = user.subscribedPackage;
     } else {
         vipBadge.classList.add("hidden");
     }
 
-    var alertBox = document.getElementById("pendingAlertBox");
-    if (pendingRequests[currentUserPhone]) {
-        document.getElementById("pendingPkgName").innerText = pendingRequests[currentUserPhone].packageName;
-        document.getElementById("pendingPkgPrice").innerText = pendingRequests[currentUserPhone].price + " EGP";
-        alertBox.classList.remove("hidden");
+    var adminNavBtn = document.getElementById("adminNavBtn");
+    if (user.isAdmin) {
+        adminNavBtn.classList.remove("hidden");
     } else {
-        alertBox.classList.add("hidden");
+        adminNavBtn.classList.add("hidden");
     }
 
-    renderFullUserWithdrawHistory();
-    updateTasksButtons();
-}
-
-function copyReferralLink() {
-    var copyText = document.getElementById("referralLinkInput");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(copyText.value);
-    alert("تم نسخ رابط الإحالة الخاص بك بنجاح! شاركه مع أصدقائك الآن 🚀");
-}
-
-function renderFullUserWithdrawHistory() {
-    reloadDataFromStorage();
-    var tbody = document.getElementById("userFullWithdrawHistoryTable");
-    if (!tbody) return;
-    tbody.innerHTML = "";
-    var myHistory = withdrawRequests.filter(function (r) {
-        return r.phone === currentUserPhone;
-    });
-
-    if (myHistory.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='4' style='color:var(--text-muted);'>لا توجد عمليات سحب سابقة حتى الآن</td></tr>";
-        return;
-    }
-
-    myHistory.slice().reverse().forEach(function (item) {
-        var statusHTML = "";
-        if (item.status === "pending") {
-            statusHTML = "<span class='status-badge status-pending'>قيد المراجعة ⏳</span>";
-        } else if (item.status === "approved") {
-            statusHTML = "<span class='status-badge status-success'>تم إرسال المبلغ ✅</span>";
+    // الصورة الشخصية
+    var avatarImgs = [document.getElementById("userAvatarImg"), document.getElementById("headerAvatarImg")];
+    var avatarIcons = [null, document.getElementById("headerAvatarIcon")];
+    for (var i = 0; i < avatarImgs.length; i++) {
+        if (user.avatar) {
+            avatarImgs[i].src = user.avatar;
+            avatarImgs[i].classList.remove("hidden");
+            if (avatarIcons[i]) avatarIcons[i].classList.add("hidden");
         } else {
-            statusHTML = "<span class='status-badge status-rejected'>مرفوض ❌</span>";
+            avatarImgs[i].classList.add("hidden");
+            if (avatarIcons[i]) avatarIcons[i].classList.remove("hidden");
         }
+    }
 
-        tbody.innerHTML +=
-            "<tr>" +
-            "<td>" + item.date + "</td>" +
-            "<td>" + item.wallet + "</td>" +
-            "<td>" + item.amount.toFixed(2) + " EGP</td>" +
-            "<td>" + statusHTML + "</td>" +
-            "</tr>";
-    });
+    // رابط الإحالة
+    var refLink = window.location.origin + window.location.pathname + "?ref=" + user.phone;
+    var refInput = document.getElementById("referralLinkInput");
+    if (refInput) refInput.value = refLink;
+    
+    var refCountDisplay = document.getElementById("refCountDisplay");
+    if (refCountDisplay) refCountDisplay.innerText = user.referrals ? user.referrals.length : 0;
+
+    var refBonusDisplay = document.getElementById("refBonusDisplay");
+    if (refBonusDisplay) refBonusDisplay.innerText = (user.refBonusEarned || 0).toFixed(2) + " EGP";
+
+    // التحقق من وجود طلب معلق للتفعيل
+    var pendingBox = document.getElementById("pendingAlertBox");
+    if (pendingRequests[user.phone]) {
+        if (pendingBox) pendingBox.classList.remove("hidden");
+        document.getElementById("pendingPkgName").innerText = pendingRequests[user.phone].packageName;
+        document.getElementById("pendingPkgPrice").innerText = pendingRequests[user.phone].price + " EGP";
+    } else {
+        if (pendingBox) pendingBox.classList.add("hidden");
+    }
 }
 
-function switchTab(tabName) {
-    reloadDataFromStorage();
-    var tabs = document.querySelectorAll(".tab-content");
-    var btns = document.querySelectorAll(".nav-btn");
-    for (var i = 0; i < tabs.length; i++) {
-        tabs[i].classList.add("hidden");
-    }
-    for (var j = 0; j < btns.length; j++) {
-        btns[j].classList.remove("active");
-    }
+// ====================== الباقات والاشتراكات ======================
+function openPackagesModal() {
+    document.getElementById("packagesModal").classList.remove("hidden");
+}
 
-    if (tabName === "home") {
-        document.getElementById("tabHome").classList.remove("hidden");
-        btns[0].classList.add("active");
-    } else if (tabName === "tasks") {
-        document.getElementById("tabTasks").classList.remove("hidden");
-        btns[1].classList.add("active");
-        if (typeof loadDailyDynamicTasks === "function") {
-            loadDailyDynamicTasks();
-        }
-        updateTasksButtons();
-    } else if (tabName === "history") {
-        document.getElementById("tabHistory").classList.remove("hidden");
-        btns[2].classList.add("active");
-        renderFullUserWithdrawHistory();
-    } else if (tabName === "account") {
-        document.getElementById("tabAccount").classList.remove("hidden");
-        btns[3].classList.add("active");
-    } else if (tabName === "admin") {
-        document.getElementById("tabAdmin").classList.remove("hidden");
-        if (btns[4]) btns[4].classList.add("active");
-        if (typeof renderAdminPanel === "function") renderAdminPanel();
-    }
+function closePackagesModal() {
+    document.getElementById("packagesModal").classList.add("hidden");
 }
 
 function openPackageOptionsModal() {
@@ -301,207 +264,90 @@ function closePackageOptionsModal() {
     document.getElementById("packageOptionsModal").classList.add("hidden");
 }
 
-function refundDepositToBalance() {
-    reloadDataFromStorage();
-    var user = usersDB[currentUserPhone];
-    if (!user.deposit || user.deposit <= 0) {
-        alert("ليس لديك رصيد خطة قائمة لاسترجاعه!");
-        return;
-    }
-
-    if (confirm("هل أنت متأكد من استرجاع قيمة خطة الترويج (" + user.deposit + " EGP) وإضافتها إلى رصيدك المتاح؟ سيتم إلغاء تفعيل الباقة الحالية.")) {
-        user.balance = (user.balance || 0) + user.deposit;
-        user.deposit = 0;
-        user.subscribed = false;
-        user.subscribedPackage = "غير مشترك";
-
-        saveAllData();
-        loadUserData();
-        closePackageOptionsModal();
-        alert("تم استرجاع مبلغ الخطة بنجاح إلى رصيدك المتاح!");
-    }
-}
-
 function subscribeDirectPackage(price) {
     reloadDataFromStorage();
-    var user = usersDB[currentUserPhone];
+    var user = getCurrentUser();
+    if (!user) return;
 
-    if ((user.balance || 0) < price) {
-        alert("رصيدك المتاح (" + (user.balance || 0).toFixed(2) + " EGP) غير كافٍ لتفعيل هذه الباقة! يرجى التواصل مع الدعم لتغذية الحساب.");
+    if (pendingRequests[user.phone]) {
+        alert("لديك طلب تفعيل باقة قيد المراجعة بالفعل!");
         closePackagesModal();
         return;
     }
 
-    if (user.deposit > 0) {
-        if (!confirm("لديك خطة تسويق سابقة بقيمة " + user.deposit + " EGP. هل تريد استبدالها وتفعيل الباقة الجديدة؟")) {
-            return;
-        }
-        user.balance += user.deposit;
-    }
+    var packageName = "باقة " + price + " EGP";
 
-    user.balance -= price;
-    user.deposit = price;
-    user.subscribed = true;
-    user.subscribedPackage = "باقة " + price + " EGP";
-
-    if (user.referrerPhone && usersDB[user.referrerPhone]) {
-        var refUser = usersDB[user.referrerPhone];
-        if (!refUser.referrals) refUser.referrals = [];
-        if (refUser.referrals.indexOf(currentUserPhone) === -1) {
-            refUser.referrals.push(currentUserPhone);
-            refUser.profit = (refUser.profit || 0) + 100;
-            refUser.refBonusEarned = (refUser.refBonusEarned || 0) + 100;
-            user.referrerPhone = null;
-        }
-    }
+    // إرسال طلب تفعيل للإدارة
+    pendingRequests[user.phone] = {
+        packageName: packageName,
+        price: price,
+        date: new Date().toISOString().split('T')[0]
+    };
 
     saveAllData();
-    loadUserData();
     closePackagesModal();
-    alert("مبروك! تم تفعيل الباقة التسويقية بنجاح فوريًا من رصيدك المتاح 🚀");
+    refreshUI();
+    alert("تم إرسال طلب تفعيل " + packageName + " إلى الإدارة بنجاح! سيتم المراجعة والتفعيل فورا.");
 }
 
-function updateTasksButtons() {
-    var u = usersDB[currentUserPhone];
-    if (!u) return;
-    
-    var now = new Date();
-    var year = now.getFullYear();
-    var month = String(now.getMonth() + 1).padStart(2, '0');
-    var day = String(now.getDate()).padStart(2, '0');
-    var today = year + '-' + month + '-' + day;
-
-    if (!u.completedTasks) u.completedTasks = {};
-    var completedToday = u.completedTasks[today] ? u.completedTasks[today].length : 0;
-
-    for (var i = 1; i <= 5; i++) {
-        var btn = document.getElementById("taskBtn" + i);
-        if (btn) {
-            if (u.completedTasks[today] && u.completedTasks[today].indexOf(i) !== -1) {
-                btn.disabled = true;
-                btn.innerText = "مكتملة ✓";
-                btn.style.background = "#334155";
-            } else {
-                btn.disabled = false;
-                btn.innerText = "تنفيذ المهمة";
-                btn.style.background = "";
-            }
-        }
-    }
-    var leftEl = document.getElementById("tasksLeft");
-    if (leftEl) leftEl.innerText = 5 - completedToday;
-}
-
-function uploadUserAvatar(e) {
+function refundDepositToBalance() {
     reloadDataFromStorage();
-    var file = e.target.files[0];
-    if (file) {
-        var reader = new FileReader();
-        reader.onload = function (evt) {
-            usersDB[currentUserPhone].avatar = evt.target.result;
-            saveAllData();
-            loadUserData();
-        };
-        reader.readAsDataURL(file);
-    }
-}
+    var user = getCurrentUser();
+    if (!user) return;
 
-function editUserName() {
-    reloadDataFromStorage();
-    var newName = prompt("ادخل اسم المسوق الجديد:", usersDB[currentUserPhone].name);
-    if (newName && newName.trim() !== "") {
-        usersDB[currentUserPhone].name = newName.trim();
-        saveAllData();
-        loadUserData();
-        if (usersDB[currentUserPhone].isAdmin === true && typeof renderAdminPanel === "function") {
-            renderAdminPanel();
-        }
-        alert("تم تحديث اسم المسوق بنجاح!");
-    }
-}
-
-function doTask(taskId) {
-    reloadDataFromStorage();
-    var user = usersDB[currentUserPhone];
-    if (!user.subscribed) {
-        alert("يجب تفعيل باقة تسويقية أولاً لتنفيذ المهام!");
+    if (!user.subscribedPackage || user.deposit <= 0) {
+        alert("لا توجد خطة ترويج نشطة حالياً لاسترجاعها!");
+        closePackageOptionsModal();
         return;
     }
 
-    var now = new Date();
-    var year = now.getFullYear();
-    var month = String(now.getMonth() + 1).padStart(2, '0');
-    var day = String(now.getDate()).padStart(2, '0');
-    var today = year + '-' + month + '-' + day;
+    user.balance += user.deposit;
+    user.deposit = 0;
+    user.subscribedPackage = null;
 
-    if (!user.completedTasks) user.completedTasks = {};
-    if (!user.completedTasks[today]) user.completedTasks[today] = [];
-
-    if (user.completedTasks[today].indexOf(taskId) !== -1) {
-        alert("تم تنفيذ هذه المهمة اليوم بالفعل!");
-        return;
-    }
-
-    var dailyTotal = 0;
-    if (user.deposit === 300) dailyTotal = 15;
-    else if (user.deposit === 800) dailyTotal = 40;
-    else if (user.deposit === 1500) dailyTotal = 75;
-    else if (user.deposit === 3000) dailyTotal = 150;
-    else if (user.deposit === 8000) dailyTotal = 400;
-    else if (user.deposit === 12000) dailyTotal = 600;
-    else dailyTotal = user.deposit * 0.05;
-
-    var earn = dailyTotal / 5;
-    user.profit += earn;
-    user.completedTasks[today].push(taskId);
     saveAllData();
-    loadUserData();
-    alert("تم تنفيذ المهمة بنجاح وأُضيفت عمولة الترويج المستحقة (" + earn.toFixed(2) + " EGP)!");
+    closePackageOptionsModal();
+    refreshUI();
+    alert("تم إلغاء الباقة وإعادة قيمة خطة الترويج إلى رصيدك المتاح بنجاح!");
 }
 
-function checkWithdrawSchedule() {
-    var now = new Date();
-    var day = now.getDay();
-    var hour = now.getHours();
-
-    var isWithdrawDay = day === 0 || day === 3;
-    var isWithdrawHour = hour >= 10 && hour < 24;
-
-    var alertBox = document.getElementById("withdrawTimeAlertBox");
-    var activeSection = document.getElementById("withdrawActiveSection");
-    var lockedSection = document.getElementById("withdrawLockedSection");
-
-    if (isWithdrawDay && isWithdrawHour) {
-        alertBox.style.background = "rgba(34, 197, 94, 0.15)";
-        alertBox.style.border = "1px solid var(--neon-green)";
-        alertBox.style.color = "var(--neon-green)";
-        alertBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> <strong>باب سحب العمولات مفتوح الآن ✅</strong>";
-        activeSection.classList.remove("hidden");
-        lockedSection.classList.add("hidden");
-        return true;
-    } else {
-        alertBox.style.background = "rgba(239, 68, 68, 0.15)";
-        alertBox.style.border = "1px solid var(--danger)";
-        alertBox.style.color = "var(--danger)";
-        alertBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> <strong>باب السحب مغلق حالياً ⏳</strong>";
-        activeSection.classList.add("hidden");
-        lockedSection.classList.remove("hidden");
-        return false;
-    }
-}
+// ====================== سحب العمولات ======================
+var selectedWallet = "";
+var selectedWithdrawAmount = 0;
 
 function openWithdrawModal() {
-    reloadDataFromStorage();
-    var user = usersDB[currentUserPhone];
+    var user = getCurrentUser();
+    if (!user) return;
+
     document.getElementById("withdrawAvailableProfit").innerText = (user.profit || 0).toFixed(2) + " EGP";
-    selectedWalletType = "";
-    document.getElementById("withdrawWalletNumber").value = "";
-    document.getElementById("withdrawAmountInput").value = "";
+    
+    // التحقق من وقت السحب (الأحد والأربعاء)
+    var now = new Date();
+    var day = now.getDay(); // 0 الأحد، 3 الأربعاء
+    var hour = now.getHours();
+    
+    var isWithdrawAllowed = (day === 0 || day === 3) && (hour >= 10 && hour < 24);
+    
+    var timeAlert = document.getElementById("withdrawTimeAlertBox");
+    var activeSec = document.getElementById("withdrawActiveSection");
+    var lockedSec = document.getElementById("withdrawLockedSection");
 
-    var cards = document.querySelectorAll(".wallet-logo-card");
-    for (var i = 0; i < cards.length; i++) cards[i].classList.remove("active");
+    if (isWithdrawAllowed) {
+        timeAlert.style.background = "rgba(34, 197, 94, 0.15)";
+        timeAlert.style.color = "var(--neon-green)";
+        timeAlert.style.border = "1px solid var(--neon-green)";
+        timeAlert.innerHTML = '<i class="fa-solid fa-circle-check"></i> باب سحب العمولات مفتوح الآن (الأحد والأربعاء من 10 ص حتى منتصف الليل)';
+        activeSec.classList.remove("hidden");
+        lockedSec.classList.add("hidden");
+    } else {
+        timeAlert.style.background = "rgba(239, 68, 68, 0.15)";
+        timeAlert.style.color = "var(--danger)";
+        timeAlert.style.border = "1px solid var(--danger)";
+        timeAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> باب السحب مغلق حالياً. مواعيد السحب: الأحد والأربعاء من 10 ص حتى منتصف الليل';
+        activeSec.classList.add("hidden");
+        lockedSec.classList.remove("hidden");
+    }
 
-    checkWithdrawSchedule();
     document.getElementById("withdrawModal").classList.remove("hidden");
 }
 
@@ -510,96 +356,214 @@ function closeWithdrawModal() {
 }
 
 function selectWalletType(walletName, el) {
-    selectedWalletType = walletName;
+    selectedWallet = walletName;
     var cards = document.querySelectorAll(".wallet-logo-card");
     for (var i = 0; i < cards.length; i++) {
-        cards[i].classList.remove("active");
+        cards[i].style.borderColor = "#23304d";
     }
-    el.classList.add("active");
-    document.getElementById("withdrawWalletNumber").placeholder = "ادخل رقم محفظة " + walletName;
+    el.style.borderColor = "var(--neon-green)";
 }
 
 function setWithdrawAmount(amt) {
+    selectedWithdrawAmount = amt;
     document.getElementById("withdrawAmountInput").value = amt;
 }
 
 function submitWithdrawRequest() {
-    if (!checkWithdrawSchedule()) {
-        alert("عذراً، سحب العمولات غير متاح حالياً. يرجى الالتزام بمواعيد الأحد والأربعاء!");
-        return;
-    }
-
     reloadDataFromStorage();
-    var user = usersDB[currentUserPhone];
-    var walletNum = document.getElementById("withdrawWalletNumber").value.trim();
-    var amount = parseFloat(document.getElementById("withdrawAmountInput").value);
+    var user = getCurrentUser();
+    if (!user) return;
 
-    if (!selectedWalletType) {
+    var walletNum = document.getElementById("withdrawWalletNumber").value.trim();
+    var manualAmt = parseFloat(document.getElementById("withdrawAmountInput").value);
+    var finalAmt = !isNaN(manualAmt) && manualAmt > 0 ? manualAmt : selectedWithdrawAmount;
+
+    if (!selectedWallet) {
         alert("يرجى اختيار شبكة المحفظة الإلكترونية!");
         return;
     }
 
     if (!walletNum) {
-        alert("يرجى إدخال رقم المحفظة!");
+        alert("يرجى إدخال رقم المحفظة الإلكترونية!");
         return;
     }
 
-    if (isNaN(amount) || amount < 250) {
-        alert("عذراً، الحد الأدنى للسحب هو 250 EGP!");
+    if (finalAmt < 250) {
+        alert("عذراً، الحد الأدنى لسحب العمولات هو 250 EGP!");
         return;
     }
 
-    if (amount > (user.profit || 0)) {
-        alert("تنبيه: المبلغ المطلوبة أكبر من رصيد العمولات المتاح لديك!");
+    if ((user.profit || 0) < finalAmt) {
+        alert("رصيد العمولات المتاح لديك لا يكفي لسحب هذا المبلغ!");
         return;
     }
 
-    var todayStr = new Date().toISOString().slice(0, 10);
-    var fullWalletDesc = selectedWalletType + " (" + walletNum + ")";
-
-    var newReq = {
+    withdrawRequests.push({
         id: Date.now(),
-        phone: currentUserPhone,
+        phone: user.phone,
         name: user.name,
-        wallet: fullWalletDesc,
-        amount: amount,
-        date: todayStr,
+        wallet: selectedWallet + " (" + walletNum + ")",
+        amount: finalAmt,
+        date: new Date().toISOString().split('T')[0],
         status: "pending"
-    };
+    });
 
-    withdrawRequests.push(newReq);
     saveAllData();
-
-    document.getElementById("withdrawWalletNumber").value = "";
-    document.getElementById("withdrawAmountInput").value = "";
     closeWithdrawModal();
-    loadUserData();
-    alert("تم تقديم طلب سحب العمولات بنجاح!");
+    alert("تم تقديم طلب سحب العمولات بنجاح وسيجتم مراجعته وتحويله قريباً!");
 }
 
-function showRegister() {
-    document.getElementById("loginScreen").classList.add("hidden");
-    document.getElementById("registerScreen").classList.remove("hidden");
+// تصميم فخم ومنظم لسجل السحب للعميل
+function renderUserWithdrawHistory() {
+    var container = document.getElementById("userFullWithdrawHistoryTable");
+    if (!container) return;
+    
+    var parent = container.parentElement;
+    if (parent && parent.tagName === 'TABLE') {
+        var wrapper = parent.parentElement;
+        parent.remove();
+        var newDiv = document.createElement('div');
+        newDiv.id = "userFullWithdrawHistoryTable";
+        newDiv.style.cssText = "display: flex; flex-direction: column; gap: 12px;";
+        wrapper.appendChild(newDiv);
+        container = newDiv;
+    }
+
+    var currentUser = getCurrentUser();
+    if (!currentUser) return;
+
+    var userWithdraws = withdrawRequests.filter(function(r) {
+        return r.phone === currentUser.phone;
+    });
+
+    if (userWithdraws.length === 0) {
+        container.innerHTML = "<div style='text-align:center; padding:20px; color:var(--text-muted); background:#090d16; border-radius:12px; border:1px solid #23304d;'>لا توجد عمليات سحب سابقة حتى الآن</div>";
+        return;
+    }
+
+    var html = "";
+    userWithdraws.forEach(function(req) {
+        var statusColor = req.status === 'approved' ? 'var(--neon-green)' : (req.status === 'rejected' ? 'var(--danger)' : 'var(--accent)');
+        var statusText = req.status === 'approved' ? 'تم استلام المبلغ ✅' : (req.status === 'rejected' ? 'مرفوض ❌' : 'قيد المراجعة ⏳');
+
+        html += `
+            <div style="background: linear-gradient(135deg, #090d16 0%, #111827 100%); border: 1px solid #23304d; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-wallet" style="color: var(--neon-green); font-size: 16px;"></i>
+                        <span style="font-weight: bold; color: white; font-size: 14px;">${req.wallet}</span>
+                    </div>
+                    <div style="font-weight: bold; color: var(--neon-green); font-size: 15px;">EGP ${req.amount.toFixed(2)}</div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px;">
+                    <span style="color: var(--text-muted);"><i class="fa-regular fa-clock"></i> ${req.date}</span>
+                    <span style="color: ${statusColor}; font-weight: bold; background: rgba(255,255,255,0.03); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">${statusText}</span>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
 }
 
-function showLogin() {
-    document.getElementById("registerScreen").classList.add("hidden");
-    document.getElementById("loginScreen").classList.remove("hidden");
+// ====================== المهام اليومية ======================
+function doTask(taskNo) {
+    reloadDataFromStorage();
+    var user = getCurrentUser();
+    if (!user) return;
+
+    if (!user.subscribedPackage) {
+        alert("يجب عليك تفعيل باقة تسويق أولاً لكي تتمكن من تنفيذ المهام وكسب العمولات!");
+        return;
+    }
+
+    var btn = document.getElementById("taskBtn" + taskNo);
+    if (btn) {
+        btn.innerText = "تم التنفيذ بنجاح ✅";
+        btn.style.background = "#22c55e";
+        btn.style.color = "black";
+        btn.disabled = true;
+    }
+
+    // إضافة عمولة يومية بناء على الباقة
+    var earned = 15;
+    if (user.subscribedPackage.indexOf("800") !== -1) earned = 40;
+    else if (user.subscribedPackage.indexOf("1500") !== -1) earned = 75;
+    else if (user.subscribedPackage.indexOf("3000") !== -1) earned = 150;
+    else if (user.subscribedPackage.indexOf("8000") !== -1) earned = 400;
+    else if (user.subscribedPackage.indexOf("12000") !== -1) earned = 600;
+
+    user.profit = (user.profit || 0) + earned;
+    saveAllData();
+    refreshUI();
+    alert("أحسنت! تمت إتمام مهمة الترويج بنجاح وتمت إضافة " + earned + " جنيه إلى أرباحك.");
 }
 
-function openPackagesModal() {
-    document.getElementById("packagesModal").classList.remove("hidden");
+// ====================== تعديل وتغيير البيانات الشخصية ======================
+function editUserName() {
+    reloadDataFromStorage();
+    var user = getCurrentUser();
+    if (!user) return;
+
+    var newName = prompt("أدخل الاسم الجديد للمسوق:", user.name);
+    if (newName && newName.trim() !== "") {
+        user.name = newName.trim();
+        saveAllData();
+        refreshUI();
+        alert("تم تحديث اسم المسوق بنجاح!");
+    }
 }
-function closePackagesModal() {
-    document.getElementById("packagesModal").classList.add("hidden");
+
+function uploadUserAvatar(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        reloadDataFromStorage();
+        var user = getCurrentUser();
+        if (user) {
+            user.avatar = e.target.result;
+            saveAllData();
+            refreshUI();
+            alert("تم تحديث الصورة الشخصية بنجاح!");
+        }
+    };
+    reader.readAsDataURL(file);
 }
+
+function copyReferralLink() {
+    var input = document.getElementById("referralLinkInput");
+    if (!input) return;
+    input.select();
+    input.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(input.value);
+    alert("تم نسخ رابط الدعوة الخاص بك بنجاح!");
+}
+
 function openInfoModal() {
     document.getElementById("infoModal").classList.remove("hidden");
 }
+
 function closeInfoModal() {
     document.getElementById("infoModal").classList.add("hidden");
 }
-function handleLogout() {
-    localStorage.removeItem("tasawuq_logged_user");
-    location.reload();
-}
+
+// تهيئة أولية عند تشغيل التطبيق
+window.addEventListener('DOMContentLoaded', function() {
+    reloadDataFromStorage();
+    
+    // فحص رابط الإحالة إن وجد
+    var urlParams = new URLSearchParams(window.location.search);
+    var refPhone = urlParams.get('ref');
+    if (refPhone && usersDB[refPhone]) {
+        localStorage.setItem("tasawuq_plus_temp_ref", refPhone);
+    }
+
+    var currentUser = getCurrentUser();
+    if (currentUser) {
+        showApp();
+    } else {
+        showLogin();
+    }
+});
