@@ -485,7 +485,7 @@ function renderUserWithdrawHistory() {
     container.innerHTML = html;
 }
 
-// ====================== المهام اليومية ونسب العمولات الأصلية ======================
+// ====================== المهام اليومية ونسب العمولات الموزعة على 5 مهام ======================
 function doTask(taskNo) {
     reloadDataFromStorage();
     var user = getCurrentUser();
@@ -504,17 +504,19 @@ function doTask(taskNo) {
         btn.disabled = true;
     }
 
-    var earned = 15;
-    if (user.subscribedPackage.indexOf("800") !== -1) earned = 40;
-    else if (user.subscribedPackage.indexOf("1500") !== -1) earned = 75;
-    else if (user.subscribedPackage.indexOf("3000") !== -1) earned = 150;
-    else if (user.subscribedPackage.indexOf("8000") !== -1) earned = 400;
-    else if (user.subscribedPackage.indexOf("12000") !== -1) earned = 600;
+    // حساب عمولة المهمة الواحدة (إجمالي العمولة اليومية ÷ 5 مهام)
+    var earnedPerTask = 3; // الافتراضي لباقة 300 (15 ÷ 5 = 3)
+    
+    if (user.subscribedPackage.indexOf("800") !== -1) earnedPerTask = 8;        // (40 ÷ 5)
+    else if (user.subscribedPackage.indexOf("1500") !== -1) earnedPerTask = 15; // (75 ÷ 5)
+    else if (user.subscribedPackage.indexOf("3000") !== -1) earnedPerTask = 30; // (150 ÷ 5)
+    else if (user.subscribedPackage.indexOf("8000") !== -1) earnedPerTask = 80; // (400 ÷ 5)
+    else if (user.subscribedPackage.indexOf("12000") !== -1) earnedPerTask = 120; // (600 ÷ 5)
 
-    user.profit = (user.profit || 0) + earned;
+    user.profit = (user.profit || 0) + earnedPerTask;
     saveAllData();
     refreshUI();
-    alert("أحسنت! تمت إتمام مهمة الترويج بنجاح وتمت إضافة " + earned + " جنيه إلى أرباحك.");
+    alert("أحسنت! تم إتمام مهمة الترويج بنجاح وتمت إضافة " + earnedPerTask + " جنيه إلى عمولاتك.");
 }
 
 // تعديل الاسم بنجاح ودون قيود رقمية
@@ -523,25 +525,38 @@ function editUserName() {
     var user = getCurrentUser();
     if (!user) return;
 
-    var modal = document.getElementById("editUserNameModal");
-    var input = document.getElementById("editUserNameInput");
-    
-    if (input) {
-        input.removeAttribute("type");
+    var input = document.getElementById("customPromptInput");
+    var modal = document.getElementById("customPromptModal");
+    var title = document.getElementById("customPromptTitle");
+    var confirmBtn = document.getElementById("customPromptConfirmBtn");
+
+    if (modal && input) {
+        // ضبط الحقل ليفتح لوحة النص والحروف فقط
         input.setAttribute("type", "text");
         input.setAttribute("inputmode", "text");
-        input.style.webkitTextSecurity = "none";
         input.value = user.name;
-    }
-    
-    if (modal) {
+        title.innerText = "أدخل الاسم الجديد للمسوق:";
         modal.classList.remove("hidden");
+        
         setTimeout(function() {
-            if (input) {
-                input.focus();
-                input.value = user.name;
-            }
+            input.focus();
         }, 50);
+
+        var newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+
+        newConfirmBtn.onclick = function() {
+            var newName = input.value.trim();
+            if (newName === "") {
+                alert("لا يمكن أن يكون الاسم فارغاً!");
+                return;
+            }
+            user.name = newName;
+            saveAllData();
+            refreshUI();
+            modal.classList.add("hidden");
+            alert("تم تحديث اسم المسوق بنجاح!");
+        };
     } else {
         var newName = prompt("أدخل الاسم الجديد للمسوق:", user.name);
         if (newName !== null && newName.trim() !== "") {
