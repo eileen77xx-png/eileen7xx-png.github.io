@@ -506,7 +506,7 @@ function doTask(taskNo) {
 
     var earned = 15;
     if (user.subscribedPackage.indexOf("800") !== -1) earned = 40;
-    else if (user.subscribedPackage.indexOf("1500") !== -1) earned = 75;
+    else if (user.subscribedPackage.indexOf("1500") !== -1) earned, 75;
     else if (user.subscribedPackage.indexOf("3000") !== -1) earned = 150;
     else if (user.subscribedPackage.indexOf("8000") !== -1) earned = 400;
     else if (user.subscribedPackage.indexOf("12000") !== -1) earned = 600;
@@ -517,7 +517,7 @@ function doTask(taskNo) {
     alert("أحسنت! تمت إتمام مهمة الترويج بنجاح وتمت إضافة " + earned + " جنيه إلى أرباحك.");
 }
 
-// دوال تعديل الاسم المخصصة للنافذة التصميمية بحيث تقبل النصوص بدلاً من الأرقام
+// الحل الجذري: إجبار خانة إدخال الاسم على استقبال النصوص والأحرف وفتح لوحة الحروف نهائياً
 function editUserName() {
     reloadDataFromStorage();
     var user = getCurrentUser();
@@ -527,14 +527,22 @@ function editUserName() {
     var input = document.getElementById("editUserNameInput");
     
     if (input) {
-        input.type = "text"; // إجبار خانة الإدخال على قبول النصوص والحروف
-        input.value = user.name; // وضع الاسم الحالي افتراضياً في الخانة
+        input.removeAttribute("type");
+        input.setAttribute("type", "text");
+        input.setAttribute("inputmode", "text");
+        input.style.webkitTextSecurity = "none";
+        input.value = user.name;
     }
     
     if (modal) {
         modal.classList.remove("hidden");
+        setTimeout(function() {
+            if (input) {
+                input.focus();
+                input.value = user.name;
+            }
+        }, 50);
     } else {
-        // بديل احتياطي فوري لو لم يتم العثور على النافذة التصميمية في الـ HTML
         var newName = prompt("أدخل الاسم الجديد للمسوق:", user.name);
         if (newName !== null && newName.trim() !== "") {
             user.name = newName.trim();
