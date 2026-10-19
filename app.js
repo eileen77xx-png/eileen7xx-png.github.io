@@ -523,11 +523,16 @@ function editUserName() {
     if (!user) return;
 
     var newName = prompt("أدخل الاسم الجديد للمسوق:", user.name);
-    if (newName && newName.trim() !== "") {
-        user.name = newName.trim();
-        saveAllData();
-        refreshUI();
-        alert("تم تحديث اسم المسوق بنجاح!");
+    if (newName !== null) {
+        var trimmedName = newName.trim();
+        if (trimmedName !== "") {
+            user.name = trimmedName;
+            saveAllData();
+            refreshUI();
+            alert("تم تحديث اسم المسوق بنجاح!");
+        } else {
+            alert("لا يمكن أن يكون الاسم فارغاً!");
+        }
     }
 }
 
